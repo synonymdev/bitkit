@@ -7,6 +7,7 @@ import Carousel from 'react-native-reanimated-carousel';
 import { appName, appStoreUrl, playStoreUrl } from '../constants/app';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import type { RootNavigationProp } from '../navigation/types';
+import { useSheetRef } from '../sheets/SheetRefsProvider';
 import {
 	pinSelector,
 	quickpayIntroSeenSelector,
@@ -18,7 +19,6 @@ import {
 } from '../store/reselect/todos';
 import { channelsNotificationsShown, hideTodo } from '../store/slices/todos';
 import { ITodo, TTodoType } from '../store/types/todos';
-import { showBottomSheet } from '../store/utils/ui';
 import { View as ThemedView } from '../styles/components';
 import { Caption13Up } from '../styles/text';
 import { getDurationForBlocks } from '../utils/helpers';
@@ -27,6 +27,8 @@ import SuggestionCard from './SuggestionCard';
 const Suggestions = (): ReactElement => {
 	const { t } = useTranslation('cards');
 	const navigation = useNavigation<RootNavigationProp>();
+	const backupSheetRef = useSheetRef('backupPrompt');
+	const pinSheetRef = useSheetRef('pinNavigation');
 	const { width } = useWindowDimensions();
 	const dispatch = useAppDispatch();
 	const pinTodoDone = useAppSelector(pinSelector);
@@ -61,10 +63,11 @@ const Suggestions = (): ReactElement => {
 		});
 	}, [t]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: sheetRef doesn't change
 	const handleOnPress = useCallback(
 		(id: TTodoType): void => {
 			if (id === 'backupSeedPhrase') {
-				showBottomSheet('backupPrompt');
+				backupSheetRef.current?.present();
 			}
 
 			if (id === 'lightning') {
@@ -81,7 +84,7 @@ const Suggestions = (): ReactElement => {
 
 			if (id === 'pin') {
 				if (!pinTodoDone) {
-					showBottomSheet('PINNavigation', { showLaterButton: true });
+					pinSheetRef.current?.present();
 				} else {
 					navigation.navigate('Settings', { screen: 'DisablePin' });
 				}

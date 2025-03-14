@@ -12,25 +12,24 @@ import React, {
 	useState,
 } from 'react';
 
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import { __E2E__ } from '../../constants/env';
-import { __TREASURE_HUNT_HOST__ } from '../../constants/env';
-import { useSnapPoints } from '../../hooks/bottomSheet';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import Airdrop from '../../screens/TreasureHunt/Airdrop';
-import Chest from '../../screens/TreasureHunt/Chest';
-import ErrorScreen from '../../screens/TreasureHunt/Error';
-import Loading from '../../screens/TreasureHunt/Loading';
-import Prize from '../../screens/TreasureHunt/Prize';
-import { viewControllerSelector } from '../../store/reselect/ui';
-import { addTreasureChest } from '../../store/slices/settings';
+import BottomSheet from '../components/BottomSheet';
+import { __E2E__ } from '../constants/env';
+import { __TREASURE_HUNT_HOST__ } from '../constants/env';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import Airdrop from '../screens/TreasureHunt/Airdrop';
+import Chest from '../screens/TreasureHunt/Chest';
+import ErrorScreen from '../screens/TreasureHunt/Error';
+import Loading from '../screens/TreasureHunt/Loading';
+import Prize from '../screens/TreasureHunt/Prize';
+import { addTreasureChest } from '../store/slices/settings';
+import { SheetsParamList } from '../store/types/ui';
 import BottomSheetNavigationContainer from './BottomSheetNavigationContainer';
 
 export type TreasureHuntNavigationProp =
 	NativeStackNavigationProp<TreasureHuntStackParamList>;
 
 export type TreasureHuntStackParamList = {
-	Chest: undefined;
+	Chest: { chestId: string };
 	Loading: { chestId: string };
 	Prize: { chestId: string };
 	Airdrop: { chestId: string };
@@ -45,16 +44,16 @@ const screenOptions: NativeStackNavigationOptions = {
 	animation: __E2E__ ? 'none' : 'default',
 };
 
-const TreasureHuntNavigation = (): ReactElement => {
-	const snapPoints = useSnapPoints('large');
+const SheetContent = ({
+	data,
+}: { data: SheetsParamList['treasureHunt'] }): ReactElement => {
 	const dispatch = useAppDispatch();
 	const { treasureChests } = useAppSelector((state) => state.settings);
 	const [isLoading, setIsLoading] = useState(true);
 	const [initialScreen, setInitialScreen] =
 		useState<keyof TreasureHuntStackParamList>('Chest');
-	const { isOpen, chestId } = useAppSelector((state) => {
-		return viewControllerSelector(state, 'treasureHunt');
-	});
+
+	const { chestId } = data;
 
 	const found = treasureChests.find((chest) => chest.chestId === chestId!);
 
@@ -102,11 +101,6 @@ const TreasureHuntNavigation = (): ReactElement => {
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: onOpen
 	useEffect(() => {
-		if (!isOpen) {
-			setIsLoading(true);
-			return;
-		}
-
 		if (found) {
 			if (found.isAirdrop) {
 				setInitialScreen('Airdrop');
@@ -121,40 +115,52 @@ const TreasureHuntNavigation = (): ReactElement => {
 		} else {
 			getChest();
 		}
-	}, [isOpen, getChest]);
+	}, [getChest]);
 
-	if (!isOpen || isLoading) {
+	if (isLoading) {
 		return <></>;
 	}
 
 	return (
-		<BottomSheetWrapper view="treasureHunt" snapPoints={snapPoints}>
-			<NavigationIndependentTree>
-				<BottomSheetNavigationContainer key={isOpen.toString()}>
-					<Stack.Navigator
-						initialRouteName={initialScreen}
-						screenOptions={screenOptions}>
-						<Stack.Screen name="Chest" component={Chest} />
-						<Stack.Screen
-							name="Loading"
-							component={Loading}
-							initialParams={{ chestId }}
-						/>
-						<Stack.Screen
-							name="Prize"
-							component={Prize}
-							initialParams={{ chestId }}
-						/>
-						<Stack.Screen
-							name="Airdrop"
-							component={Airdrop}
-							initialParams={{ chestId }}
-						/>
-						<Stack.Screen name="Error" component={ErrorScreen} />
-					</Stack.Navigator>
-				</BottomSheetNavigationContainer>
-			</NavigationIndependentTree>
-		</BottomSheetWrapper>
+		<NavigationIndependentTree>
+			<BottomSheetNavigationContainer>
+				<Stack.Navigator
+					initialRouteName={initialScreen}
+					screenOptions={screenOptions}>
+					<Stack.Screen
+						name="Chest"
+						component={Chest}
+						initialParams={{ chestId }}
+					/>
+					<Stack.Screen
+						name="Loading"
+						component={Loading}
+						initialParams={{ chestId }}
+					/>
+					<Stack.Screen
+						name="Prize"
+						component={Prize}
+						initialParams={{ chestId }}
+					/>
+					<Stack.Screen
+						name="Airdrop"
+						component={Airdrop}
+						initialParams={{ chestId }}
+					/>
+					<Stack.Screen name="Error" component={ErrorScreen} />
+				</Stack.Navigator>
+			</BottomSheetNavigationContainer>
+		</NavigationIndependentTree>
+	);
+};
+
+const TreasureHuntNavigation = (): ReactElement => {
+	return (
+		<BottomSheet id="treasureHunt" size="large">
+			{({ data }: { data: SheetsParamList['treasureHunt'] }) => {
+				return <SheetContent data={data} />;
+			}}
+		</BottomSheet>
 	);
 };
 

@@ -67,10 +67,10 @@ d('Boost', () => {
 		await rpc.sendToAddress(wAddress, '0.001');
 		await rpc.generateToAddress(1, await rpc.getNewAddress());
 		await electrum?.waitForSync();
-		await waitFor(element(by.id('NewTxPrompt')))
+		await waitFor(element(by.id('ReceivedTransaction')))
 			.toBeVisible()
 			.withTimeout(10000);
-		await element(by.id('NewTxPromptButton')).tap();
+		await element(by.id('ReceivedTransactionButton')).tap();
 		await expect(
 			element(by.id('MoneyText').withAncestor(by.id('TotalBalance'))),
 		).toHaveText('100 000');
@@ -178,10 +178,10 @@ d('Boost', () => {
 		await rpc.sendToAddress(wAddress, '0.001');
 		await rpc.generateToAddress(1, await rpc.getNewAddress());
 		await electrum?.waitForSync();
-		await waitFor(element(by.id('NewTxPrompt')))
+		await waitFor(element(by.id('ReceivedTransaction')))
 			.toBeVisible()
 			.withTimeout(10000);
-		await element(by.id('NewTxPromptButton')).tap();
+		await element(by.id('ReceivedTransactionButton')).tap();
 		await expect(
 			element(by.id('MoneyText').withAncestor(by.id('TotalBalance'))),
 		).toHaveText('100 000');

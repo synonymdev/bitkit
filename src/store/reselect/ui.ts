@@ -2,41 +2,10 @@ import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import { TBackupItem } from '../types/backup';
 import { EBackupCategory } from '../types/backup';
-import {
-	IViewControllerData,
-	THealthState,
-	TProfileLink,
-	TSendTransaction,
-	TUiViewController,
-	TViewController,
-} from '../types/ui';
+import { THealthState, TProfileLink, TSendTransaction } from '../types/ui';
 import { backupSelector } from './backup';
 import { blocktankPaidOrdersFullSelector } from './blocktank';
 import { openChannelsSelector, pendingChannelsSelector } from './lightning';
-
-export const viewControllersSelector = (
-	state: RootState,
-): TUiViewController => {
-	return state.ui.viewControllers;
-};
-
-export const viewControllerSelector = (
-	state: RootState,
-	viewController: TViewController,
-): IViewControllerData => {
-	return state.ui.viewControllers[viewController];
-};
-
-export const viewControllerIsOpenSelector = (
-	state: RootState,
-	viewController: TViewController,
-): boolean => {
-	return state.ui.viewControllers[viewController].isOpen;
-};
-
-export const showLaterButtonSelector = (state: RootState): boolean => {
-	return state.ui.viewControllers.PINNavigation.showLaterButton ?? false;
-};
 
 export const profileLinkSelector = (state: RootState): TProfileLink => {
 	return state.ui.profileLink;

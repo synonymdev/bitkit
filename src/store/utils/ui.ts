@@ -1,36 +1,32 @@
 import { Platform } from 'react-native';
 import { getBuildNumber } from 'react-native-device-info';
 
+import { Keyboard } from '../../hooks/keyboard';
+import { getSheetRefOutsideComponent } from '../../sheets/SheetRefsProvider';
 import { vibrate } from '../../utils/helpers';
 import { dispatch } from '../helpers';
-import {
-	closeSheet,
-	setAppUpdateInfo,
-	showSheet,
-	toggleSheet,
-} from '../slices/ui';
+import { setAppUpdateInfo } from '../slices/ui';
 import { EActivityType } from '../types/activity';
-import { TAvailableUpdate, ViewControllerParamList } from '../types/ui';
+import { SheetId, SheetsParamList, TAvailableUpdate } from '../types/ui';
 
 const releaseUrl =
 	'https://github.com/synonymdev/bitkit/releases/download/updater/release.json';
 
-export const showBottomSheet = <View extends keyof ViewControllerParamList>(
-	...args: undefined extends ViewControllerParamList[View]
-		? [view: View] | [view: View, params: ViewControllerParamList[View]]
-		: [view: View, params: ViewControllerParamList[View]]
+export const showSheet = <Id extends keyof SheetsParamList>(
+	...args: undefined extends SheetsParamList[Id]
+		? [id: Id] | [id: Id, params: SheetsParamList[Id]]
+		: [id: Id, params: SheetsParamList[Id]]
 ): void => {
-	const [view, params] = args;
-	dispatch(showSheet({ view, params }));
+	const [id, params] = args;
+	const sheetRef = getSheetRefOutsideComponent(id);
+	sheetRef.current?.present(params);
 };
 
-export const toggleBottomSheet = <View extends keyof ViewControllerParamList>(
-	...args: undefined extends ViewControllerParamList[View]
-		? [view: View] | [view: View, params: ViewControllerParamList[View]]
-		: [view: View, params: ViewControllerParamList[View]]
-): void => {
-	const [view, params] = args;
-	dispatch(toggleSheet({ view, params }));
+export const closeSheet = async (id: SheetId): Promise<void> => {
+	const sheetRef = getSheetRefOutsideComponent(id);
+	await Keyboard.dismiss();
+	// NOTE: params are reset in onClose of BottomSheet
+	sheetRef.current?.close();
 };
 
 export const showNewOnchainTxPrompt = ({
@@ -41,14 +37,12 @@ export const showNewOnchainTxPrompt = ({
 	value: number;
 }): void => {
 	vibrate({ type: 'default' });
-	showBottomSheet('newTxPrompt', {
-		activityItem: {
-			id,
-			activityType: EActivityType.onchain,
-			value,
-		},
+	showSheet('receivedTx', {
+		id,
+		activityType: EActivityType.onchain,
+		value,
 	});
-	dispatch(closeSheet('receiveNavigation'));
+	closeSheet('receive');
 };
 
 export const checkForAppUpdate = async (): Promise<void> => {

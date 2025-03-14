@@ -75,10 +75,10 @@ d('Transfer', () => {
 		await rpc.generateToAddress(1, await rpc.getNewAddress());
 		await electrum?.waitForSync();
 
-		await waitFor(element(by.id('NewTxPrompt')))
+		await waitFor(element(by.id('ReceivedTransaction')))
 			.toBeVisible()
 			.withTimeout(20000);
-		await element(by.id('NewTxPrompt')).swipe('down'); // close Receive screen
+		await element(by.id('ReceivedTransaction')).swipe('down'); // close Receive screen
 
 		// switch to USD
 		await element(by.id('HeaderMenu')).tap();
@@ -261,10 +261,10 @@ d('Transfer', () => {
 		await rpc.sendToAddress(wAddress, '0.001');
 		await rpc.generateToAddress(1, await rpc.getNewAddress());
 
-		await waitFor(element(by.id('NewTxPrompt')))
+		await waitFor(element(by.id('ReceivedTransaction')))
 			.toBeVisible()
 			.withTimeout(20000);
-		await element(by.id('NewTxPrompt')).swipe('down');
+		await element(by.id('ReceivedTransaction')).swipe('down');
 
 		// Get LDK node id
 		await element(by.id('HeaderMenu')).tap();

@@ -41,7 +41,7 @@ import {
 	__BACKUPS_SERVER_HOST__,
 	__BACKUPS_SERVER_PUBKEY__,
 } from '../../constants/env';
-import { sendNavigation } from '../../navigation/bottom-sheet/SendNavigation';
+import { sendNavigation } from '../../sheets/SendNavigation';
 import {
 	dispatch,
 	getBlocktankStore,
@@ -52,7 +52,7 @@ import {
 import { addActivityItem } from '../../store/slices/activity';
 import { initialFeesState } from '../../store/slices/fees';
 import { updateBackupState } from '../../store/slices/lightning';
-import { closeSheet, updateUi } from '../../store/slices/ui';
+import { updateUi } from '../../store/slices/ui';
 import {
 	EActivityType,
 	TLightningActivityItem,
@@ -79,7 +79,7 @@ import {
 	updateLightningNodeIdThunk,
 	updateLightningNodeVersionThunk,
 } from '../../store/utils/lightning';
-import { showBottomSheet } from '../../store/utils/ui';
+import { closeSheet, showSheet } from '../../store/utils/ui';
 import { getBlocktankInfo, isGeoBlocked, logToBlocktank } from '../blocktank';
 import {
 	promiseTimeout,
@@ -574,9 +574,13 @@ export const handleLightningPaymentSubscription = async ({
 	};
 
 	vibrate({ type: 'default' });
-	showBottomSheet('newTxPrompt', { activityItem });
-	dispatch(closeSheet('receiveNavigation'));
-	dispatch(closeSheet('orangeTicket'));
+	showSheet('receivedTx', {
+		id: activityItem.id,
+		activityType: EActivityType.lightning,
+		value: activityItem.value,
+	});
+	closeSheet('receive');
+	closeSheet('orangeTicket');
 	dispatch(addActivityItem(activityItem));
 
 	await refreshLdk({ selectedWallet, selectedNetwork });
@@ -702,7 +706,7 @@ export const subscribeToLightningPayments = ({
 				await closeChannelThunk(res);
 				if (res.reason === EChannelClosureReason.CommitmentTxConfirmed) {
 					// counterparty force closed the channel
-					showBottomSheet('connectionClosed');
+					showSheet('connectionClosed');
 				}
 				updateSlashPayConfig({ selectedWallet, selectedNetwork });
 			},

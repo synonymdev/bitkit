@@ -11,6 +11,7 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
 import { useLightningBalance } from '../../../hooks/lightning';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { useSheetRef } from '../../../sheets/SheetRefsProvider';
 import { openChannelsSelector } from '../../../store/reselect/lightning';
 import {
 	selectedNetworkSelector,
@@ -21,7 +22,6 @@ import {
 	createLightningInvoice,
 	savePeer,
 } from '../../../store/utils/lightning';
-import { showBottomSheet } from '../../../store/utils/ui';
 import { TextInput, View as ThemedView } from '../../../styles/components';
 import { Caption13Up } from '../../../styles/text';
 import {
@@ -41,6 +41,7 @@ import { showToast } from '../../../utils/notifications';
 const LdkDebug = (): ReactElement => {
 	const { t } = useTranslation('lightning');
 	const dispatch = useAppDispatch();
+	const sheetRef = useSheetRef('forceTransfer');
 	const [peer, setPeer] = useState('');
 	const [payingInvoice, setPayingInvoice] = useState(false);
 	const [refreshingLdk, setRefreshingLdk] = useState(false);
@@ -263,7 +264,7 @@ const LdkDebug = (): ReactElement => {
 	};
 
 	const onForceCloseChannels = (): void => {
-		showBottomSheet('forceTransfer');
+		sheetRef.current?.present();
 	};
 
 	const onSpendOutputsFromForceClose = async (): Promise<void> => {

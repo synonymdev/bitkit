@@ -13,14 +13,12 @@ import SafeAreaInset from '../../components/SafeAreaInset';
 import SearchInput from '../../components/SearchInput';
 import Tabs, { TTab } from '../../components/Tabs';
 import Tag from '../../components/Tag';
-import { useAppDispatch } from '../../hooks/redux';
-import { closeSheet } from '../../store/slices/ui';
-import { showBottomSheet } from '../../store/utils/ui';
+import DatePicker from '../../sheets/DatePicker';
+import { useSheetRef } from '../../sheets/SheetRefsProvider';
+import TagsSheet from '../../sheets/Tags';
 import { ScrollView, View as ThemedView } from '../../styles/components';
 import { CalendarIcon, TagIcon } from '../../styles/icons';
 import ActivityList from './ActivityList';
-import TagsPrompt from './TagsPrompt';
-import TimeRangePrompt from './TimeRangePrompt';
 
 const tabs: TTab[] = [
 	{ id: 'all', filter: { includeTransfers: true } },
@@ -48,8 +46,9 @@ const Glow = ({
 
 const ActivityFiltered = (): ReactElement => {
 	const { t } = useTranslation('wallet');
-	const dispatch = useAppDispatch();
 	const size = useSharedValue({ width: 0, height: 0 });
+	const tagsSheetRef = useSheetRef('tags');
+	const datePickerSheetRef = useSheetRef('datePicker');
 	const panGestureRef = useRef<GestureType>(Gesture.Pan());
 	const [radiusContainerHeight, setRadiusContainerHeight] = useState(0);
 	const [currentTab, setCurrentTab] = useState(0);
@@ -67,8 +66,9 @@ const ActivityFiltered = (): ReactElement => {
 
 	const addTag = (tag: string): void => {
 		setTags((tg) => [...tg, tag]);
-		dispatch(closeSheet('tagsPrompt'));
+		tagsSheetRef.current?.close();
 	};
+
 	const removeTag = (tag: string): void => {
 		setTags((tg) => tg.filter((x) => x !== tag));
 	};
@@ -128,7 +128,7 @@ const ActivityFiltered = (): ReactElement => {
 										testID="TagsPrompt"
 										onPress={(): void => {
 											Keyboard.dismiss();
-											showBottomSheet('tagsPrompt');
+											tagsSheetRef.current?.present();
 										}}>
 										<TagIcon
 											height={25}
@@ -139,10 +139,10 @@ const ActivityFiltered = (): ReactElement => {
 									<TouchableOpacity
 										style={styles.filterButton}
 										activeOpacity={0.7}
-										testID="TimeRangePrompt"
+										testID="DatePicker"
 										onPress={(): void => {
 											Keyboard.dismiss();
-											showBottomSheet('timeRangePrompt');
+											datePickerSheetRef.current?.present();
 										}}>
 										<CalendarIcon
 											height={25}
@@ -180,8 +180,8 @@ const ActivityFiltered = (): ReactElement => {
 			</ThemedView>
 
 			{/* TODO: move these up the tree, causing slow down when navigating */}
-			<TimeRangePrompt onChange={setTimerange} />
-			<TagsPrompt tags={tags} onAddTag={addTag} />
+			<DatePicker range={timerange} onChange={setTimerange} />
+			<TagsSheet tags={tags} onAddTag={addTag} />
 		</>
 	);
 };

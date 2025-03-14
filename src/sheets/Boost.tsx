@@ -3,52 +3,49 @@ import React, { memo, ReactElement, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
-import AdjustValue from '../../components/AdjustValue';
-import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import ImageText from '../../components/ImageText';
-import Money from '../../components/Money';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import SwipeToConfirm from '../../components/SwipeToConfirm';
-import Button from '../../components/buttons/Button';
-import {
-	useBottomSheetBackPress,
-	useSnapPoints,
-} from '../../hooks/bottomSheet';
-import { useFeeText } from '../../hooks/fees';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { rootNavigation } from '../../navigation/root/RootNavigationContainer';
-import { resetSendTransaction } from '../../store/actions/wallet';
-import { viewControllerSelector } from '../../store/reselect/ui';
-import { transactionSelector } from '../../store/reselect/wallet';
-import { closeSheet } from '../../store/slices/ui';
-import { TOnchainActivityItem } from '../../store/types/activity';
-import { EUnit } from '../../store/types/wallet';
-import colors from '../../styles/colors';
-import { TimerIconAlt } from '../../styles/icons';
-import { BodyMSB, BodyS, BodySSB } from '../../styles/text';
-import { showToast } from '../../utils/notifications';
+import AdjustValue from '../components/AdjustValue';
+import BottomSheet from '../components/BottomSheet';
+import BottomSheetNavigationHeader from '../components/BottomSheetNavigationHeader';
+import ImageText from '../components/ImageText';
+import Money from '../components/Money';
+import SafeAreaInset from '../components/SafeAreaInset';
+import SwipeToConfirm from '../components/SwipeToConfirm';
+import Button from '../components/buttons/Button';
+import { useFeeText } from '../hooks/fees';
+import { useAppSelector } from '../hooks/redux';
+import { rootNavigation } from '../navigation/root/RootNavigationContainer';
+import { resetSendTransaction } from '../store/actions/wallet';
+import { transactionSelector } from '../store/reselect/wallet';
+import { SheetsParamList } from '../store/types/ui';
+import { EUnit } from '../store/types/wallet';
+import colors from '../styles/colors';
+import { TimerIconAlt } from '../styles/icons';
+import { BodyMSB, BodyS, BodySSB } from '../styles/text';
+import { showToast } from '../utils/notifications';
 import {
 	adjustFee,
 	broadcastBoost,
 	canBoost,
 	setupBoost,
 	updateFee,
-} from '../../utils/wallet/transactions';
+} from '../utils/wallet/transactions';
+import { useSheetRef } from './SheetRefsProvider';
 
-const BoostForm = ({
-	activityItem,
-}: {
-	activityItem: TOnchainActivityItem;
-}): ReactElement => {
+const sheetId = 'boost';
+
+const SheetContent = ({
+	data,
+}: { data: SheetsParamList['boost'] }): ReactElement => {
+	const { activityItem } = data;
 	const { t } = useTranslation('wallet');
-	const dispatch = useAppDispatch();
+	const sheetRef = useSheetRef(sheetId);
 	const transaction = useAppSelector(transactionSelector);
 
 	const [preparing, setPreparing] = useState(true);
 	const [loading, setLoading] = useState(false);
 	const [showCustom, setShowCustom] = useState(false);
 	const [origFee, setOrigFee] = useState(1);
+
 	const boostData = useMemo(
 		() => canBoost(activityItem.txId),
 		[activityItem.txId],
@@ -60,6 +57,7 @@ const BoostForm = ({
 		return boostData.canBoost ? transaction.fee : 0;
 	}, [boostData.canBoost, transaction.fee]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: sheetRef doesn't change
 	useEffect(() => {
 		(async (): Promise<void> => {
 			const res = await setupBoost({
@@ -67,7 +65,7 @@ const BoostForm = ({
 			});
 			setPreparing(false);
 			if (res.isErr()) {
-				dispatch(closeSheet('boostPrompt'));
+				sheetRef.current?.close();
 				return;
 			}
 			setOrigFee(res.value.satsPerByte!);
@@ -76,7 +74,7 @@ const BoostForm = ({
 		return (): void => {
 			resetSendTransaction();
 		};
-	}, [activityItem.txId, dispatch]);
+	}, [activityItem.txId]);
 
 	const onSwitchView = (): void => {
 		if (showCustom) {
@@ -132,7 +130,7 @@ const BoostForm = ({
 				oldTxId: activityItem.txId,
 			});
 			if (response.isOk()) {
-				dispatch(closeSheet('boostPrompt'));
+				sheetRef.current?.close();
 				showToast({
 					type: 'success',
 					title: t('boost_success_title'),
@@ -190,7 +188,11 @@ const BoostForm = ({
 	);
 
 	return (
-		<>
+		<View style={styles.root}>
+			<BottomSheetNavigationHeader
+				title={t('boost_title')}
+				showBackButton={false}
+			/>
 			<BodyS color="secondary">
 				{t(showCustom ? 'boost_fee_custom' : 'boost_fee_recomended')}
 			</BodyS>
@@ -240,34 +242,18 @@ const BoostForm = ({
 					/>
 				</View>
 			</View>
-		</>
+			<SafeAreaInset type="bottom" minPadding={16} />
+		</View>
 	);
 };
 
-const BoostPrompt = (): ReactElement => {
-	const { t } = useTranslation('wallet');
-	const snapPoints = useSnapPoints('small');
-	const { isOpen, onchainActivityItem } = useAppSelector((state) => {
-		return viewControllerSelector(state, 'boostPrompt');
-	});
-
-	useBottomSheetBackPress('boostPrompt');
-
+const BoostSheet = (): ReactElement => {
 	return (
-		<BottomSheetWrapper view="boostPrompt" snapPoints={snapPoints}>
-			<View style={styles.root}>
-				<BottomSheetNavigationHeader
-					title={t('boost_title')}
-					showBackButton={false}
-				/>
-
-				{isOpen && onchainActivityItem && (
-					<BoostForm activityItem={onchainActivityItem} />
-				)}
-
-				<SafeAreaInset type="bottom" minPadding={16} />
-			</View>
-		</BottomSheetWrapper>
+		<BottomSheet id={sheetId} size="small">
+			{({ data }: { data: SheetsParamList['boost'] }) => {
+				return <SheetContent data={data} />;
+			}}
+		</BottomSheet>
 	);
 };
 
@@ -303,4 +289,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(BoostPrompt);
+export default memo(BoostSheet);

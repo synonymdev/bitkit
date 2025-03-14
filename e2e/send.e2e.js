@@ -245,10 +245,10 @@ d('Send', () => {
 		let { label: receive } = await element(by.id('QRCode')).getAttributes();
 		receive = receive.replaceAll(/bitcoin.*=/gi, '').toLowerCase();
 		await lnd.sendPaymentSync({ paymentRequest: receive, amt: 50000 });
-		await waitFor(element(by.id('NewTxPrompt')))
+		await waitFor(element(by.id('ReceivedTransaction')))
 			.toBeVisible()
 			.withTimeout(10000);
-		await element(by.id('NewTxPrompt')).swipe('down');
+		await element(by.id('ReceivedTransaction')).swipe('down');
 
 		await waitFor(
 			element(by.id('MoneyText').withAncestor(by.id('TotalBalance'))),

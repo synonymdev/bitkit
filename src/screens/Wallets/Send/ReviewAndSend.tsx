@@ -25,7 +25,6 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import SwipeToConfirm from '../../../components/SwipeToConfirm';
 import Tag from '../../../components/Tag';
 import Button from '../../../components/buttons/Button';
-import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
 import useColors from '../../../hooks/colors';
 import { useLightningBalance } from '../../../hooks/lightning';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
@@ -139,8 +138,6 @@ const ReviewAndSend = ({
 	const [dialogWarnings, setDialogWarnings] = useState<string[]>([]);
 	const [rawTx, setRawTx] = useState<{ hex: string; id: string }>();
 	const [decodedInvoice, setDecodedInvoice] = useState<TInvoice>();
-
-	useBottomSheetScreenBackPress();
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {

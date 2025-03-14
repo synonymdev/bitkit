@@ -131,10 +131,10 @@ d('Lightning', () => {
 			let { label: invoice1 } = await element(by.id('QRCode')).getAttributes();
 			invoice1 = invoice1.replaceAll(/bitcoin.*=/gi, '').toLowerCase();
 			await lnd.sendPaymentSync({ paymentRequest: invoice1, amt: 50000 });
-			await waitFor(element(by.id('NewTxPrompt')))
+			await waitFor(element(by.id('ReceivedTransaction')))
 				.toBeVisible()
 				.withTimeout(10000);
-			await element(by.id('NewTxPrompt')).swipe('down');
+			await element(by.id('ReceivedTransaction')).swipe('down');
 			await waitFor(
 				element(by.id('MoneyText').withAncestor(by.id('TotalBalance'))),
 			)
@@ -153,20 +153,21 @@ d('Lightning', () => {
 			const note1 = 'note 111';
 			await element(by.id('ReceiveNote')).typeText(note1);
 			await element(by.id('ReceiveNote')).tapReturnKey();
-			await sleep(200);
+			await sleep(300); // wait for keyboard to hide
 			await element(by.id('TagsAdd')).tap();
 			await element(by.id('TagInputReceive')).typeText('rtag');
 			await element(by.id('TagInputReceive')).tapReturnKey();
+			await sleep(300); // wait for keyboard to hide
 			await element(by.id('ShowQrReceive')).tap();
 			await element(by.id('QRCode')).swipe('left');
 			const { label: invoice2 } = await element(
 				by.id('ReceiveLightningInvoice'),
 			).getAttributes();
 			await lnd.sendPaymentSync({ paymentRequest: invoice2 });
-			await waitFor(element(by.id('NewTxPrompt')))
+			await waitFor(element(by.id('ReceivedTransaction')))
 				.toBeVisible()
 				.withTimeout(10000);
-			await element(by.id('NewTxPrompt')).swipe('down');
+			await element(by.id('ReceivedTransaction')).swipe('down');
 			await waitFor(
 				element(by.id('MoneyText').withAncestor(by.id('TotalBalance'))),
 			)
@@ -232,7 +233,7 @@ d('Lightning', () => {
 				.withTimeout(10000);
 
 			// check tx history
-			await element(by.id('HomeScrollView')).scroll(1000, 'down', 0);
+			await element(by.id('HomeScrollView')).scroll(1000, 'down', 0, 0.5);
 			await expect(
 				element(by.text('1 000').withAncestor(by.id('ActivityShort-1'))),
 			).toBeVisible();
@@ -324,7 +325,7 @@ d('Lightning', () => {
 				.withTimeout(10000);
 
 			// check tx history
-			await element(by.id('HomeScrollView')).scroll(1000, 'down', 0);
+			await element(by.id('HomeScrollView')).scroll(1000, 'down', 0, 0.5);
 			await expect(
 				element(by.text('111').withAncestor(by.id('ActivityShort-2'))),
 			).toBeVisible();
@@ -360,10 +361,10 @@ d('Lightning', () => {
 
 			// TODO: for some reason this doen't work on github actions
 			// wait for onchain payment to arrive
-			// await waitFor(element(by.id('NewTxPrompt')))
+			// await waitFor(element(by.id('ReceivedTransaction')))
 			// 	.toBeVisible()
 			// 	.withTimeout(60000);
-			// await element(by.id('NewTxPrompt')).swipe('down');
+			// await element(by.id('ReceivedTransaction')).swipe('down');
 			// await expect(
 			// 	element(by.id('MoneySign').withAncestor(by.id('ActivityShort-1'))),
 			// ).toHaveText('+');

@@ -9,7 +9,7 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import { PIN_ATTEMPTS } from '../../../constants/app';
 import usePIN from '../../../hooks/pin';
 import type { SettingsScreenProps } from '../../../navigation/types';
-import { showBottomSheet } from '../../../store/utils/ui';
+import { useSheetRef } from '../../../sheets/SheetRefsProvider';
 import { AnimatedView, View as ThemedView } from '../../../styles/components';
 import { BodyM, BodyS } from '../../../styles/text';
 
@@ -17,10 +17,13 @@ const ChangePin = ({
 	navigation,
 }: SettingsScreenProps<'ChangePin'>): ReactElement => {
 	const { t } = useTranslation('security');
+	const sheetRef = useSheetRef('forgotPin');
+
 	const nextStep = useCallback(() => {
 		navigation.pop();
 		navigation.navigate('ChangePin2');
 	}, [navigation]);
+
 	const { attemptsRemaining, Dots, handleNumberPress, isLastAttempt, loading } =
 		usePIN(nextStep);
 
@@ -47,7 +50,7 @@ const ChangePin = ({
 						) : (
 							<Pressable
 								onPress={(): void => {
-									showBottomSheet('forgotPIN');
+									sheetRef.current?.present();
 								}}>
 								<BodyS testID="AttemptsRemaining" color="brand">
 									{t('pin_attempts', { attemptsRemaining })}

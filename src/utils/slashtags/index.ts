@@ -4,7 +4,6 @@ import { format, parse } from '@synonymdev/slashtags-url';
 import debounce from 'lodash/debounce';
 
 import { webRelayClient } from '../../components/SlashtagsProvider';
-import { rootNavigation } from '../../navigation/root/RootNavigationContainer';
 import { dispatch, getSettingsStore } from '../../store/helpers';
 import { updateSettings } from '../../store/slices/settings';
 import {
@@ -38,17 +37,14 @@ import SlashpayConfig from './slashpay';
  */
 export const handleSlashtagURL = (
 	url: string,
-	onError?: (error: Error) => void,
 	onSuccess?: (url: string) => void,
+	onError?: (error: Error) => void,
 ): void => {
 	try {
 		const parsed = parse(url);
 
-		if (parsed.protocol === 'slash:') {
-			rootNavigation.navigate('ContactEdit', { url });
-		} else {
-			onError?.('Invalid URL' as unknown as Error);
-			return;
+		if (parsed.protocol !== 'slash:') {
+			throw new Error('Invalid URL protocol - expected slash://');
 		}
 
 		onSuccess?.(url);

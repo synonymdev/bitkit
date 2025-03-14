@@ -2,23 +2,20 @@ import React, { memo, ReactElement, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import Button from '../../components/buttons/Button';
-import {
-	useBottomSheetBackPress,
-	useSnapPoints,
-} from '../../hooks/bottomSheet';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { languageSelector, timeZoneSelector } from '../../store/reselect/ui';
-import { closeSheet } from '../../store/slices/ui';
-import { View as ThemedView } from '../../styles/components';
-import { LeftSign, RightSign } from '../../styles/icons';
-import { BodyMSB, Caption13Up, Subtitle } from '../../styles/text';
-import { generateCalendar } from '../../utils/helpers';
-import { i18nTime } from '../../utils/i18n';
+import BottomSheet from '../components/BottomSheet';
+import SafeAreaInset from '../components/SafeAreaInset';
+import Button from '../components/buttons/Button';
+import { useAppSelector } from '../hooks/redux';
+import { languageSelector, timeZoneSelector } from '../store/reselect/ui';
+import { View as ThemedView } from '../styles/components';
+import { LeftSign, RightSign } from '../styles/icons';
+import { BodyMSB, Caption13Up, Subtitle } from '../styles/text';
+import { generateCalendar } from '../utils/helpers';
+import { i18nTime } from '../utils/i18n';
+import { useSheetRef } from './SheetRefsProvider';
 
 const DAY_HEIGHT = 44;
+const sheetId = 'datePicker';
 
 const Day = ({
 	day,
@@ -91,20 +88,28 @@ const Day = ({
 };
 
 const Calendar = ({
+	initialRange,
 	onChange,
 }: {
+	initialRange: number[];
 	onChange: (timeRange: number[]) => void;
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
-	const dispatch = useAppDispatch();
+	const sheetRef = useSheetRef(sheetId);
 	const timeZone = useAppSelector(timeZoneSelector);
 	const language = useAppSelector(languageSelector);
 	const [monthDate, setMonthDate] = useState(() => {
+		if (initialRange.length > 0) {
+			const initialDate = new Date(initialRange[0]);
+			return new Date(initialDate.getFullYear(), initialDate.getMonth());
+		}
 		const n = new Date();
 		return new Date(n.getFullYear(), n.getMonth());
 	});
-	const [range, setRange] = useState<Array<Date>>([]);
+	const [range, setRange] = useState<Date[]>(
+		initialRange.map((t) => new Date(t)),
+	);
 
 	const { calendar, weekDays } = useMemo(() => {
 		const c = generateCalendar(monthDate, language, timeZone);
@@ -154,7 +159,7 @@ const Calendar = ({
 		const begin = range[0].getTime();
 		const end = (range[1] ?? range[0]).getTime() + 1000 * 60 * 60 * 24; // 24 hours
 		onChange([begin, end]);
-		dispatch(closeSheet('timeRangePrompt'));
+		sheetRef.current?.close();
 	};
 
 	return (
@@ -292,34 +297,25 @@ const Calendar = ({
 	);
 };
 
-const TimeRangePrompt = ({
+const DatePicker = ({
+	range,
 	onChange,
 }: {
+	range: number[];
 	onChange: (timeRange: number[]) => void;
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
-	const snapPoints = useSnapPoints('calendar');
-	const dispatch = useAppDispatch();
-
-	useBottomSheetBackPress('timeRangePrompt');
-
-	const handleClose = (): void => {
-		dispatch(closeSheet('timeRangePrompt'));
-	};
 
 	return (
-		<BottomSheetWrapper
-			view="timeRangePrompt"
-			snapPoints={snapPoints}
-			onClose={handleClose}>
+		<BottomSheet id={sheetId} size="calendar">
 			<View style={styles.root}>
 				<Subtitle style={styles.title}>{t('filter_title')}</Subtitle>
 
-				<Calendar onChange={onChange} />
+				<Calendar initialRange={range} onChange={onChange} />
 
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</View>
-		</BottomSheetWrapper>
+		</BottomSheet>
 	);
 };
 
@@ -412,4 +408,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(TimeRangePrompt);
+export default memo(DatePicker);

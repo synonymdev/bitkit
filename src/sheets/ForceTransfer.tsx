@@ -1,36 +1,30 @@
 import React, { memo, ReactElement, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
-import BottomSheetScreen from '../../components/BottomSheetScreen';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import {
-	useBottomSheetBackPress,
-	useSnapPoints,
-} from '../../hooks/bottomSheet';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { startCoopCloseTimestampSelector } from '../../store/reselect/user';
-import { closeSheet } from '../../store/slices/ui';
-import { clearCoopCloseTimer } from '../../store/slices/user';
-import { showBottomSheet } from '../../store/utils/ui';
-import { Display } from '../../styles/text';
-import { closeAllChannels } from '../../utils/lightning';
-import { showToast } from '../../utils/notifications';
+import BottomSheet from '../components/BottomSheet';
+import BottomSheetScreen from '../components/BottomSheetScreen';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { startCoopCloseTimestampSelector } from '../store/reselect/user';
+import { clearCoopCloseTimer } from '../store/slices/user';
+import { Display } from '../styles/text';
+import { closeAllChannels } from '../utils/lightning';
+import { showToast } from '../utils/notifications';
+import { useSheetRef } from './SheetRefsProvider';
 
-const imageSrc = require('../../assets/illustrations/exclamation-mark.png');
+const imageSrc = require('../assets/illustrations/exclamation-mark.png');
 
 const RETRY_INTERVAL = 1000 * 60 * 5;
 const GIVE_UP = 1000 * 60 * 30;
 
 const ForceTransfer = (): ReactElement => {
 	const { t } = useTranslation('lightning');
-	const snapPoints = useSnapPoints('large');
 	const dispatch = useAppDispatch();
+	const sheetRef = useSheetRef('forceTransfer');
 	const startTime = useAppSelector(startCoopCloseTimestampSelector);
 	const [isPending, setIsPending] = useState(false);
 
-	useBottomSheetBackPress('forceTransfer');
-
 	// try to cooperatively close the channel(s) for 30min
+	// biome-ignore lint/correctness/useExhaustiveDependencies: sheetRef doesn't change
 	useEffect(() => {
 		// biome-ignore lint/style/useConst: false alarm
 		let interval: NodeJS.Timer;
@@ -63,7 +57,7 @@ const ForceTransfer = (): ReactElement => {
 				console.log('giving up on coop close.');
 				dispatch(clearCoopCloseTimer());
 				clearInterval(interval);
-				showBottomSheet('forceTransfer');
+				sheetRef.current?.present();
 				return;
 			}
 
@@ -76,7 +70,7 @@ const ForceTransfer = (): ReactElement => {
 	}, [startTime, dispatch]);
 
 	const onCancel = (): void => {
-		dispatch(closeSheet('forceTransfer'));
+		sheetRef.current?.close();
 	};
 
 	const onContinue = async (): Promise<void> => {
@@ -102,7 +96,7 @@ const ForceTransfer = (): ReactElement => {
 					title: t('force_init_title'),
 					description: t('force_init_msg'),
 				});
-				dispatch(closeSheet('forceTransfer'));
+				sheetRef.current?.close();
 			} else {
 				showToast({
 					type: 'warning',
@@ -114,7 +108,7 @@ const ForceTransfer = (): ReactElement => {
 	};
 
 	return (
-		<BottomSheetWrapper view="forceTransfer" snapPoints={snapPoints}>
+		<BottomSheet id="forceTransfer" size="large">
 			<BottomSheetScreen
 				navTitle={t('force_nav_title')}
 				title={
@@ -133,7 +127,7 @@ const ForceTransfer = (): ReactElement => {
 				onContinue={onContinue}
 				onCancel={onCancel}
 			/>
-		</BottomSheetWrapper>
+		</BottomSheet>
 	);
 };
 

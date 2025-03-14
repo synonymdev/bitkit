@@ -7,7 +7,6 @@ import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigati
 import ContactImage from '../../../components/ContactImage';
 import GradientView from '../../../components/GradientView';
 import SafeAreaInset from '../../../components/SafeAreaInset';
-import { useBottomSheetScreenBackPress } from '../../../hooks/bottomSheet';
 import useColors from '../../../hooks/colors';
 import { useAppSelector } from '../../../hooks/redux';
 import { useScreenSize } from '../../../hooks/screen';
@@ -63,8 +62,6 @@ const Recipient = ({
 	const { isSmallScreen } = useScreenSize();
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const lastPaidContacts = useAppSelector(lastPaidSelector);
-
-	useBottomSheetScreenBackPress();
 
 	const onOpenContacts = (): void => {
 		navigation.navigate('Contacts');

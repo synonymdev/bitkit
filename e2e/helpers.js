@@ -138,10 +138,10 @@ export const receiveOnchainFunds = async (rpc, amount = '0.001') => {
 	await rpc.sendToAddress(wAddress, amount);
 	await rpc.generateToAddress(1, await rpc.getNewAddress());
 
-	await waitFor(element(by.id('NewTxPrompt')))
+	await waitFor(element(by.id('ReceivedTransaction')))
 		.toBeVisible()
 		.withTimeout(10000);
-	await element(by.id('NewTxPrompt')).swipe('down');
+	await element(by.id('ReceivedTransaction')).swipe('down');
 	await sleep(1000);
 };
 

@@ -2,19 +2,14 @@ import React, { memo, ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import Tag from '../../components/Tag';
-import {
-	useBottomSheetBackPress,
-	useSnapPoints,
-} from '../../hooks/bottomSheet';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { lastUsedTagsSelector } from '../../store/reselect/metadata';
-import { closeSheet } from '../../store/slices/ui';
-import { BodyS, Subtitle, Text13UP } from '../../styles/text';
+import BottomSheet from '../components/BottomSheet';
+import SafeAreaInset from '../components/SafeAreaInset';
+import Tag from '../components/Tag';
+import { useAppSelector } from '../hooks/redux';
+import { lastUsedTagsSelector } from '../store/reselect/metadata';
+import { BodyS, Subtitle, Text13UP } from '../styles/text';
 
-const TagsPrompt = ({
+const TagsSheet = ({
 	tags,
 	onAddTag,
 }: {
@@ -22,22 +17,11 @@ const TagsPrompt = ({
 	onAddTag: (tag: string) => void;
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
-	const snapPoints = useSnapPoints('medium');
-	const dispatch = useAppDispatch();
 	const lastUsed = useAppSelector(lastUsedTagsSelector);
 	const suggestions = lastUsed.filter((tg) => !tags.includes(tg));
 
-	useBottomSheetBackPress('tagsPrompt');
-
-	const handleClose = (): void => {
-		dispatch(closeSheet('tagsPrompt'));
-	};
-
 	return (
-		<BottomSheetWrapper
-			view="tagsPrompt"
-			snapPoints={snapPoints}
-			onClose={handleClose}>
+		<BottomSheet id="tags" size="small">
 			<View style={styles.root}>
 				<Subtitle style={styles.title}>{t('tags_filter_title')}</Subtitle>
 
@@ -59,7 +43,7 @@ const TagsPrompt = ({
 
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</View>
-		</BottomSheetWrapper>
+		</BottomSheet>
 	);
 };
 
@@ -87,4 +71,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(TagsPrompt);
+export default memo(TagsSheet);

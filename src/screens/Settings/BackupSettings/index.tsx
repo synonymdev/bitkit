@@ -7,12 +7,12 @@ import Button from '../../../components/buttons/Button';
 import { __E2E__ } from '../../../constants/env';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { SettingsScreenProps } from '../../../navigation/types';
+import { useSheetRef } from '../../../sheets/SheetRefsProvider';
 import { backupSelector } from '../../../store/reselect/backup';
 import { lightningBackupSelector } from '../../../store/reselect/lightning';
 import { forceBackup } from '../../../store/slices/backup';
 import { TBackupItem } from '../../../store/types/backup';
 import { EBackupCategory } from '../../../store/types/backup';
-import { toggleBottomSheet } from '../../../store/utils/ui';
 import { ScrollView, View as ThemedView } from '../../../styles/components';
 import {
 	ArrowClockwise,
@@ -135,6 +135,7 @@ const BackupSettings = ({
 	navigation,
 }: SettingsScreenProps<'BackupSettings'>): ReactElement => {
 	const { t } = useTranslation('settings');
+	const sheetRef = useSheetRef('backupNavigation');
 	const pin = useAppSelector((state) => state.settings.pin);
 	const backup = useAppSelector(backupSelector);
 	const lightningBackup = useAppSelector(lightningBackupSelector);
@@ -220,6 +221,7 @@ const BackupSettings = ({
 		(c) => c.status.synced >= c.status.required,
 	);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: sheetRef doesn't change
 	const settingsListData: IListData[] = useMemo(
 		() => [
 			{
@@ -229,7 +231,7 @@ const BackupSettings = ({
 						type: EItemType.button,
 						testID: 'BackupWallet',
 						onPress: (): void => {
-							toggleBottomSheet('backupNavigation');
+							sheetRef.current?.present();
 						},
 					},
 					{

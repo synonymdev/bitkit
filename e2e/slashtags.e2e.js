@@ -143,12 +143,6 @@ d('Profile and Contacts', () => {
 			await element(by.id('NavigationBack')).tap();
 			await element(by.id('NavigationBack')).tap();
 
-			if (device.getPlatform() === 'ios') {
-				// FIXME: this bottom sheet should not appear
-				// Tap on background to dismiss
-				await element(by.label('Close')).atIndex(0).tap({ x: 10, y: 10 });
-			}
-
 			// Hal
 			await element(by.id('AddContact')).tap();
 			await element(by.id('ContactURLInput')).typeText(hal.url);
@@ -206,10 +200,10 @@ d('Profile and Contacts', () => {
 			await rpc.sendToAddress(wAddress, '1');
 			await rpc.generateToAddress(1, await rpc.getNewAddress());
 			await electrum?.waitForSync();
-			await waitFor(element(by.id('NewTxPrompt')))
+			await waitFor(element(by.id('ReceivedTransaction')))
 				.toBeVisible()
 				.withTimeout(10000);
-			await element(by.id('NewTxPrompt')).swipe('down');
+			await element(by.id('ReceivedTransaction')).swipe('down');
 			await element(by.id('ActivitySavings')).tap();
 			await element(by.id('Activity-1')).tap();
 			await element(by.id('ActivityAssign')).tap();

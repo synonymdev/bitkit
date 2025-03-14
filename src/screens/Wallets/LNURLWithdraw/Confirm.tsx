@@ -8,41 +8,31 @@ import GradientView from '../../../components/GradientView';
 import LightningSyncing from '../../../components/LightningSyncing';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
-import type { LNURLWithdrawProps } from '../../../navigation/types';
-import {
-	selectedNetworkSelector,
-	selectedWalletSelector,
-} from '../../../store/reselect/wallet';
-import { closeSheet } from '../../../store/slices/ui';
+import type { LNURLWithdrawScreenProps } from '../../../navigation/types';
+import { useSheetRef } from '../../../sheets/SheetRefsProvider';
 import { BodyM } from '../../../styles/text';
 import { handleLnurlWithdraw } from '../../../utils/lnurl';
 import { showToast } from '../../../utils/notifications';
 
 const imageSrc = require('../../../assets/illustrations/transfer.png');
 
-const Confirm = ({ route }: LNURLWithdrawProps<'Confirm'>): ReactElement => {
+const Confirm = ({
+	route,
+}: LNURLWithdrawScreenProps<'Confirm'>): ReactElement => {
 	const { t } = useTranslation('wallet');
-	const { amount, wParams } = route.params;
-	const dispatch = useAppDispatch();
-	const selectedWallet = useAppSelector(selectedWalletSelector);
-	const selectedNetwork = useAppSelector(selectedNetworkSelector);
+	const { amount, params } = route.params;
+	const sheetRef = useSheetRef('lnurlWithdraw');
 
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handlePress = async (): Promise<void> => {
 		setIsLoading(true);
-		const res = await handleLnurlWithdraw({
-			amount,
-			params: wParams,
-			selectedNetwork,
-			selectedWallet,
-		});
+		const res = await handleLnurlWithdraw({ amount, params });
 		setIsLoading(false);
 		if (res.isErr()) {
 			return;
 		}
-		dispatch(closeSheet('lnurlWithdraw'));
+		sheetRef.current?.close();
 		showToast({
 			type: 'info',
 			title: t('other:lnurl_withdr_success_title'),
@@ -55,7 +45,7 @@ const Confirm = ({ route }: LNURLWithdrawProps<'Confirm'>): ReactElement => {
 			<GradientView style={styles.container}>
 				<BottomSheetNavigationHeader
 					title={t('lnurl_w_title')}
-					showBackButton={wParams.minWithdrawable !== wParams.maxWithdrawable}
+					showBackButton={params.minWithdrawable !== params.maxWithdrawable}
 				/>
 				<View style={styles.content}>
 					<AmountToggle style={styles.amountToggle} amount={amount} />

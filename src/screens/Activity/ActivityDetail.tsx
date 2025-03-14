@@ -28,6 +28,7 @@ import Tag from '../../components/Tag';
 import Button from '../../components/buttons/Button';
 import useColors from '../../hooks/colors';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import ActivityTags from '../../sheets/ActivityTags';
 import {
 	EActivityType,
 	TLightningActivityItem,
@@ -59,7 +60,6 @@ import {
 	canBoost,
 	getBlockExplorerLink,
 } from '../../utils/wallet/transactions';
-import ActivityTagsPrompt from './ActivityTagsPrompt';
 
 import { useOnchainWallet, useSwitchUnit } from '../../hooks/wallet';
 import type {
@@ -85,7 +85,7 @@ import {
 	deleteMetaTxTag,
 } from '../../store/slices/metadata';
 import { ETransferStatus } from '../../store/types/wallet';
-import { showBottomSheet } from '../../store/utils/ui';
+import { showSheet } from '../../store/utils/ui';
 import { getBoostedTransactionParents } from '../../utils/boost';
 import {
 	ellipsis,
@@ -235,11 +235,11 @@ const OnchainActivityDetail = ({
 	};
 
 	const handleBoost = (): void => {
-		showBottomSheet('boostPrompt', { onchainActivityItem: item });
+		showSheet('boost', { activityItem: item });
 	};
 
 	const handleAddTag = (): void => {
-		showBottomSheet('activityTagsPrompt', { id });
+		showSheet('activityTags', { id });
 	};
 
 	const handleRemoveTag = (tag: string): void => {
@@ -700,7 +700,7 @@ const LightningActivityDetail = ({
 	});
 
 	const handleAddTag = (): void => {
-		showBottomSheet('activityTagsPrompt', { id });
+		showSheet('activityTags', { id });
 	};
 
 	const handleRemoveTag = (tag: string): void => {
@@ -1076,7 +1076,7 @@ const ActivityDetail = ({
 				)}
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</ScrollView>
-			<ActivityTagsPrompt />
+			<ActivityTags />
 		</ThemedView>
 	);
 };

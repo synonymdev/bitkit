@@ -8,12 +8,13 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import type { SendScreenProps } from '../../../navigation/types';
+import { useSheetRef } from '../../../sheets/SheetRefsProvider';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
 } from '../../../store/actions/wallet';
 import { transactionSelector } from '../../../store/reselect/wallet';
-import { closeSheet, updateSendTransaction } from '../../../store/slices/ui';
+import { updateSendTransaction } from '../../../store/slices/ui';
 import { BodyM } from '../../../styles/text';
 import { showToast } from '../../../utils/notifications';
 import { processUri } from '../../../utils/scanner/scanner';
@@ -29,6 +30,7 @@ const ErrorScreen = ({
 	let { errorMessage } = route.params;
 	const dispatch = useAppDispatch();
 	const transaction = useAppSelector(transactionSelector);
+	const sheetRef = useSheetRef('send');
 	const { lightningInvoice, slashTagsUrl } = transaction;
 
 	const isSlashpayLightning = !!slashTagsUrl && !!lightningInvoice;
@@ -45,7 +47,7 @@ const ErrorScreen = ({
 	}
 
 	const handleClose = (): void => {
-		dispatch(closeSheet('sendNavigation'));
+		sheetRef.current?.close();
 	};
 
 	const handleRetry = async (): Promise<void> => {

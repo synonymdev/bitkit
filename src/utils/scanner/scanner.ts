@@ -11,16 +11,10 @@ import {
 	validateAddress,
 } from 'beignet';
 import bip21 from 'bip21';
-import {
-	LNURLAuthParams,
-	LNURLChannelParams,
-	LNURLPayParams,
-	LNURLWithdrawParams,
-} from 'js-lnurl';
 import URLParse from 'url-parse';
 
-import { sendNavigation } from '../../navigation/bottom-sheet/SendNavigation';
 import { rootNavigation } from '../../navigation/root/RootNavigationContainer';
+import { sendNavigation } from '../../sheets/SendNavigation';
 import {
 	resetSendTransaction,
 	setupOnChainTransaction,
@@ -31,9 +25,9 @@ import {
 	getSettingsStore,
 	getSlashtagsStore,
 } from '../../store/helpers';
-import { closeSheet, updateSendTransaction } from '../../store/slices/ui';
+import { updateSendTransaction } from '../../store/slices/ui';
 import { EDenomination } from '../../store/types/wallet';
-import { showBottomSheet } from '../../store/utils/ui';
+import { closeSheet, showSheet } from '../../store/utils/ui';
 import { fiatToBitcoinUnit } from '../conversion';
 import { getBitcoinDisplayValues } from '../displayValues';
 import i18n from '../i18n';
@@ -154,7 +148,7 @@ export const processUri = async ({
 
 	// Handle
 	if (data && !validateOnly) {
-		await handleData({ data, uri });
+		await handleData({ data, uri, source });
 	}
 
 	return ok('');
@@ -234,25 +228,25 @@ export const parseUri = async (
 				if (params.tag === 'login') {
 					return ok({
 						type: EQRDataType.lnurlAuth,
-						lnUrlParams: params as LNURLAuthParams,
+						lnUrlParams: params,
 					});
 				}
 				if (params.tag === 'withdrawRequest') {
 					return ok({
 						type: EQRDataType.lnurlWithdraw,
-						lnUrlParams: params as LNURLWithdrawParams,
+						lnUrlParams: params,
 					});
 				}
 				if (params.tag === 'channelRequest') {
 					return ok({
 						type: EQRDataType.lnurlChannel,
-						lnUrlParams: params as LNURLChannelParams,
+						lnUrlParams: params,
 					});
 				}
 				if (params.tag === 'payRequest') {
 					return ok({
 						type: EQRDataType.lnurlPay,
-						lnUrlParams: params as LNURLPayParams,
+						lnUrlParams: params,
 					});
 				}
 			}
@@ -267,7 +261,7 @@ export const parseUri = async (
 			const params = res.value;
 			return ok({
 				type: EQRDataType.lnurlAddress,
-				lnUrlParams: params as LNURLPayParams,
+				lnUrlParams: params,
 				address: uri,
 			});
 		}
@@ -578,9 +572,11 @@ export const processSlashPayUrl = async (
 const handleData = async ({
 	data,
 	uri,
+	source,
 }: {
 	data: QRData;
 	uri: string;
+	source: 'mainScanner' | 'send';
 }): Promise<Result<string>> => {
 	const selectedWallet = getSelectedWallet();
 	const selectedNetwork = getSelectedNetwork();
@@ -588,8 +584,12 @@ const handleData = async ({
 
 	switch (type) {
 		case EQRDataType.slashtag: {
-			handleSlashtagURL(data.url);
-			dispatch(closeSheet('addContactModal'));
+			const onSuccess = (): void => {
+				closeSheet('addContact');
+				rootNavigation.navigate('ContactEdit', { url: data.url });
+			};
+
+			handleSlashtagURL(data.url, onSuccess);
 			return ok('');
 		}
 		case EQRDataType.slashAuth: {
@@ -619,10 +619,14 @@ const handleData = async ({
 			if (enableQuickpay && amount && amount < quickpayAmountSats) {
 				const screen = 'Quickpay';
 				const params = { invoice: lightningInvoice, amount };
-				// If BottomSheet is not open yet (MainScanner)
-				showBottomSheet('sendNavigation', { screen, ...params });
-				// If BottomSheet is already open (SendScanner)
-				sendNavigation.navigate(screen, params);
+
+				if (source === 'mainScanner') {
+					// If BottomSheet is not open yet (MainScanner)
+					showSheet('send', { screen, ...params });
+				} else {
+					// If BottomSheet is already open (SendScanner)
+					sendNavigation.navigate(screen, params);
+				}
 
 				return ok('');
 			}
@@ -636,10 +640,14 @@ const handleData = async ({
 			dispatch(updateSendTransaction({ paymentMethod, uri }));
 
 			const screen = amount ? 'ReviewAndSend' : 'Amount';
-			// If BottomSheet is not open yet (MainScanner)
-			showBottomSheet('sendNavigation', { screen });
-			// If BottomSheet is already open (SendScanner)
-			sendNavigation.navigate(screen);
+
+			if (source === 'mainScanner') {
+				// If BottomSheet is not open yet (MainScanner)
+				showSheet('send', { screen });
+			} else {
+				// If BottomSheet is already open (SendScanner)
+				sendNavigation.navigate(screen);
+			}
 
 			updateBeignetSendTransaction({
 				label: message,
@@ -665,10 +673,13 @@ const handleData = async ({
 				slashTagsUrl,
 			});
 
-			// If BottomSheet is not open yet (MainScanner)
-			showBottomSheet('sendNavigation', { screen: 'Amount' });
-			// If BottomSheet is already open (SendScanner)
-			sendNavigation.navigate('Amount');
+			if (source === 'mainScanner') {
+				// If BottomSheet is not open yet (MainScanner)
+				showSheet('send', { screen: 'Amount' });
+			} else {
+				// If BottomSheet is already open (SendScanner)
+				sendNavigation.navigate('Amount');
+			}
 
 			return ok('');
 		}
@@ -683,10 +694,14 @@ const handleData = async ({
 			if (enableQuickpay && amount && amount < quickpayAmountSats) {
 				const screen = 'Quickpay';
 				const params = { invoice: lightningInvoice, amount };
-				// If BottomSheet is not open yet (MainScanner)
-				showBottomSheet('sendNavigation', { screen, ...params });
-				// If BottomSheet is already open (SendScanner)
-				sendNavigation.navigate(screen, params);
+
+				if (source === 'mainScanner') {
+					// If BottomSheet is not open yet (MainScanner)
+					showSheet('send', { screen, ...params });
+				} else {
+					// If BottomSheet is already open (SendScanner)
+					sendNavigation.navigate(screen, params);
+				}
 
 				return ok('');
 			}
@@ -695,10 +710,14 @@ const handleData = async ({
 
 			const invoiceAmount = amount ?? 0;
 			const screen = invoiceAmount ? 'ReviewAndSend' : 'Amount';
-			// If BottomSheet is not open yet (MainScanner)
-			showBottomSheet('sendNavigation', { screen });
-			// If BottomSheet is already open (SendScanner)
-			sendNavigation.navigate(screen);
+
+			if (source === 'mainScanner') {
+				// If BottomSheet is not open yet (MainScanner)
+				showSheet('send', { screen });
+			} else {
+				// If BottomSheet is already open (SendScanner)
+				sendNavigation.navigate(screen);
+			}
 
 			updateBeignetSendTransaction({
 				outputs: [{ address: '', value: invoiceAmount, index: 0 }],
@@ -710,7 +729,7 @@ const handleData = async ({
 		}
 		case EQRDataType.lnurlAddress:
 		case EQRDataType.lnurlPay: {
-			const pParams = data.lnUrlParams! as LNURLPayParams;
+			const pParams = data.lnUrlParams;
 
 			//Convert msats to sats.
 			pParams.minSendable = Math.floor(pParams.minSendable / 1000);
@@ -718,6 +737,8 @@ const handleData = async ({
 
 			// Determine if we have enough sending capacity before proceeding.
 			const lightningBalance = getLightningBalance({ includeReserve: false });
+
+			dispatch(updateSendTransaction({ paymentMethod: 'lightning' }));
 
 			if (lightningBalance.localBalance < pParams.minSendable) {
 				showToast({
@@ -732,34 +753,51 @@ const handleData = async ({
 
 			if (pParams.minSendable === pParams.maxSendable) {
 				const amount = pParams.minSendable;
-				showBottomSheet('sendNavigation', {
-					screen: 'LNURLConfirm',
-					pParams,
-					amount,
-					url: uri,
-				});
+				if (source === 'mainScanner') {
+					// If BottomSheet is not open yet (MainScanner)
+					showSheet('send', {
+						screen: 'LNURLConfirm',
+						pParams,
+						amount,
+						url: uri,
+					});
+				} else {
+					// If BottomSheet is already open (SendScanner)
+					sendNavigation.navigate('LNURLConfirm', {
+						pParams,
+						amount,
+						url: uri,
+					});
+				}
 				sendNavigation.navigate('LNURLConfirm', {
 					pParams,
 					amount,
 					url: uri,
 				});
 			} else {
-				showBottomSheet('sendNavigation', {
-					screen: 'LNURLAmount',
-					pParams: pParams,
-					url: uri,
-				});
-				sendNavigation.navigate('LNURLAmount', { pParams, url: uri });
+				if (source === 'mainScanner') {
+					// If BottomSheet is not open yet (MainScanner)
+					showSheet('send', {
+						screen: 'LNURLAmount',
+						pParams: pParams,
+						url: uri,
+					});
+				} else {
+					// If BottomSheet is already open (SendScanner)
+					sendNavigation.navigate('LNURLAmount', { pParams, url: uri });
+				}
 			}
 
 			return ok('');
 		}
 		case EQRDataType.lnurlWithdraw: {
-			const params = data.lnUrlParams as LNURLWithdrawParams;
+			const params = data.lnUrlParams;
 
 			//Convert msats to sats.
 			params.minWithdrawable = Math.floor(params.minWithdrawable / 1000);
 			params.maxWithdrawable = Math.floor(params.maxWithdrawable / 1000);
+
+			dispatch(updateSendTransaction({ paymentMethod: 'lightning' }));
 
 			if (params.minWithdrawable > params.maxWithdrawable) {
 				showToast({
@@ -786,11 +824,11 @@ const handleData = async ({
 				);
 			}
 
-			showBottomSheet('lnurlWithdraw', { wParams: params });
+			showSheet('lnurlWithdraw', params);
 			return ok('');
 		}
 		case EQRDataType.lnurlChannel: {
-			const params = data.lnUrlParams as LNURLChannelParams;
+			const params = data.lnUrlParams;
 			rootNavigation.navigate('TransferRoot', {
 				screen: 'LNURLChannel',
 				params: { cParams: params },
@@ -798,12 +836,12 @@ const handleData = async ({
 			return ok('');
 		}
 		case EQRDataType.lnurlAuth: {
-			const params = data.lnUrlParams as LNURLAuthParams;
+			const params = data.lnUrlParams;
 			await handleLnurlAuth({ params, selectedWallet, selectedNetwork });
 			return ok('');
 		}
 		case EQRDataType.orangeTicket: {
-			showBottomSheet('orangeTicket', { ticketId: data.ticketId });
+			showSheet('orangeTicket', { ticketId: data.ticketId });
 			return ok('');
 		}
 		case EQRDataType.nodeId: {
@@ -811,15 +849,15 @@ const handleData = async ({
 				screen: 'ExternalConnection',
 				params: { peer: data.uri },
 			});
-			dispatch(closeSheet('sendNavigation'));
+			closeSheet('send');
 			return ok('');
 		}
 		case EQRDataType.treasureHunt: {
-			showBottomSheet('treasureHunt', { chestId: data.chestId });
+			showSheet('treasureHunt', { chestId: data.chestId });
 			return ok('');
 		}
 		case EQRDataType.pubkyAuth: {
-			showBottomSheet('pubkyAuth', { url: data.url });
+			showSheet('pubkyAuth', { url: data.url });
 			return ok('');
 		}
 	}

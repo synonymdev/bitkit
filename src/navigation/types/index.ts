@@ -8,20 +8,20 @@ import {
 } from '@react-navigation/native-stack';
 
 import type { RecoveryStackParamList } from '../../screens/Recovery/RecoveryNavigator';
+import type { BackupStackParamList } from '../../sheets/BackupNavigation';
+import type { LNURLWithdrawStackParamList } from '../../sheets/LNURLWithdrawNavigation';
+import type { OrangeTicketStackParamList } from '../../sheets/OrangeTicketNavigation';
+import type { PinStackParamList } from '../../sheets/PINNavigation';
+import type { ProfileLinkStackParamList } from '../../sheets/ProfileLinkNavigation';
+import type { ReceiveStackParamList } from '../../sheets/ReceiveNavigation';
+import type { SendStackParamList } from '../../sheets/SendNavigation';
+import type { TreasureHuntStackParamList } from '../../sheets/TreasureHuntNavigation';
 import type { IActivityItem } from '../../store/types/activity';
 import type { TWidgetId, TWidgetOptions } from '../../store/types/widgets';
 import type { OnboardingStackParamList } from '../OnboardingNavigator';
 import type { SettingsStackParamList } from '../SettingsNavigator';
 import type { TransferStackParamList } from '../TransferNavigator';
 import type { WalletStackParamList } from '../WalletNavigator';
-import type { BackupStackParamList } from '../bottom-sheet/BackupNavigation';
-import type { LNURLWithdrawStackParamList } from '../bottom-sheet/LNURLWithdrawNavigation';
-import type { OrangeTicketStackParamList } from '../bottom-sheet/OrangeTicketNavigation';
-import type { PinStackParamList } from '../bottom-sheet/PINNavigation';
-import type { ProfileLinkStackParamList } from '../bottom-sheet/ProfileLinkNavigation';
-import type { ReceiveStackParamList } from '../bottom-sheet/ReceiveNavigation';
-import type { SendStackParamList } from '../bottom-sheet/SendNavigation';
-import type { TreasureHuntStackParamList } from '../bottom-sheet/TreasureHuntNavigation';
 
 // TODO: move all navigation related types here
 // https://reactnavigation.org/docs/typescript#organizing-types
@@ -95,8 +95,9 @@ export type ReceiveScreenProps<T extends keyof ReceiveStackParamList> =
 export type SendScreenProps<T extends keyof SendStackParamList> =
 	NativeStackScreenProps<SendStackParamList, T>;
 
-export type LNURLWithdrawProps<T extends keyof LNURLWithdrawStackParamList> =
-	NativeStackScreenProps<LNURLWithdrawStackParamList, T>;
+export type LNURLWithdrawScreenProps<
+	T extends keyof LNURLWithdrawStackParamList,
+> = NativeStackScreenProps<LNURLWithdrawStackParamList, T>;
 
 export type OrangeTicketScreenProps<
 	T extends keyof OrangeTicketStackParamList,

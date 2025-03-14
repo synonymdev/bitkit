@@ -1,31 +1,26 @@
+import { auth, parseAuthUrl } from '@synonymdev/react-native-pubky';
 import React, {
 	memo,
 	ReactElement,
 	useCallback,
 	useEffect,
 	useMemo,
+	useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-
-import { auth, parseAuthUrl } from '@synonymdev/react-native-pubky';
 import Animated, { FadeIn } from 'react-native-reanimated';
-import BottomSheetNavigationHeader from '../../components/BottomSheetNavigationHeader';
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import SafeAreaInset from '../../components/SafeAreaInset';
-import Button from '../../components/buttons/Button';
-import {
-	useBottomSheetBackPress,
-	useSnapPoints,
-} from '../../hooks/bottomSheet';
-import { useAppSelector } from '../../hooks/redux';
-import { dispatch } from '../../store/helpers.ts';
-import { viewControllerSelector } from '../../store/reselect/ui.ts';
-import { closeSheet } from '../../store/slices/ui.ts';
-import { CheckCircleIcon } from '../../styles/icons.ts';
-import { BodyM, CaptionB, Text13UP, Title } from '../../styles/text';
-import { showToast } from '../../utils/notifications.ts';
-import { getPubkySecretKey } from '../../utils/pubky';
+
+import BottomSheet from '../components/BottomSheet';
+import BottomSheetNavigationHeader from '../components/BottomSheetNavigationHeader';
+import SafeAreaInset from '../components/SafeAreaInset';
+import Button from '../components/buttons/Button';
+import { SheetsParamList } from '../store/types/ui';
+import { CheckCircleIcon } from '../styles/icons';
+import { BodyM, CaptionB, Text13UP, Title } from '../styles/text';
+import { showToast } from '../utils/notifications';
+import { getPubkySecretKey } from '../utils/pubky';
+import { useSheetRef } from './SheetRefsProvider';
 
 const defaultParsedUrl: PubkyAuthDetails = {
 	relay: '',
@@ -81,18 +76,16 @@ const Permission = memo(
 	},
 );
 
-const PubkyAuth = (): ReactElement => {
+const SheetContent = ({
+	data,
+}: { data: SheetsParamList['pubkyAuth'] }): ReactElement => {
 	const { t } = useTranslation('security');
-	const snapPoints = useSnapPoints('medium');
-	const { url = '' } = useAppSelector((state) => {
-		return viewControllerSelector(state, 'pubkyAuth');
-	});
-	const [parsed, setParsed] =
-		React.useState<PubkyAuthDetails>(defaultParsedUrl);
-	const [authorizing, setAuthorizing] = React.useState(false);
-	const [authSuccess, setAuthSuccess] = React.useState(false);
+	const sheetRef = useSheetRef('pubkyAuth');
+	const [parsed, setParsed] = useState<PubkyAuthDetails>(defaultParsedUrl);
+	const [authorizing, setAuthorizing] = useState(false);
+	const [authSuccess, setAuthSuccess] = useState(false);
 
-	useBottomSheetBackPress('pubkyAuth');
+	const { url } = data;
 
 	useEffect(() => {
 		const fetchParsed = async (): Promise<void> => {
@@ -150,13 +143,7 @@ const PubkyAuth = (): ReactElement => {
 		[t, url],
 	);
 
-	const onClose = useMemo(
-		() => (): void => {
-			dispatch(closeSheet('pubkyAuth'));
-		},
-		[],
-	);
-
+	// biome-ignore lint/correctness/useExhaustiveDependencies: sheetRef doesn't change
 	const Buttons = useCallback(() => {
 		if (authSuccess) {
 			return (
@@ -164,7 +151,7 @@ const PubkyAuth = (): ReactElement => {
 					style={styles.authorizeButton}
 					text={t('authorization.success')}
 					size="large"
-					onPress={onClose}
+					onPress={() => sheetRef.current?.close()}
 				/>
 			);
 		}
@@ -174,7 +161,7 @@ const PubkyAuth = (): ReactElement => {
 					style={styles.closeButton}
 					text={t('authorization.deny')}
 					size="large"
-					onPress={onClose}
+					onPress={() => sheetRef.current?.close()}
 				/>
 				<Button
 					loading={authorizing}
@@ -189,7 +176,7 @@ const PubkyAuth = (): ReactElement => {
 				/>
 			</>
 		);
-	}, [authSuccess, authorizing, onAuthorize, onClose, t]);
+	}, [authSuccess, authorizing, onAuthorize, t]);
 
 	const SuccessCircle = useCallback(() => {
 		if (authSuccess) {
@@ -203,39 +190,47 @@ const PubkyAuth = (): ReactElement => {
 	}, [authSuccess]);
 
 	return (
-		<BottomSheetWrapper view="pubkyAuth" snapPoints={snapPoints}>
-			<View style={styles.container}>
-				<BottomSheetNavigationHeader title={t('authorization.title')} />
-				<Text13UP color="secondary">{t('authorization.claims')}</Text13UP>
-				<Title color="white">{parsed.relay}</Title>
+		<View style={styles.container}>
+			<BottomSheetNavigationHeader title={t('authorization.title')} />
+			<Text13UP color="secondary">{t('authorization.claims')}</Text13UP>
+			<Title color="white">{parsed.relay}</Title>
 
-				<View style={styles.buffer} />
+			<View style={styles.buffer} />
 
-				<BodyM color="secondary">{t('authorization.description')}</BodyM>
+			<BodyM color="secondary">{t('authorization.description')}</BodyM>
 
-				<View style={styles.buffer} />
+			<View style={styles.buffer} />
 
-				<Text13UP color="secondary">
-					{t('authorization.requested_permissions')}
-				</Text13UP>
-				{parsed.capabilities.map((capability) => {
-					return (
-						<Permission
-							key={capability.path}
-							capability={capability}
-							authSuccess={authSuccess}
-						/>
-					);
-				})}
+			<Text13UP color="secondary">
+				{t('authorization.requested_permissions')}
+			</Text13UP>
+			{parsed.capabilities.map((capability) => {
+				return (
+					<Permission
+						key={capability.path}
+						capability={capability}
+						authSuccess={authSuccess}
+					/>
+				);
+			})}
 
-				<View style={styles.buffer} />
+			<View style={styles.buffer} />
 
-				{SuccessCircle()}
+			{SuccessCircle()}
 
-				<View style={styles.buttonContainer}>{Buttons()}</View>
-				<SafeAreaInset type="bottom" minPadding={16} />
-			</View>
-		</BottomSheetWrapper>
+			<View style={styles.buttonContainer}>{Buttons()}</View>
+			<SafeAreaInset type="bottom" minPadding={16} />
+		</View>
+	);
+};
+
+const PubkyAuth = (): ReactElement => {
+	return (
+		<BottomSheet id="pubkyAuth" size="medium">
+			{({ data }: { data: SheetsParamList['pubkyAuth'] }) => {
+				return <SheetContent data={data} />;
+			}}
+		</BottomSheet>
 	);
 };
 

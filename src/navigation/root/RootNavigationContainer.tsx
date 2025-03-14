@@ -4,9 +4,10 @@ import {
 	NavigationContainer,
 	createNavigationContainerRef,
 } from '@react-navigation/native';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { Linking } from 'react-native';
 
+import { useAllSheetRefs } from '../../sheets/SheetRefsProvider';
 import { processUri } from '../../utils/scanner/scanner';
 import { RootStackParamList } from '../types';
 
@@ -48,6 +49,8 @@ const RootNavigationContainer = ({
 }: {
 	children: ReactElement;
 }): ReactElement => {
+	const sheetRefs = useAllSheetRefs();
+
 	const linking: LinkingOptions<RootStackParamList> = {
 		prefixes: ['bitkit', 'slash', 'bitcoin', 'lightning'],
 		subscribe(listener): () => void {
@@ -63,6 +66,17 @@ const RootNavigationContainer = ({
 			};
 		},
 	};
+
+	// Close any open sheets when navigating to a new screen
+	// biome-ignore lint/correctness/useExhaustiveDependencies: sheetRefs don't change
+	useEffect(() => {
+		const unsubscribe = navigationRef.addListener('state', () => {
+			const openSheets = sheetRefs.filter(({ ref }) => ref.current?.isOpen());
+			openSheets.forEach(({ ref }) => ref.current?.close());
+		});
+
+		return unsubscribe;
+	}, []);
 
 	return (
 		<NavigationContainer

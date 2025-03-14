@@ -1,27 +1,27 @@
+import { parse } from '@synonymdev/slashtags-url';
 import React, { ReactElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Keyboard, StyleSheet, View } from 'react-native';
-import { useAppSelector } from '../../hooks/redux';
 
-import { parse } from '@synonymdev/slashtags-url';
 import ContactsList from '../../components/ContactsList';
 import NavigationHeader from '../../components/NavigationHeader';
 import ProfileImage from '../../components/ProfileImage';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import SearchInput from '../../components/SearchInput';
+import { useAppSelector } from '../../hooks/redux';
 import { useProfile, useSlashtags } from '../../hooks/slashtags';
 import { RootStackScreenProps } from '../../navigation/types';
+import AddContact from '../../sheets/AddContact';
+import { useSheetRef } from '../../sheets/SheetRefsProvider';
 import {
 	contactsSelector,
 	onboardedContactsSelector,
 } from '../../store/reselect/slashtags';
-import { showBottomSheet } from '../../store/utils/ui';
 import {
 	View as ThemedView,
 	TouchableHighlight,
 } from '../../styles/components';
 import { PlusIcon } from '../../styles/icons';
-import AddContact from './AddContact';
 import ContactsOnboarding from './ContactsOnboarding';
 
 const Contacts = (props: RootStackScreenProps<'Contacts'>): ReactElement => {
@@ -40,6 +40,7 @@ const ContactsScreen = ({
 	navigation,
 }: RootStackScreenProps<'Contacts'>): ReactElement => {
 	const { t } = useTranslation('slashtags');
+	const sheetRef = useSheetRef('addContact');
 	const [searchFilter, setSearchFilter] = useState('');
 	const { url: myProfileURL } = useSlashtags();
 	const { profile } = useProfile(myProfileURL);
@@ -73,7 +74,7 @@ const ContactsScreen = ({
 						testID="AddContact"
 						onPress={(): void => {
 							Keyboard.dismiss();
-							showBottomSheet('addContactModal');
+							sheetRef.current?.present();
 						}}>
 						<PlusIcon width={24} height={24} color="brand" />
 					</TouchableHighlight>

@@ -6,13 +6,10 @@ import {
 } from '@react-navigation/native-stack';
 import React, { ReactElement, memo } from 'react';
 
-import BottomSheetWrapper from '../../components/BottomSheetWrapper';
-import { __E2E__ } from '../../constants/env';
-import { useSnapPoints } from '../../hooks/bottomSheet';
-import { useAppSelector } from '../../hooks/redux';
-import ProfileLink from '../../screens/Profile/ProfileLink';
-import ProfileLinkSuggestions from '../../screens/Profile/ProfileLinkSuggestions';
-import { viewControllerIsOpenSelector } from '../../store/reselect/ui';
+import BottomSheet from '../components/BottomSheet';
+import { __E2E__ } from '../constants/env';
+import ProfileLink from '../screens/Profile/ProfileLink';
+import ProfileLinkSuggestions from '../screens/Profile/ProfileLinkSuggestions';
 import BottomSheetNavigationContainer from './BottomSheetNavigationContainer';
 
 export type ProfileLinkNavigationProp =
@@ -31,15 +28,10 @@ const screenOptions: NativeStackNavigationOptions = {
 };
 
 const ProfileLinkNavigation = (): ReactElement => {
-	const snapPoints = useSnapPoints('small');
-	const isOpen = useAppSelector((state) => {
-		return viewControllerIsOpenSelector(state, 'profileAddDataForm');
-	});
-
 	return (
-		<BottomSheetWrapper view="profileAddDataForm" snapPoints={snapPoints}>
+		<BottomSheet id="profileLink" size="small">
 			<NavigationIndependentTree>
-				<BottomSheetNavigationContainer key={isOpen.toString()}>
+				<BottomSheetNavigationContainer>
 					<Stack.Navigator screenOptions={screenOptions}>
 						<Stack.Screen name="ProfileLink" component={ProfileLink} />
 						<Stack.Screen
@@ -49,7 +41,7 @@ const ProfileLinkNavigation = (): ReactElement => {
 					</Stack.Navigator>
 				</BottomSheetNavigationContainer>
 			</NavigationIndependentTree>
-		</BottomSheetWrapper>
+		</BottomSheet>
 	);
 };
 

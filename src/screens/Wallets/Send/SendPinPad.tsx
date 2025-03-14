@@ -6,12 +6,13 @@ import { FadeIn, FadeOut } from 'react-native-reanimated';
 import NumberPad from '../../../components/NumberPad';
 import { PIN_ATTEMPTS } from '../../../constants/app';
 import usePIN from '../../../hooks/pin';
-import { showBottomSheet } from '../../../store/utils/ui';
+import { useSheetRef } from '../../../sheets/SheetRefsProvider';
 import { AnimatedView } from '../../../styles/components';
 import { BodyS } from '../../../styles/text';
 
 const SendPinPad = ({ onSuccess }: { onSuccess: () => void }): ReactElement => {
 	const { t } = useTranslation('security');
+	const sheetRef = useSheetRef('forgotPin');
 	const { attemptsRemaining, Dots, handleNumberPress, isLastAttempt, loading } =
 		usePIN(onSuccess);
 
@@ -35,7 +36,7 @@ const SendPinPad = ({ onSuccess }: { onSuccess: () => void }): ReactElement => {
 						) : (
 							<Pressable
 								onPress={(): void => {
-									showBottomSheet('forgotPIN');
+									sheetRef.current?.present();
 								}}>
 								<BodyS testID="AttemptsRemaining" color="brand">
 									{t('pin_attempts', { attemptsRemaining })}

@@ -8,7 +8,6 @@ import React, {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 import Dialog from '../../components/Dialog';
 import Divider from '../../components/Divider';
@@ -19,9 +18,11 @@ import ProfileLinks from '../../components/ProfileLinks';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import Button from '../../components/buttons/Button';
 import { Keyboard } from '../../hooks/keyboard';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { useProfile, useSlashtags } from '../../hooks/slashtags';
-import ProfileLinkNavigation from '../../navigation/bottom-sheet/ProfileLinkNavigation';
 import type { RootStackScreenProps } from '../../navigation/types';
+import ProfileLinkNavigation from '../../sheets/ProfileLinkNavigation';
+import { useSheetRef } from '../../sheets/SheetRefsProvider';
 import { slashtagsLinksSelector } from '../../store/reselect/slashtags';
 import { onboardingProfileStepSelector } from '../../store/reselect/slashtags';
 import {
@@ -29,7 +30,6 @@ import {
 	setOnboardingProfileStep,
 } from '../../store/slices/slashtags';
 import { BasicProfile } from '../../store/types/slashtags';
-import { showBottomSheet } from '../../store/utils/ui';
 import { ScrollView, View as ThemedView } from '../../styles/components';
 import { PlusIcon } from '../../styles/icons';
 import { BodyS } from '../../styles/text';
@@ -48,6 +48,7 @@ const ProfileEdit = ({
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 	const [fields, setFields] = useState<Omit<BasicProfile, 'links'>>({});
 	const dispatch = useAppDispatch();
+	const sheetRef = useSheetRef('profileLink');
 	const links = useAppSelector(slashtagsLinksSelector);
 	const onboardingStep = useAppSelector(onboardingProfileStepSelector);
 
@@ -94,7 +95,7 @@ const ProfileEdit = ({
 
 	const onAddLink = async (): Promise<void> => {
 		await Keyboard.dismiss();
-		showBottomSheet('profileAddDataForm');
+		sheetRef.current?.present();
 	};
 
 	const onSave = async (): Promise<void> => {

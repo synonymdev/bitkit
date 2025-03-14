@@ -193,6 +193,7 @@ d('Settings', () => {
 			await expect(element(by.text(tag))).not.toBeVisible();
 			await element(by.id('TagInputReceive')).typeText(tag);
 			await element(by.id('ReceiveTagsSubmit')).tap();
+			await sleep(300); // wait for keyboard to hide
 			await expect(element(by.text(tag))).toBeVisible();
 			await element(by.id('ReceiveScreen')).swipe('down');
 			await sleep(1000);

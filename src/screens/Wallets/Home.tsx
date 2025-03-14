@@ -13,11 +13,11 @@ import Widgets from '../../components/Widgets';
 import useColors from '../../hooks/colors';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { useBalance } from '../../hooks/wallet';
-import AppUpdatePrompt from '../../navigation/bottom-sheet/AppUpdatePrompt';
-import BackupPrompt from '../../navigation/bottom-sheet/BackupPrompt';
-import HighBalanceWarning from '../../navigation/bottom-sheet/HighBalanceWarning';
-import QuickPayPrompt from '../../navigation/bottom-sheet/QuickPayPrompt';
 import ActivityListShort from '../../screens/Activity/ActivityListShort';
+import AppUpdate from '../../sheets/AppUpdate';
+import BackupPrompt from '../../sheets/BackupPrompt';
+import HighBalanceWarning from '../../sheets/HighBalanceWarning';
+import QuickPayPrompt from '../../sheets/QuickPayPrompt';
 import {
 	enableSwipeToHideBalanceSelector,
 	hideBalanceSelector,
@@ -136,7 +136,7 @@ const Home = (): ReactElement => {
 			{/* Timed/conditional bottom-sheets */}
 			<BackupPrompt />
 			<HighBalanceWarning />
-			<AppUpdatePrompt />
+			<AppUpdate />
 			<QuickPayPrompt />
 		</>
 	);
