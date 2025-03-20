@@ -358,6 +358,17 @@ const performWidgetsRestore = async (): Promise<
 
 		const backup = backupRes.value.data;
 		const expectedBackupShape = initialWidgetsState;
+
+		// NOTE: can be removed after all users have updated from 1.0.9
+		const hasSlashfeedWidgets = Object.keys(backup.widgets).some((key) => {
+			return key.includes('slashfeed');
+		});
+
+		// If the backup has slashfeed widgets, skip the restore.
+		if (hasSlashfeedWidgets) {
+			return ok({ backupExists: false });
+		}
+
 		//If the keys in the backup object are not found in the reference object assume the backup does not exist.
 		if (!isObjPartialMatch(backup, expectedBackupShape, ['widgets'])) {
 			return ok({ backupExists: false });
