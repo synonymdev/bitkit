@@ -19,7 +19,6 @@ import type { RootNavigationProp } from '../navigation/types';
 import { useSheetRef } from '../sheets/SheetRefsProvider';
 import { resetSendTransaction } from '../store/actions/wallet';
 import { spendingOnboardingSelector } from '../store/reselect/aggregations';
-import { showSheet } from '../store/utils/ui';
 import { ScanIcon } from '../styles/icons';
 import ButtonBlur from './buttons/ButtonBlur';
 
@@ -34,13 +33,13 @@ const TabBar = (): ReactElement => {
 
 	const onReceivePress = (): void => {
 		const currentRoute = rootNavigation.getCurrentRoute();
+		const screen =
+			// if we are on the spending screen and the user has not yet received funds
+			currentRoute === 'ActivitySpending' && isSpendingOnboarding
+				? 'ReceiveAmount'
+				: 'ReceiveQR';
 
-		// if we are on the spending screen and the user has not yet received funds
-		if (currentRoute === 'ActivitySpending' && isSpendingOnboarding) {
-			showSheet('receive', { screen: 'ReceiveAmount' });
-		} else {
-			receiveSheetRef.current?.present();
-		}
+		receiveSheetRef.current?.present({ screen });
 	};
 
 	const onSendPress = (): void => {

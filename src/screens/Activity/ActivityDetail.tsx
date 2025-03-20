@@ -66,6 +66,7 @@ import type {
 	RootNavigationProp,
 	RootStackScreenProps,
 } from '../../navigation/types';
+import { useSheetRef } from '../../sheets/SheetRefsProvider';
 import {
 	activityItemSelector,
 	activityItemsSelector,
@@ -85,7 +86,6 @@ import {
 	deleteMetaTxTag,
 } from '../../store/slices/metadata';
 import { ETransferStatus } from '../../store/types/wallet';
-import { showSheet } from '../../store/utils/ui';
 import { getBoostedTransactionParents } from '../../utils/boost';
 import {
 	ellipsis,
@@ -159,6 +159,8 @@ const OnchainActivityDetail = ({
 	const { wallet } = useOnchainWallet();
 	const { t } = useTranslation('wallet');
 	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
+	const boostSheetRef = useSheetRef('boost');
+	const activityTagsSheetRef = useSheetRef('activityTags');
 	const switchUnit = useSwitchUnit();
 	const dispatch = useAppDispatch();
 	const contacts = useAppSelector(contactsSelector);
@@ -235,11 +237,11 @@ const OnchainActivityDetail = ({
 	};
 
 	const handleBoost = (): void => {
-		showSheet('boost', { activityItem: item });
+		boostSheetRef.current?.present({ activityItem: item });
 	};
 
 	const handleAddTag = (): void => {
-		showSheet('activityTags', { id });
+		activityTagsSheetRef.current?.present({ id });
 	};
 
 	const handleRemoveTag = (tag: string): void => {
@@ -678,8 +680,10 @@ const LightningActivityDetail = ({
 }): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const { t: tTime } = useTranslation('intl', { i18n: i18nTime });
+	const activityTagsSheetRef = useSheetRef('activityTags');
 	const switchUnit = useSwitchUnit();
 	const colors = useColors();
+
 	const {
 		id,
 		txType,
@@ -700,7 +704,7 @@ const LightningActivityDetail = ({
 	});
 
 	const handleAddTag = (): void => {
-		showSheet('activityTags', { id });
+		activityTagsSheetRef.current?.present({ id });
 	};
 
 	const handleRemoveTag = (tag: string): void => {

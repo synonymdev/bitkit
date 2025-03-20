@@ -1,16 +1,16 @@
 import React, { ReactElement } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-import { useAppSelector } from '../../hooks/redux';
 
 import NavigationHeader from '../../components/NavigationHeader';
 import SafeAreaInset from '../../components/SafeAreaInset';
 import RectangleButton from '../../components/buttons/RectangleButton';
+import { useAppSelector } from '../../hooks/redux';
 import { useBalance } from '../../hooks/wallet';
 import type { TransferScreenProps } from '../../navigation/types';
+import { useSheetRef } from '../../sheets/SheetRefsProvider';
 import { spendingIntroSeenSelector } from '../../store/reselect/settings';
 import { isGeoBlockedSelector } from '../../store/reselect/user';
-import { showSheet } from '../../store/utils/ui';
 import { View as ThemedView } from '../../styles/components';
 import { QrIcon, ShareAndroidIcon, TransferIcon } from '../../styles/icons';
 import { BodyM, Display } from '../../styles/text';
@@ -21,6 +21,7 @@ const Funding = ({
 }: TransferScreenProps<'Funding'>): ReactElement => {
 	const { t } = useTranslation('lightning');
 	const { onchainBalance } = useBalance();
+	const receiveSheetRef = useSheetRef('receive');
 	const isGeoBlocked = useAppSelector(isGeoBlockedSelector);
 	const spendingIntroSeen = useAppSelector(spendingIntroSeenSelector);
 
@@ -34,7 +35,7 @@ const Funding = ({
 
 	const onFund = (): void => {
 		navigation.popTo('Wallet', { screen: 'Home' });
-		showSheet('receive', { screen: 'ReceiveAmount' });
+		receiveSheetRef.current?.present({ screen: 'ReceiveAmount' });
 	};
 
 	const onAdvanced = (): void => {
