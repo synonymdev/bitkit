@@ -5587,9 +5587,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"beignet@npm:0.0.52":
-  version: 0.0.52
-  resolution: "beignet@npm:0.0.52"
+"beignet@npm:0.0.54":
+  version: 0.0.54
+  resolution: "beignet@npm:0.0.54"
   dependencies:
     "@bitcoinerlab/secp256k1": 1.0.5
     bech32: 2.0.0
@@ -5602,8 +5602,8 @@ __metadata:
     ecpair: 2.1.0
     lodash.clonedeep: 4.5.0
     net: 1.0.2
-    rn-electrum-client: 0.0.21
-  checksum: 912fc18f707ffc9e1b65838f0f03396afaa3f1101211997b731deac22d2d2c06307daa9ae0013c9ad9cb2611dbc5d205f112175d57d504cabb53b06ec0b30c9c
+    rn-electrum-client: 0.0.22
+  checksum: 5e351a5e95b482972c06b85ba004ced565192f00c15e33e5d699cf82b25de8a6afd86125c982a8b32e936bc2a5b75af35257b6d4ad2bb2d4ff7abb9121165a03
   languageName: node
   linkType: hard
 
@@ -5844,7 +5844,7 @@ __metadata:
     "@types/url-parse": ^1.4.11
     "@types/uuid": ^9.0.8
     babel-plugin-transform-remove-console: ^6.9.4
-    beignet: 0.0.52
+    beignet: 0.0.54
     bip21: 2.0.3
     bip32: 4.0.0
     bitcoin-address-validation: 2.2.3
@@ -5915,7 +5915,7 @@ __metadata:
     redux-logger: 3.0.6
     redux-persist: 6.0.0
     rn-android-keyboard-adjust: 2.1.2
-    rn-electrum-client: ^0.0.21
+    rn-electrum-client: ^0.0.22
     rn-qr-generator: 1.4.3
     sodium-react-native-direct: 0.4.4
     styled-components: 5.3.11
@@ -13491,10 +13491,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rn-electrum-client@npm:0.0.21, rn-electrum-client@npm:^0.0.21":
-  version: 0.0.21
-  resolution: "rn-electrum-client@npm:0.0.21"
-  checksum: 7aeb73f36fb2133d0bed77c6a907a8f8cc508913ff90dcb5494db067db63df9a747e978592df2ca06c0077ab9b39822d8a0bc7fdf52e4fe6ee83c546878cbbbf
+"rn-electrum-client@npm:0.0.22, rn-electrum-client@npm:^0.0.22":
+  version: 0.0.22
+  resolution: "rn-electrum-client@npm:0.0.22"
+  checksum: 03bc8466a41c9c609a372c24ad599a8423183c33987612c938d94ac3323f9d5c049383e5c2e7a5e6cb9fe5f8a0e950ac1395930de9801018b4e4b9f84bdc3fb4
   languageName: node
   linkType: hard
 

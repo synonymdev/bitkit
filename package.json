@@ -56,7 +56,7 @@
     "@synonymdev/slashtags-profile": "2.0.0",
     "@synonymdev/slashtags-url": "1.0.1",
     "@synonymdev/web-relay": "1.0.7",
-    "beignet": "0.0.52",
+    "beignet": "0.0.54",
     "bip21": "2.0.3",
     "bip32": "4.0.0",
     "bitcoin-address-validation": "2.2.3",
@@ -160,7 +160,7 @@
     "reactotron-react-native": "^5.1.10",
     "reactotron-react-native-mmkv": "^0.2.7",
     "reactotron-redux": "^3.1.9",
-    "rn-electrum-client": "^0.0.21",
+    "rn-electrum-client": "^0.0.22",
     "typescript": "5.7.3"
   },
   "react-native": {
