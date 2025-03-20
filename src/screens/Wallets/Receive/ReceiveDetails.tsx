@@ -1,7 +1,7 @@
 import React, { ReactElement, memo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, StyleSheet, View } from 'react-native';
-import { FadeIn, FadeOut } from 'react-native-reanimated';
+import { Image, Platform, StyleSheet, View } from 'react-native';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
@@ -27,7 +27,7 @@ import {
 	updatePendingInvoice,
 } from '../../../store/slices/metadata';
 import { removeInvoiceTag, updateInvoice } from '../../../store/slices/receive';
-import { AnimatedView, BottomSheetTextInput } from '../../../styles/components';
+import { BottomSheetTextInput } from '../../../styles/components';
 import { TagIcon } from '../../../styles/icons';
 import { Caption13Up } from '../../../styles/text';
 import { estimateOrderFee } from '../../../utils/blocktank';
@@ -174,11 +174,12 @@ const ReceiveDetails = ({
 						</View>
 
 						{!keyboardShown && (
-							<AnimatedView
+							<Animated.View
 								style={styles.bottom}
-								color="transparent"
 								entering={FadeIn}
-								exiting={FadeOut}>
+								// FadeOut causing a bug on Android
+								exiting={Platform.OS === 'ios' ? FadeOut : undefined}
+							>
 								<Caption13Up style={styles.label} color="secondary">
 									{t('tags')}
 								</Caption13Up>
@@ -209,7 +210,7 @@ const ReceiveDetails = ({
 										<Image style={styles.image} source={imageSrc} />
 									</View>
 								)}
-							</AnimatedView>
+							</Animated.View>
 						)}
 
 						<View style={styles.buttonContainer}>
