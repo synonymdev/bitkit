@@ -1,4 +1,24 @@
 {
+  "drawer": {
+    "activity": {
+      "string": "Activitat"
+    },
+    "contacts": {
+      "string": "Contactes"
+    },
+    "profile": {
+      "string": "Perfil"
+    },
+    "widgets": {
+      "string": "Ginys"
+    },
+    "settings": {
+      "string": "Configuracions"
+    },
+    "status": {
+      "string": "Estat de l'Aplicació"
+    }
+  },
   "send": {
     "string": "Envia"
   },
@@ -88,6 +108,11 @@
   },
   "send_pending": {
     "string": "Pagament pendent"
+  },
+  "send_quickpay": {
+    "nav_title": {
+      "string": "QuickPay"
+    }
   },
   "send_instant_failed": {
     "string": "Pagament Instantani Fallit"

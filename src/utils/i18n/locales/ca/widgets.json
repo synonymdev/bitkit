@@ -1,0 +1,53 @@
+{
+  "widgets": {
+    "string": "Ginys"
+  },
+  "widget": {
+    "nav_title": {
+      "string": "Giny"
+    },
+    "edit": {
+      "string": "Alimentar el Giny"
+    },
+    "edit_default": {
+      "string": "Predeterminat"
+    },
+    "edit_custom": {
+      "string": "Personalitzat"
+    },
+    "source": {
+      "string": "Origen"
+    }
+  },
+  "add": {
+    "string": "Afegir ginys"
+  },
+  "delete": {
+    "title": {
+      "string": "Esborrar el giny?"
+    },
+    "description": {
+      "string": "Estàs segur que vols eliminar '{name}' dels teus ginys?"
+    }
+  },
+  "price": {
+    "name": {
+      "string": "Preu de Bitcoin"
+    }
+  },
+  "news": {
+    "name": {
+      "string": "Capçaleres de Bitcoin"
+    }
+  },
+  "blocks": {
+    "name": {
+      "string": "Blocs de Bitcoin"
+    }
+  },
+  "facts": {
+    "name": {
+      "string": "Bitcoin Fets"
+    }
+  }
+}

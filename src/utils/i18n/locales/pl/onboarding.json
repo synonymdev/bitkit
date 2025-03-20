@@ -1,5 +1,152 @@
 {
+  "tos_header": {
+    "string": "Bitkit\n<accent>warunki użytkowania</accent>"
+  },
+  "tos_checkbox": {
+    "string": "Warunki użytkowania"
+  },
+  "tos_checkbox_value": {
+    "string": "Oświadczam, że zapoznałem się i akceptuję <accent>warunki użytkowania.</accent>"
+  },
+  "pp_checkbox": {
+    "string": "Polityka prywatności"
+  },
+  "pp_checkbox_value": {
+    "string": "Oświadczam, że zapoznałem się i akceptuję <accent>politykę prywatności.</accent>"
+  },
+  "welcome_title": {
+    "string": "Możesz ₿yć \n<accent>zmianą</accent>"
+  },
+  "welcome_text": {
+    "string": "Używaj Bitkit, aby płacić każdemu, gdziekolwiek i kiedykolwiek, oraz wydawaj bitcoiny na rzeczy, które cenisz w życiu."
+  },
+  "get_started": {
+    "string": "Rozpocznij"
+  },
+  "skip_intro": {
+    "string": "Pomiń wprowadzenie"
+  },
   "skip": {
     "string": "Pomiń"
+  },
+  "slide0_header": {
+    "string": "Wolność w\n<accent>twojej kieszeni</accent>"
+  },
+  "slide0_text": {
+    "string": "Bitkit przekazuje Ci klucze do zarządzania Twoimi pieniędzmi. Wydawaj teraz lub oszczędzaj na później. Wybór należy do Ciebie."
+  },
+  "slide1_header": {
+    "string": "Płatności\n<accent>natychmiastowe</accent>"
+  },
+  "slide1_text": {
+    "string": "Wydawaj bitcoiny szybciej niż kiedykolwiek. Ciesz się natychmiastowymi i tanimi płatnościami z przyjaciółmi, rodziną i sprzedawcami."
+  },
+  "slide1_note": {
+    "string": "Bitkit nie świadczy obecnie usług Lightning w Twoim kraju, ale nadal możesz łączyć się z innymi węzłami."
+  },
+  "slide2_header": {
+    "string": "Bitcoinerzy,\n<accent>bez granic</accent>"
+  },
+  "slide2_text": {
+    "string": "Przejmij kontrolę nad swoim cyfrowym życiem dzięki przenośnym profilom i płatnym kontaktom."
+  },
+  "slide3_header": {
+    "string": "Prywatność nie jest\n<accent>przestępstwem</accent>"
+  },
+  "slide3_text": {
+    "string": "Przesuń, aby ukryć saldo, zwiększyć prywatność płatności i zabezpieczyć portfel dzięki funkcjom bezpieczeństwa."
+  },
+  "slide4_header": {
+    "string": "Twoje klucze,\n<accent>twoje monety</accent>"
+  },
+  "slide4_text": {
+    "string": "Utwórzmy twój portfel. Pamiętaj, że Bitkit to oprogramowanie mobilne. <accent>Nie przechowuj w nim wszystkich swoich środków.</accent>"
+  },
+  "new_wallet": {
+    "string": "Nowy portfel"
+  },
+  "restore": {
+    "string": "Odzyskaj"
+  },
+  "restore_wallet": {
+    "string": "Odzyskaj portfel"
+  },
+  "advanced_setup": {
+    "string": "Ustawienia zaawansowane"
+  },
+  "advanced": {
+    "string": "Zaawansowane"
+  },
+  "passphrase_header": {
+    "string": "Zabezpiecz <accent>hasłem</accent>"
+  },
+  "passphrase_text": {
+    "string": "Możesz dodać tajne hasło do 12-wyrazowej frazy odzyskiwania. Jeśli to zrobisz, pamiętaj, aby jej nie zapomnieć."
+  },
+  "passphrase": {
+    "string": "Hasło"
+  },
+  "create_new_wallet": {
+    "string": "Utwórz nowy portfel"
+  },
+  "restore_header": {
+    "string": "<accent>Odzyskaj</accent>\nswój portfel"
+  },
+  "restore_phrase": {
+    "string": "Wpisz swoją frazę odzyskiwania z dowolnej (papierowej) kopii zapasowej."
+  },
+  "restore_red_explain": {
+    "string": "Jeśli słowo jest oznaczone na <accent>czerwono</accent>, nie zostało znalezione w słowniku fraz odzyskiwania. Sprawdź, czy nie ma literówek."
+  },
+  "restore_inv_checksum": {
+    "string": "Sumy kontrolne frazy odzyskiwania nie zgadzają się. Sprawdź ją ponownie."
+  },
+  "restore_suggestions": {
+    "string": "SUGESTIE"
+  },
+  "restore_passphrase_placeholder": {
+    "string": "Hasło*"
+  },
+  "restore_passphrase_meaning": {
+    "string": "Opcjonalne, wpisz tylko jeśli zostało wcześniej ustawione."
+  },
+  "restore_error_title": {
+    "string": "Odzyskanie portfela nie powiodło się"
+  },
+  "restore_error_description": {
+    "string": "Bitkit nie mógł przywrócić Twojego portfela z kopii zapasowej ani frazy odzyskiwania."
+  },
+  "loading_header": {
+    "string": "Konfigurowanie\n<accent>twojego portfela</accent>"
+  },
+  "restore_success_header": {
+    "string": "Portfel <accent>przywrócony</accent>"
+  },
+  "restore_success_text": {
+    "string": "Pomyślnie przywrócono Twój portfel z kopii zapasowej. Ciesz się korzystaniem z Bitkit!"
+  },
+  "restore_failed_header": {
+    "string": "<accent>Błąd</accent> salda do wydawania"
+  },
+  "restore_failed_text": {
+    "string": "Bitkit przywrócił Twoje oszczędności, ale nie udało się przywrócić bieżącego salda wydatków (stan Lightning) ani danych portfela."
+  },
+  "restore_no_backup_button": {
+    "string": "Kontynuuj bez kopii zapasowej"
+  },
+  "restore_no_backup_warn": {
+    "string": "Jeśli wcześniej miałeś kopię zapasową Lightning, zostanie ona nadpisana i utracona. Może to skutkować utratą środków."
+  },
+  "empty_wallet": {
+    "string": "Aby\nrozpocząć\n<accent>wyślij\nBitcoin</accent>\nna swój\nportfel"
+  },
+  "error_create": {
+    "string": "Tworzenie portfela nie powiodło się"
+  },
+  "multiple_header": {
+    "string": "<accent>Uwaga:</accent>\nwiele urządzeń"
+  },
+  "multiple_text": {
+    "string": "Nie instaluj swojej frazy odzyskiwania Bitkit na kilku telefonach jednocześnie, ponieważ może to uszkodzić Twoje dane."
   }
 }

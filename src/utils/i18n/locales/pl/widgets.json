@@ -1,0 +1,136 @@
+{
+  "widgets": {
+    "string": "Widgety"
+  },
+  "onboarding": {
+    "title": {
+      "string": "Hej,\n<accent>Widgety</accent>"
+    },
+    "description": {
+      "string": "Korzystaj ze zdecentralizowanych kanałów swoich ulubionych usług internetowych, dodając do portfela Bitkit przydatne i interaktywne widgety."
+    }
+  },
+  "widget": {
+    "nav_title": {
+      "string": "Widget"
+    },
+    "edit": {
+      "string": "Panel widgetów"
+    },
+    "edit_default": {
+      "string": "Domyślne"
+    },
+    "edit_custom": {
+      "string": "Własna"
+    },
+    "edit_description": {
+      "string": "Wybierz pola, które chcesz wyświetlić w widgecie {name}."
+    },
+    "source": {
+      "string": "Źródło"
+    }
+  },
+  "add": {
+    "string": "Dodaj widget"
+  },
+  "delete": {
+    "title": {
+      "string": "Usunąć widget?"
+    },
+    "description": {
+      "string": "Na pewno usunąć widget ‘{name}‘ z twoich widgetów?"
+    }
+  },
+  "price": {
+    "name": {
+      "string": "Cena Bitcoina"
+    },
+    "description": {
+      "string": "Sprawdź najnowsze kursy wymiany Bitcoina dla różnych walut fiducjarnych."
+    },
+    "error": {
+      "string": "Nie udało się pobrać danych o cenie"
+    }
+  },
+  "news": {
+    "name": {
+      "string": "Bitcoinowe Nagłówki"
+    },
+    "description": {
+      "string": "Przeczytaj najnowsze i najciekawsze nagłówki Bitcoin z różnych serwisów informacyjnych."
+    },
+    "error": {
+      "string": "Nie udało się pobrać najnowszych wiadomości."
+    }
+  },
+  "blocks": {
+    "name": {
+      "string": "Bitcoinowe Bloki"
+    },
+    "description": {
+      "string": "Przeglądaj różne statystyki nowych wydobytych bloków Bitcoina."
+    },
+    "error": {
+      "string": "Nie udało się pobrać danych o blokach"
+    }
+  },
+  "facts": {
+    "name": {
+      "string": "Bitcoinowe Fakty"
+    },
+    "description": {
+      "string": "Odkrywaj ciekawostki o Bitcoinie za każdym razem, gdy otwierasz swój portfel."
+    }
+  },
+  "calculator": {
+    "name": {
+      "string": "Bitcoinowy Kalkulator"
+    },
+    "description": {
+      "string": "Przelicz kwoty ₿ na {fiatSymbol} lub odwrotnie."
+    }
+  },
+  "weather": {
+    "name": {
+      "string": "Bitcoinowa Pogoda"
+    },
+    "description": {
+      "string": "Sprawdź, kiedy jest dobry moment na transakcję w sieci Bitcoin."
+    },
+    "condition": {
+      "good": {
+        "title": {
+          "string": "Korzystne warunki"
+        },
+        "description": {
+          "string": "Brak przeszkód. Teraz jest dobry moment na transakcję w sieci blockchain."
+        }
+      },
+      "average": {
+        "title": {
+          "string": "Średnie warunki"
+        },
+        "description": {
+          "string": "Opłaty za następny blok są zbliżone do miesięcznych średnich."
+        }
+      },
+      "poor": {
+        "title": {
+          "string": "Niekorzystne warunki"
+        },
+        "description": {
+          "string": "Jeśli nie musisz się spieszyć z transakcją, lepiej chwilę poczekać."
+        }
+      }
+    },
+    "current_fee": {
+      "string": "Obecna średnia opłata"
+    },
+    "next_block": {
+      "string": "Włączenie do następnego bloku"
+    },
+    "error": {
+      "string": "Nie udało się pobrać aktualnych danych o opłatach"
+    }
+  }
+}

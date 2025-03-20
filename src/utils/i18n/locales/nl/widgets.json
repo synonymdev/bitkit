@@ -1,0 +1,44 @@
+{
+  "widgets": {
+    "string": "Widgets"
+  },
+  "widget": {
+    "edit": {
+      "string": "Widget Feed"
+    },
+    "edit_custom": {
+      "string": "Op maat"
+    }
+  },
+  "add": {
+    "string": "Widget Toevoegen"
+  },
+  "delete": {
+    "title": {
+      "string": "Widget Verwijderen?"
+    },
+    "description": {
+      "string": "Weet u zeker dat u '{name}' wilt wissen van uw widgetlijst?"
+    }
+  },
+  "price": {
+    "name": {
+      "string": "Bitcoinprijs"
+    }
+  },
+  "news": {
+    "name": {
+      "string": "Bitcoin Nieuwes"
+    }
+  },
+  "blocks": {
+    "name": {
+      "string": "Bitcoin Blokken"
+    }
+  },
+  "facts": {
+    "name": {
+      "string": "Bitcoin Feiten"
+    }
+  }
+}

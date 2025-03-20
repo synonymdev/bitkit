@@ -125,6 +125,11 @@
       "string": "Afficher les titres des widgets"
     }
   },
+  "quickpay": {
+    "nav_title": {
+      "string": "QuickPay"
+    }
+  },
   "security": {
     "title": {
       "string": "Sécurité et vie privée"
@@ -389,18 +394,6 @@
     },
     "cs_auto_mode": {
       "string": "Mode Autopilote"
-    },
-    "cs_max": {
-      "string": "Plus privé"
-    },
-    "cs_max_description": {
-      "string": "Triez par et utilisez le plus petit UTXO en premier. Frais plus élevés, mais cache vos plus grands UTXO."
-    },
-    "cs_min": {
-      "string": "Frais les plus bas"
-    },
-    "cs_min_description": {
-      "string": "Triez par et utilisez le plus grand UTXO en premier. Les frais sont plus bas, mais ils révèlent vos plus grands UTXO."
     },
     "cs_consolidate": {
       "string": "Consolider"

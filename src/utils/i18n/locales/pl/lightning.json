@@ -1,7 +1,89 @@
 {
+  "transfer_intro": {
+    "button": {
+      "string": "Rozpocznij"
+    }
+  },
+  "funding": {
+    "nav_title": {
+      "string": "Saldo do wydawania"
+    },
+    "button1": {
+      "string": "Prześlij z Oszczędności"
+    },
+    "button2": {
+      "string": "Użyj innego portfela"
+    },
+    "button3": {
+      "string": "Zaawansowane"
+    }
+  },
+  "funding_advanced": {
+    "nav_title": {
+      "string": "Saldo do wydawania"
+    },
+    "title": {
+      "string": "<accent>Ustawienia</accent> zaawansowane"
+    },
+    "text": {
+      "string": "Zeskanuj kod QR, aby odebrać swój kanał LNURL od innego LSP, lub wybierz ręczną konfigurację."
+    },
+    "button1": {
+      "string": "Kod QR kanału LNURL"
+    }
+  },
+  "no_funds": {
+    "title": {
+      "string": "Brak dostępnych środków"
+    },
+    "fund": {
+      "string": "Zasil portfel"
+    }
+  },
+  "transfer": {
+    "nav_title": {
+      "string": "Prześlij środki"
+    }
+  },
+  "spending_intro": {
+    "button": {
+      "string": "Rozpocznij"
+    }
+  },
   "transfer_failed": {
     "continue": {
       "string": "Spróbuj ponownie"
+    }
+  },
+  "spending_amount": {
+    "quarter": {
+      "string": "25%"
+    }
+  },
+  "spending_confirm": {
+    "network_fee": {
+      "string": "Opłaty sieciowe"
+    },
+    "lsp_fee": {
+      "string": "Opłaty serwisowe"
+    },
+    "total": {
+      "string": "Razem"
+    }
+  },
+  "savings_intro": {
+    "button": {
+      "string": "Rozpocznij"
+    }
+  },
+  "savings_confirm": {
+    "label": {
+      "string": "Prześlij na Oszczędności"
+    }
+  },
+  "savings_advanced": {
+    "text": {
+      "string": "Możesz przenieść część swojego salda wydatków na oszczędności, ponieważ masz kilka aktywnych połączeń Lightning."
     }
   },
   "external_manual": {
@@ -13,10 +95,40 @@
     },
     "port": {
       "string": "Port"
+    },
+    "paste": {
+      "string": "Wklej adres URI węzła"
+    },
+    "scan": {
+      "string": "Skanuj QR"
     }
+  },
+  "savings": {
+    "string": "Oszczędności"
+  },
+  "error_invoice": {
+    "string": "Nie udało się utworzyć faktury"
+  },
+  "error_decode": {
+    "string": "Nie można zdekodować faktury"
+  },
+  "invoice_copied": {
+    "string": "Skopiowano fakturę do schowka"
+  },
+  "other": {
+    "string": "Inne"
   },
   "channel_node_id": {
     "string": "ID węzła"
+  },
+  "support": {
+    "string": "Wsparcie"
+  },
+  "close_error": {
+    "string": "Transfer nie powiódł się"
+  },
+  "close_text": {
+    "string": "Opłata za zamknięcie tego połączenia Lightning i przelanie środków z powrotem na oszczędności zależy od warunków sieciowych.\n\nPrzelew środków na oszczędności jest zazwyczaj natychmiastowy, ale w szczególnych warunkach sieciowych rozliczenie może potrwać do <accent>14 dni</accent>."
   },
   "close_button": {
     "string": "Zamknij"

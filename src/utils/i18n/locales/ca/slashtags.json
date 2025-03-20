@@ -146,69 +146,6 @@
   "offline_enable_explain": {
     "string": "* Això requereix compartir les dades de pagament."
   },
-  "widgets": {
-    "string": "Ginys"
-  },
-  "widget_add": {
-    "string": "Afegir ginys"
-  },
-  "widget_loading_description": {
-    "string": "Carregant la descripció del giny..."
-  },
-  "widget_failed_description": {
-    "string": "Ha fallat en carregar el giny"
-  },
-  "widget_source": {
-    "string": "Origen"
-  },
-  "widget_price": {
-    "string": "Preu de Bitcoin"
-  },
-  "widget_headlines": {
-    "string": "Capçaleres de Bitcoin"
-  },
-  "widget_blocks": {
-    "string": "Blocs de Bitcoin"
-  },
-  "widget_facts": {
-    "string": "Bitcoin Fets"
-  },
-  "widget_qr": {
-    "string": "O escaneja el codi QR"
-  },
-  "widget_error_drive": {
-    "string": "No s'ha pogut obtenir les dades"
-  },
-  "widget_feed": {
-    "string": "Giny"
-  },
-  "widget_edit": {
-    "string": "Alimentar el Giny"
-  },
-  "widget_edit_default": {
-    "string": "Predeterminat"
-  },
-  "widget_edit_custom": {
-    "string": "Personalitzat"
-  },
-  "widget_loading_options": {
-    "string": "Carregant les opcions del giny..."
-  },
-  "widget_reset": {
-    "string": "Reinicia"
-  },
-  "widget_preview": {
-    "string": "Previsualització"
-  },
-  "widget_delete_yes": {
-    "string": "Sí, Elimina"
-  },
-  "widget_delete_title": {
-    "string": "Esborrar el giny?"
-  },
-  "widget_delete_desc": {
-    "string": "Estàs segur que vols eliminar '{name}' dels teus ginys?"
-  },
   "error_saving_contact": {
     "string": "No s'ha pogut desar el contacte."
   },

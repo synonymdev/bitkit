@@ -1,4 +1,21 @@
 {
+  "drawer": {
+    "activity": {
+      "string": "Actividad"
+    },
+    "contacts": {
+      "string": "Contactos"
+    },
+    "profile": {
+      "string": "Perfil"
+    },
+    "widgets": {
+      "string": "Widgets"
+    },
+    "settings": {
+      "string": "Ajustes"
+    }
+  },
   "send": {
     "string": "Enviar"
   },

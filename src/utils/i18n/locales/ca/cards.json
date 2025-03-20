@@ -1,5 +1,8 @@
 {
   "backupSeedPhrase": {
+    "title": {
+      "string": "Sauvegarde"
+    },
     "description": {
       "string": "Emmagatzema els teus bitcoin"
     }
@@ -13,6 +16,9 @@
     }
   },
   "quickpay": {
+    "title": {
+      "string": "QuickPay"
+    },
     "description": {
       "string": "Escaneja i paga"
     }
@@ -66,6 +72,9 @@
     }
   },
   "transferClosingChannel": {
+    "title": {
+      "string": "Initialisation"
+    },
     "description": {
       "string": "Mantenir l'aplicació oberta"
     }

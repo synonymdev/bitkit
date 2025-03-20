@@ -142,47 +142,5 @@
   },
   "offline_enable_explain": {
     "string": "*Dit vereist het delen van data om betalingen te kunnen maken"
-  },
-  "widgets": {
-    "string": "Widgets"
-  },
-  "widget_add": {
-    "string": "Widget Toevoegen"
-  },
-  "widget_price": {
-    "string": "Bitcoinprijs"
-  },
-  "widget_headlines": {
-    "string": "Bitcoin Nieuwes"
-  },
-  "widget_blocks": {
-    "string": "Bitcoin Blokken"
-  },
-  "widget_facts": {
-    "string": "Bitcoin Feiten"
-  },
-  "widget_qr": {
-    "string": "Of Scan QR Code"
-  },
-  "widget_edit": {
-    "string": "Widget Feed"
-  },
-  "widget_edit_custom": {
-    "string": "Op maat"
-  },
-  "widget_loading_options": {
-    "string": "Widget opties aan het laden..."
-  },
-  "widget_reset": {
-    "string": "Resetten"
-  },
-  "widget_delete_yes": {
-    "string": "Ja, Verwijder"
-  },
-  "widget_delete_title": {
-    "string": "Widget Verwijderen?"
-  },
-  "widget_delete_desc": {
-    "string": "Weet u zeker dat u '{name}' wilt wissen van uw widgetlijst?"
   }
 }

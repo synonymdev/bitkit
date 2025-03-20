@@ -1,0 +1,136 @@
+{
+  "widgets": {
+    "string": "Widgety"
+  },
+  "onboarding": {
+    "title": {
+      "string": "Dobrý den,\n<accent>Widgety</accent>"
+    },
+    "description": {
+      "string": "Užívejte si decentralizované kanály ze svých oblíbených webových služeb přidáním zábavných a užitečných widgetů do peněženky Bitkit."
+    }
+  },
+  "widget": {
+    "nav_title": {
+      "string": "Widget"
+    },
+    "edit": {
+      "string": "Widget Feed"
+    },
+    "edit_default": {
+      "string": "Výchozí"
+    },
+    "edit_custom": {
+      "string": "Vlastní"
+    },
+    "edit_description": {
+      "string": "Vyberte, která pole chcete zobrazit ve widgetu {name}."
+    },
+    "source": {
+      "string": "Zdroj"
+    }
+  },
+  "add": {
+    "string": "Přidat widget"
+  },
+  "delete": {
+    "title": {
+      "string": "Smazat Widget?"
+    },
+    "description": {
+      "string": "Jste si jisti, že chcete smazat ‘{name}‘ ze svých widgetů?"
+    }
+  },
+  "price": {
+    "name": {
+      "string": "cena bitcoinu"
+    },
+    "description": {
+      "string": "Zkontrolujte nejnovější směnné kurzy bitcoinu pro různé fiat měny."
+    },
+    "error": {
+      "string": "Nepodařilo se získat údaje o ceně"
+    }
+  },
+  "news": {
+    "name": {
+      "string": "bitcoinové titulky"
+    },
+    "description": {
+      "string": "Přečtěte si nejnovější a nejzajímavější titulky o bitcoinu z různých zpravodajských webů."
+    },
+    "error": {
+      "string": "Nepodařilo se získat nejnovější zprávy"
+    }
+  },
+  "blocks": {
+    "name": {
+      "string": "bitcoinové bloky"
+    },
+    "description": {
+      "string": "Prozkoumejte různé statistiky nově vytěžených bloků bitcoinu."
+    },
+    "error": {
+      "string": "Nepodařilo se získat data o blocích"
+    }
+  },
+  "facts": {
+    "name": {
+      "string": "bitcoinová fakta"
+    },
+    "description": {
+      "string": "Pokaždé, když otevřete peněženku, objevte zábavná fakta o bitcoinu."
+    }
+  },
+  "calculator": {
+    "name": {
+      "string": "Bitcoinová kalkulačka"
+    },
+    "description": {
+      "string": "Převeďte ₿ částky na {fiatSymbol} nebo naopak."
+    }
+  },
+  "weather": {
+    "name": {
+      "string": "Počasí v bitcoinu"
+    },
+    "description": {
+      "string": "Zjistěte, kdy je vhodná doba pro transakce v blockchainu bitcoinu."
+    },
+    "condition": {
+      "good": {
+        "title": {
+          "string": "Příznivé podmínky"
+        },
+        "description": {
+          "string": "Všude čisto. Nyní je vhodná doba pro transakce na blockchainu."
+        }
+      },
+      "average": {
+        "title": {
+          "string": "Průměrné podmínky"
+        },
+        "description": {
+          "string": "Poplatek dalšího bloku se blíží měsíčním průměrům."
+        }
+      },
+      "poor": {
+        "title": {
+          "string": "Špatné podmínky"
+        },
+        "description": {
+          "string": "Pokud na transakci nespěcháte, je lepší chvíli počkat."
+        }
+      }
+    },
+    "current_fee": {
+      "string": "Aktuální průměrný poplatek"
+    },
+    "next_block": {
+      "string": "Zařazení do dalšího bloku"
+    },
+    "error": {
+      "string": "Nepodařilo se získat aktuální poplatkovou úroveň"
+    }
+  }
+}

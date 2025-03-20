@@ -1,4 +1,27 @@
 {
+  "drawer": {
+    "wallet": {
+      "string": "Peněženka"
+    },
+    "activity": {
+      "string": "Aktivita"
+    },
+    "contacts": {
+      "string": "Kontakty"
+    },
+    "profile": {
+      "string": "Profil"
+    },
+    "widgets": {
+      "string": "Widgety"
+    },
+    "settings": {
+      "string": "Nastavení"
+    },
+    "status": {
+      "string": "Stav aplikace"
+    }
+  },
   "send": {
     "string": "Odeslat"
   },
@@ -42,7 +65,7 @@
     "string": "Faktura"
   },
   "send_address_placeholder": {
-    "string": "Zadejte bitcoinovou nebo lightningovou fakturu nebo adresu"
+    "string": "Zadejte bitcoinovou adresu nebo lightningovou fakturu"
   },
   "send_clipboard_empty_title": {
     "string": "Schránka je prázdná"

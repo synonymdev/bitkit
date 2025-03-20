@@ -1,0 +1,34 @@
+{
+  "widgets": {
+    "string": "Widgets"
+  },
+  "widget": {
+    "edit": {
+      "string": "Widget Feed"
+    },
+    "edit_custom": {
+      "string": "personalizado"
+    }
+  },
+  "add": {
+    "string": "Añadir Widget"
+  },
+  "delete": {
+    "title": {
+      "string": "¿Borrar Widget?"
+    },
+    "description": {
+      "string": "¿Está seguro de que desea eliminar '{name}' de sus widgets?"
+    }
+  },
+  "price": {
+    "name": {
+      "string": "Precio del Bitcoin"
+    }
+  },
+  "blocks": {
+    "name": {
+      "string": "Bitcoin Bloques"
+    }
+  }
+}

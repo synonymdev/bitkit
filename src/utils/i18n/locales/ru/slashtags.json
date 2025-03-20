@@ -104,12 +104,6 @@
   "onboarding_profile2_text": {
     "string": "Вы и ваши контакты можете использовать Bitkit для отправки платежей напрямую, без банков, в любое время и в любом месте."
   },
-  "onboarding_widgets_header": {
-    "string": "Привет,\n<accent>Виджеты</accent>"
-  },
-  "onboarding_widgets_text": {
-    "string": "Наслаждайтесь децентрализованными лентами ваших любимых веб-сервисов, добавляя интересные и полезные виджеты в ваш кошелёк Bitkit."
-  },
   "my_profile": {
     "string": "Мой профиль"
   },
@@ -169,72 +163,6 @@
   },
   "offline_enable_explain": {
     "string": "* Это требует обмена платежными данными."
-  },
-  "widgets": {
-    "string": "Виджеты"
-  },
-  "widget_add": {
-    "string": "Добавить Виджет"
-  },
-  "widget_loading_description": {
-    "string": "Загрузка описания виджета..."
-  },
-  "widget_failed_description": {
-    "string": "Не удалось загрузить виджет"
-  },
-  "widget_source": {
-    "string": "Источник"
-  },
-  "widget_price": {
-    "string": "Биткоин Цена"
-  },
-  "widget_headlines": {
-    "string": "Биткоин Заголовки"
-  },
-  "widget_blocks": {
-    "string": "Биткоин Блоки"
-  },
-  "widget_facts": {
-    "string": "Биткоин Факты"
-  },
-  "widget_qr": {
-    "string": "Или Сканируйте QR-код"
-  },
-  "widget_error_drive": {
-    "string": "Не удалось получить данные"
-  },
-  "widget_feed": {
-    "string": "Виджет"
-  },
-  "widget_edit": {
-    "string": "Фид Виджета"
-  },
-  "widget_edit_default": {
-    "string": "По умолчанию"
-  },
-  "widget_edit_custom": {
-    "string": "Другое"
-  },
-  "widget_edit_description": {
-    "string": "Пожалуйста, выберите, какие поля вы хотите отображать в виджете {name}."
-  },
-  "widget_loading_options": {
-    "string": "Загрузка параметров виджета..."
-  },
-  "widget_reset": {
-    "string": "Сбросить"
-  },
-  "widget_preview": {
-    "string": "Предпросмотр"
-  },
-  "widget_delete_yes": {
-    "string": "Да, Удалить"
-  },
-  "widget_delete_title": {
-    "string": "Удалить виджет?"
-  },
-  "widget_delete_desc": {
-    "string": "Вы уверены, что хотите удалить «{name}» из ваших виджетов?"
   },
   "error_saving_contact": {
     "string": "Не удалось сохранить контакт"

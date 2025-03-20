@@ -104,6 +104,11 @@
       "string": "Ginys"
     }
   },
+  "quickpay": {
+    "nav_title": {
+      "string": "QuickPay"
+    }
+  },
   "security": {
     "title": {
       "string": "Seguretat i privacitat"
@@ -131,32 +136,6 @@
     },
     "use_bio": {
       "string": "Utilitza {biometryTypeName} enlloc"
-    }
-  },
-  "backup": {
-    "status_failed": {
-      "string": "Error de còpia de seguretat: {time}"
-    },
-    "status_success": {
-      "string": "Última còpia de seguretat: {time}"
-    },
-    "category_connections": {
-      "string": "Connexions"
-    },
-    "category_settings": {
-      "string": "Configuracions"
-    },
-    "category_widgets": {
-      "string": "Ginys"
-    },
-    "category_tags": {
-      "string": "Etiquetes"
-    },
-    "category_profile": {
-      "string": "Perfil"
-    },
-    "category_contacts": {
-      "string": "Contactes"
     }
   },
   "support": {
@@ -252,9 +231,6 @@
     },
     "cs_manual": {
       "string": "Manual"
-    },
-    "cs_max": {
-      "string": "Més privacitat"
     },
     "payment_preference": {
       "string": "Preferències de pagament"

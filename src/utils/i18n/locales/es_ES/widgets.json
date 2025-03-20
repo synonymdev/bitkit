@@ -1,0 +1,58 @@
+{
+  "widgets": {
+    "string": "Widgets"
+  },
+  "onboarding": {
+    "title": {
+      "string": "Hola,\n<accent>Widgets</accent>"
+    },
+    "description": {
+      "string": "Disfruta de fuentes descentralizadas de tus servicios web favoritos, añadiendo widgets divertidos y útiles a tu monedero Bitkit."
+    }
+  },
+  "widget": {
+    "nav_title": {
+      "string": "Widget"
+    },
+    "edit_custom": {
+      "string": "Personalizar"
+    },
+    "edit_description": {
+      "string": "Por favor, seleccione cuales campos quiere mostrar en el widget {name}."
+    },
+    "source": {
+      "string": "Fuente"
+    }
+  },
+  "add": {
+    "string": "Añadir Widget"
+  },
+  "delete": {
+    "title": {
+      "string": "¿Borrar Widget?"
+    },
+    "description": {
+      "string": "¿Está seguro de querer borrar ‘{name}‘ de sus widgets?"
+    }
+  },
+  "price": {
+    "name": {
+      "string": "Precio de Bitcoin"
+    }
+  },
+  "news": {
+    "name": {
+      "string": "Titulares Bitcoin"
+    }
+  },
+  "blocks": {
+    "name": {
+      "string": "Bloques Bitcoin"
+    }
+  },
+  "facts": {
+    "name": {
+      "string": "Hechos Bitcoin"
+    }
+  }
+}

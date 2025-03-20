@@ -1,4 +1,24 @@
 {
+  "drawer": {
+    "activity": {
+      "string": "Aktivität"
+    },
+    "contacts": {
+      "string": "Kontakte"
+    },
+    "profile": {
+      "string": "Profil"
+    },
+    "widgets": {
+      "string": "Widgets"
+    },
+    "settings": {
+      "string": "Einstellungen"
+    },
+    "status": {
+      "string": "App Status"
+    }
+  },
   "send": {
     "string": "Senden"
   },
