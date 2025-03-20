@@ -58,7 +58,7 @@ const AddContact = ({
 		};
 
 		const onSuccess = async (): Promise<void> => {
-			navigation.navigate('ContactEdit', { url });
+			navigation.navigate('ContactEdit', { url: contactUrl });
 			setUrl('');
 		};
 
