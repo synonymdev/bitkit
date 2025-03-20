@@ -1,12 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
-import React, {
-	ReactElement,
-	memo,
-	useCallback,
-	useMemo,
-	useState,
-} from 'react';
+import React, { ReactElement, memo, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import DraggableFlatList, {
@@ -52,18 +46,6 @@ const Widgets = (): ReactElement => {
 
 	useFocusEffect(useCallback(() => setEditing(false), []));
 
-	const sortedWidgets = useMemo(() => {
-		const savedWidgets = Object.keys(widgets);
-
-		const sorted = savedWidgets.sort((a, b) => {
-			const indexA = sortOrder.indexOf(a);
-			const indexB = sortOrder.indexOf(b);
-			return indexA - indexB;
-		});
-
-		return sorted;
-	}, [widgets, sortOrder]);
-
 	const onDragEnd = useCallback(
 		({ data }) => {
 			const order = data.map((id): string => id);
@@ -83,7 +65,7 @@ const Widgets = (): ReactElement => {
 		({ item: id, drag }: RenderItemParams<string>): ReactElement => {
 			const initiateDrag = (): void => {
 				// only allow dragging if there are more than 1 widget
-				if (sortedWidgets.length > 1 && editing) {
+				if (sortOrder.length > 1 && editing) {
 					drag();
 				}
 			};
@@ -168,14 +150,14 @@ const Widgets = (): ReactElement => {
 				/>
 			);
 		},
-		[editing, widgets, sortedWidgets.length],
+		[editing, widgets, sortOrder.length],
 	);
 
 	return (
 		<View style={styles.root}>
 			<View style={styles.title} testID="WidgetsTitle">
 				<Caption13Up color="secondary">{t('widgets')}</Caption13Up>
-				{sortedWidgets.length > 0 && (
+				{sortOrder.length > 0 && (
 					<TouchableOpacity
 						hitSlop={{ top: 15, right: 15, bottom: 15, left: 15 }}
 						testID="WidgetsEdit"
@@ -190,7 +172,7 @@ const Widgets = (): ReactElement => {
 			</View>
 
 			<DraggableFlatList
-				data={sortedWidgets}
+				data={sortOrder}
 				keyExtractor={(id): string => id}
 				renderItem={(params): ReactElement => (
 					<ScaleDecorator>{renderItem(params)}</ScaleDecorator>
