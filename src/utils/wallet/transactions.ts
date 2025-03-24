@@ -40,7 +40,7 @@ import {
 } from './index';
 
 /*
- * Attempt to estimate the current fee for a given wallet and its UTXO's
+ * Attempt to estimate the current fee for a given wallet and its UTXOs
  */
 export const getTotalFee = ({
 	satsPerByte,

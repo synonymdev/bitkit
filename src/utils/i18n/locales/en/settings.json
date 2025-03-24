@@ -430,31 +430,31 @@
 			"string": "Smallest First"
 		},
 		"cs_max_description": {
-			"string": "Sort by and use smallest UTXO first. Potentially higher fee, but hides your largest UTXO's."
+			"string": "Sort by and use smallest UTXO first. Potentially higher fee, but hides your largest UTXOs."
 		},
 		"cs_min": {
 			"string": "Largest First"
 		},
 		"cs_min_description": {
-			"string": "Sort by and use largest UTXO first. Potentially lower fee, but reveals your largest UTXO's."
+			"string": "Sort by and use largest UTXO first. Potentially lower fee, but reveals your largest UTXOs."
 		},
 		"cs_consolidate": {
 			"string": "Consolidate"
 		},
 		"cs_consolidate_description": {
-			"string": "Use all available UTXO's regardless of the amount being sent. Use this method when fees are low in order to reduce fees in future transactions."
+			"string": "Use all available UTXOs regardless of the amount being sent. Use this method when fees are low in order to reduce fees in future transactions."
 		},
 		"cs_first_in_first_out": {
 			"string": "First-In First-Out"
 		},
 		"cs_first_in_first_out_description": {
-			"string": "Use older UTXO's first (by block height)."
+			"string": "Use older UTXOs first (by block height)."
 		},
 		"cs_last_in_last_out": {
 			"string": "Last-In Last-Out"
 		},
 		"cs_last_in_last_out_description": {
-			"string": "Use newer UTXO's first (by block height)."
+			"string": "Use newer UTXOs first (by block height)."
 		},
 		"payment_preference": {
 			"string": "Payment Preference"

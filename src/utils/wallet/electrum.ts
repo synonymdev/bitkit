@@ -41,7 +41,7 @@ export const isConnectedElectrum = async (): Promise<boolean> => {
 };
 
 /**
- * Formats a provided array of addresses a returns their UTXO's & balances.
+ * Formats a provided array of addresses a returns their UTXOs & balances.
  * @param {IAddress[]} allAddresses
  * @returns {Promise<Result<IGetUtxosResponse>>}
  */
@@ -58,7 +58,7 @@ export const getAddressUtxos = async ({
 };
 
 /**
- * Queries Electrum to return the available UTXO's and balance of the provided addresses.
+ * Queries Electrum to return the available UTXOs and balance of the provided addresses.
  * @param {TUnspentAddressScriptHashData} addresses
  */
 export const listUnspentAddressScriptHashes = async ({

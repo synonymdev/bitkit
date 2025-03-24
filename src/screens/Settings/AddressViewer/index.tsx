@@ -257,11 +257,11 @@ const AddressViewer = (): ReactElement => {
 	);
 	// The private key of the currently selected address to display qrcode data for.
 	const [privateKey, setPrivateKey] = useState<string | undefined>(undefined);
-	// Available array of UTXO's after checking for a balance.
+	// Available array of UTXOs after checking for a balance.
 	const [utxos, setUtxos] = useState<IUtxo[] | undefined>();
-	// Total balance of available UTXO's after checking for a balance.
+	// Total balance of available UTXOs after checking for a balance.
 	const [totalBalance, setTotalBalance] = useState(0);
-	// An array of UTXO's that are currently selected for spending.
+	// An array of UTXOs that are currently selected for spending.
 	const [selectedUtxos, setSelectedUtxos] = useState<IUtxo[]>([]);
 	const [searchTxt, setSearchTxt] = useState('');
 	// Addresses filtered from a search query in onSearch.
@@ -615,7 +615,7 @@ const AddressViewer = (): ReactElement => {
 	);
 
 	/**
-	 * This method will gather all selected UTXO's and setup an on-chain transaction.
+	 * This method will gather all selected UTXOs and setup an on-chain transaction.
 	 * The on-chain transaction will retrieve and include the app's receiving address by default.
 	 * Finally, this method will prompt the sendNavigation modal to appear for the user to finalize and confirm the transaction.
 	 */
@@ -735,7 +735,7 @@ const AddressViewer = (): ReactElement => {
 	}, [getMoreAddresses]);
 
 	/**
-	 * Retrieves the balance and UTXO's associated with all addresses of each type.
+	 * Retrieves the balance and UTXOs associated with all addresses of each type.
 	 */
 	const onCheckBalance = useCallback(async (): Promise<void> => {
 		setIsCheckingBalances(true);

@@ -228,7 +228,7 @@
 		"string": "Please increase your send amount to proceed."
 	},
 	"send_coin_selection_output_to_small_description": {
-		"string": "Please remove UTXO's or increase your send amount to proceed."
+		"string": "Please remove UTXOs or increase your send amount to proceed."
 	},
 	"send_fee_error_min": {
 		"string": "Unable to decrease the fee any further."

@@ -178,7 +178,7 @@ const DevSettings = ({
 					onPress: widgetsCache.clear,
 				},
 				{
-					title: "Clear UTXO's",
+					title: 'Clear UTXOs',
 					type: EItemType.button,
 					onPress: clearUtxos,
 				},
