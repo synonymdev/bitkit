@@ -3,6 +3,7 @@ import { __E2E__ } from '../constants/env';
 import { widgetsCache } from '../storage/widgets-cache';
 import { refreshOnchainFeeEstimates } from '../store/utils/fees';
 import { getDisplayValues, getFiatDisplayValues } from '../utils/displayValues';
+import { useCurrency } from './displayValues';
 
 type TBlockFeeRates = {
 	avgHeight: number;
@@ -107,6 +108,7 @@ const calculateCondition = (
 };
 
 const useWeatherWidget = (): TWidgetState => {
+	const { fiatTicker } = useCurrency();
 	const [state, setState] = useState<TWidgetState>(() => {
 		const cached = getCachedData();
 		return cached
@@ -145,7 +147,7 @@ const useWeatherWidget = (): TWidgetState => {
 
 				// Total fee based on average native segwit transaction of 140 vBytes
 				const avgFee = fees.normal * VBYTES_SIZE;
-				const dv = getDisplayValues({ satoshis: avgFee });
+				const dv = getDisplayValues({ satoshis: avgFee, currency: fiatTicker });
 				const currentFee = `${dv.fiatSymbol} ${dv.fiatFormatted}`;
 				const data = { condition, currentFee, nextBlockFee: fees.fast };
 
@@ -170,7 +172,7 @@ const useWeatherWidget = (): TWidgetState => {
 			clearInterval(interval);
 			abortController.abort();
 		};
-	}, []);
+	}, [fiatTicker]);
 
 	return state;
 };
