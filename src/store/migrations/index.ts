@@ -153,6 +153,33 @@ const migrations = {
 			},
 		};
 	},
+	54: (state): PersistedState => {
+		// migrate widgets sort order
+		const newSortOrder = state.widgets.sortOrder
+			.map((item) => {
+				// Handle slashfeed items
+				if (item.includes('slashfeed:')) {
+					if (item.includes('Bitcoin Headlines')) return 'news';
+					if (item.includes('Bitcoin Price')) return 'price';
+					if (item.includes('Bitcoin Blocks')) return 'blocks';
+					if (item.includes('Bitcoin Facts')) return 'facts';
+				}
+				// Non-slashfeed items pass through unchanged
+				return item;
+			})
+			.filter((item, index, arr) => {
+				// Remove duplicates
+				return arr.indexOf(item) === index;
+			});
+
+		return {
+			...state,
+			widgets: {
+				...state.widgets,
+				sortOrder: newSortOrder,
+			},
+		};
+	},
 };
 
 export default migrations;
