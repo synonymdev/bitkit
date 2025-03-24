@@ -427,22 +427,34 @@
       "string": "Autopilot mód"
     },
     "cs_max": {
-      "string": "Více soukromí"
+      "string": "Nejmenší první"
     },
     "cs_max_description": {
-      "string": "Seřadit a použít nejmenší UTXO jako první. Vyšší poplatek, ale skrývá vaše největší UTXO."
+      "string": "Seřadit a použít nejmenší UTXO jako první. Potenciálně vyšší poplatek, ale skrývá největší UTXO."
     },
     "cs_min": {
-      "string": "Nejnižší poplatek"
+      "string": "Největší první"
     },
     "cs_min_description": {
-      "string": "Seřadit a použít největší UTXO jako první. Nejnižší poplatek, ale odhaluje vaše největší UTXO."
+      "string": "Seřadit a použít nejprve největší UTXO. Potenciálně nižší poplatek, ale odhalí vaše největší UTXO."
     },
     "cs_consolidate": {
       "string": "Konsolidovat"
     },
     "cs_consolidate_description": {
       "string": "Použijte všechny dostupné UTXO bez ohledu na částku, která se odesílá. Použijte tuto metodu, když jsou poplatky nízké, abyste snížili poplatky v budoucích transakcích."
+    },
+    "cs_first_in_first_out": {
+      "string": "First-In First-Out"
+    },
+    "cs_first_in_first_out_description": {
+      "string": "Použít nejprve starší UTXO (podle velikosti bloku)."
+    },
+    "cs_last_in_last_out": {
+      "string": "Last-In Last-Out"
+    },
+    "cs_last_in_last_out_description": {
+      "string": "Použít nejprve novější UTXO (podle velikosti bloku)."
     },
     "payment_preference": {
       "string": "Platební preference"

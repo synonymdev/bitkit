@@ -1,4 +1,24 @@
 {
+  "drawer": {
+    "activity": {
+      "string": "Activiteit"
+    },
+    "contacts": {
+      "string": "Contacten"
+    },
+    "profile": {
+      "string": "Profiel"
+    },
+    "widgets": {
+      "string": "Widgets"
+    },
+    "settings": {
+      "string": "Instellingen"
+    },
+    "status": {
+      "string": "App-status"
+    }
+  },
   "send": {
     "string": "Verstuur"
   },

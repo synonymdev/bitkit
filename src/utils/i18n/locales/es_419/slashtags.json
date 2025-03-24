@@ -133,38 +133,5 @@
   },
   "offline_enable_explain": {
     "string": "* Esto requiere compartir los datos de pago."
-  },
-  "widgets": {
-    "string": "Widgets"
-  },
-  "widget_add": {
-    "string": "Añadir Widget"
-  },
-  "widget_price": {
-    "string": "Precio del Bitcoin"
-  },
-  "widget_blocks": {
-    "string": "Bitcoin Bloques"
-  },
-  "widget_qr": {
-    "string": "O escanear QR"
-  },
-  "widget_edit": {
-    "string": "Widget Feed"
-  },
-  "widget_edit_custom": {
-    "string": "personalizado"
-  },
-  "widget_loading_options": {
-    "string": "Cargando opciones del widget..."
-  },
-  "widget_delete_yes": {
-    "string": "Sí, Borrar"
-  },
-  "widget_delete_title": {
-    "string": "¿Borrar Widget?"
-  },
-  "widget_delete_desc": {
-    "string": "¿Está seguro de que desea eliminar '{name}' de sus widgets?"
   }
 }

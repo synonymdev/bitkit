@@ -1,7 +1,52 @@
 {
+  "qr_scan": {
+    "string": "Skanuj kod QR"
+  },
+  "qr_error_header": {
+    "string": "Nie można odczytać kodu QR"
+  },
+  "qr_error_text": {
+    "string": "Bitkit nie jest w stanie odczytać tego kodu QR."
+  },
+  "qr_error_no_data_header": {
+    "string": "Nie można odczytać danych"
+  },
+  "qr_error_no_data_text": {
+    "string": "Bitkit nie był w stanie przeczytać podanych danych."
+  },
+  "qr_error_network_header": {
+    "string": "Nieprawdiłowa sieć"
+  },
+  "qr_paste": {
+    "string": "Wklej kod QR"
+  },
+  "buy_header": {
+    "string": "Kup trochę\n<accent>Bitcoina</accent>"
+  },
+  "buy_button": {
+    "string": "Wybierz giełdę"
+  },
+  "error_keychain": {
+    "string": "Problem z połączeniem"
+  },
+  "connection_restored_title": {
+    "string": "Połączenie z Electrum przywrócone"
+  },
+  "connection_issue": {
+    "string": "Problemy z połączeniem z internetem"
+  },
+  "connection_reconnect_title": {
+    "string": "Ponowne łączenie z Electrum"
+  },
+  "connection_back_title": {
+    "string": "Połączenie z Internetem przywrócone"
+  },
   "high_balance": {
     "nav_title": {
       "string": "Wysokie saldo"
+    },
+    "text": {
+      "string": "<accent>Twoje saldo portfela przekracza 500$.</accent>\nDla bezpieczeństwa rozważ przeniesienie części oszczędności do portfela offline."
     },
     "continue": {
       "string": "Rozumiem"
@@ -28,6 +73,9 @@
   "clipboard_redirect_msg": {
     "string": "Czy chcesz zostać przekierowany do odpowiedniego ekranu?"
   },
+  "pay_insufficient_savings": {
+    "string": "Niewystarczające oszczędności"
+  },
   "swipe": {
     "string": "Przesuń, aby potwierdzić"
   },
@@ -36,6 +84,12 @@
   },
   "scan_err_interpret_title": {
     "string": "Nie można zinterpretować dostarczonych danych"
+  },
+  "scan_err_not_payable_msg": {
+    "string": "Ten kod QR nie zawiera danych płatności."
+  },
+  "rate_error_msg_nodate": {
+    "string": "Bitkit nie mógł zaktualizować bieżącego kursu wymiany Bitcoina. Spróbuj ponownie później."
   },
   "lnurl_pay_error_no_capacity": {
     "string": "Niewystarczająca pojemność wychodząca/wysyłająca, aby ukończyć żądanie lnurl-pay."
@@ -61,8 +115,14 @@
   "lnurl_channel_success_msg_no_peer": {
     "string": "Pomyślnie zażądano kanału."
   },
+  "lnurl_auth_success_title": {
+    "string": "Zalogowano"
+  },
   "phone_settings": {
     "string": "Otwórz ustawienia telefonu"
+  },
+  "bt_error_retrieve": {
+    "string": "Transfer nie powiódł się"
   },
   "bt_channel_purchase_cost_error": {
     "string": "Potrzebujesz {delta}aby ukończyć transakcję."
@@ -73,10 +133,16 @@
   "update_nav_title": {
     "string": "Aktualizacja dostępna"
   },
+  "update_title": {
+    "string": "Uaktualnij\n<accent>Bitkit</accent>"
+  },
   "update_text": {
     "string": "Zaktualizuj proszę aplikację Bitkit do najnowszej wersji aby cieszyć się nowymi funkcjami i poprawkami. "
   },
   "update_button": {
     "string": "Aktualizacja"
+  },
+  "try_again": {
+    "string": "Spróbuj ponownie."
   }
 }

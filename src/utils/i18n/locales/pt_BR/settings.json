@@ -390,18 +390,6 @@
     "cs_auto_mode": {
       "string": "Modo de Piloto Automático"
     },
-    "cs_max": {
-      "string": "Mais Privacidade"
-    },
-    "cs_max_description": {
-      "string": "Prioriza UTXOs menores. A taxa é mais alta, mas oculta os maiores UTXOs."
-    },
-    "cs_min": {
-      "string": "Menos Taxas"
-    },
-    "cs_min_description": {
-      "string": "Prioriza UTXOs maiores. A taxa é mais baixa, mas revela seus maiores UTXOs."
-    },
     "cs_consolidate": {
       "string": "Consolidação máxima"
     },

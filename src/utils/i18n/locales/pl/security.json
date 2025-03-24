@@ -2,6 +2,9 @@
   "backup_wallet": {
     "string": "Kopia zapasowa portfela"
   },
+  "backup_title": {
+    "string": "<accent>Bezpiecznie przechowuj</accent> swoje Bitcoiny"
+  },
   "backup_funds": {
     "string": "Ponieważ posiadasz już środki na swoim portfelu, to czas aby zarobić kopię zapasową!"
   },
@@ -68,6 +71,9 @@
   "pin_security_header": {
     "string": "Zwieksz bezpieczeństwo"
   },
+  "pin_security_text": {
+    "string": "Aby zwiększyć bezpieczeństwo portfela, możesz ustawić kod PIN i Face ID."
+  },
   "pin_security_button": {
     "string": "Zabezpiecz portfel"
   },
@@ -116,6 +122,9 @@
   "pin_send": {
     "string": "Proszę podaj swój kod PIN aby potwierdzić i wysłać płatność."
   },
+  "pin_send_title": {
+    "string": "Wprowadź kod PIN"
+  },
   "pin_use_biometrics": {
     "string": "Użyj {biometricsName}"
   },
@@ -143,6 +152,9 @@
   "bio_loading": {
     "string": "Ładuję..."
   },
+  "bio_ask": {
+    "string": "Kod PIN ustawiony. Czy chcesz używać {biometricsName} zamiast twojego PIN-u?"
+  },
   "bio_use": {
     "string": "Użyj {biometricsName}"
   },
@@ -151,6 +163,9 @@
   },
   "success_title": {
     "string": "Portfel zabezpieczony"
+  },
+  "success_bio": {
+    "string": "Pomyślnie ustawiono kod PIN i {biometricsName}, aby zwiększyć bezpieczeństwo portfela."
   },
   "success_no_bio": {
     "string": "Skutecznie ustawiono kod PIN zwiększając bezpieczeństwo portfela."
@@ -172,6 +187,9 @@
   },
   "reset_dialog_title": {
     "string": "Zresetować Bitkit?"
+  },
+  "reset_dialog_desc": {
+    "string": "Czy na pewno chcesz zresetować swój portfel Bitkit? Czy masz kopię zapasową swojej frazy odzyskiwania i danych portfela?"
   },
   "display_seed": {
     "string": "Pokaż mnemonik"
@@ -202,6 +220,9 @@
   },
   "cp_title": {
     "string": "Zmień kod PIN"
+  },
+  "cp_text": {
+    "string": "Możesz zmienić swój kod PIN na nową\n4-cyfrową kombinację. Najpierw wprowadź aktualny kod PIN."
   },
   "cp_retype_title": {
     "string": "Wpisz ponownie kod PIN"

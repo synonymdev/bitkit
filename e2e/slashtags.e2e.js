@@ -83,7 +83,9 @@ d('Profile and Contacts', () => {
 			await element(by.id('ProfileAddLink')).tap();
 
 			await element(by.id('LinkLabelInput')).typeText('LINK-LABEL');
+			await sleep(300); // wait for keyboard
 			await element(by.id('LinkValueInput')).typeText('link-value');
+			await sleep(300); // wait for keyboard
 			await element(by.id('SaveLink')).tap();
 			await waitFor(element(by.id('SaveLink'))).not.toBeVisible();
 			await expect(element(by.text('LINK-LABEL'))).toExist();
@@ -137,6 +139,13 @@ d('Profile and Contacts', () => {
 				.withTimeout(30000);
 			await expect(element(by.text(satoshi.name))).toExist();
 			await expect(element(by.text(satoshi.bio))).toExist();
+
+			// Android: keyboard is not dismissed after adding contact in e2e
+			if (device.getPlatform() === 'android') {
+				await element(by.id('NameInput')).tapReturnKey();
+				await sleep(300); // wait for keyboard to hide
+			}
+
 			await element(by.id('SaveContactButton')).tap();
 			await expect(element(by.text('WEBSITE'))).toExist();
 			await expect(element(by.text(satoshi.website))).toExist();
@@ -152,6 +161,14 @@ d('Profile and Contacts', () => {
 				.withTimeout(30000);
 			await expect(element(by.text(hal.name1))).toExist();
 			await element(by.id('NameInput')).replaceText(hal.name2);
+			await sleep(300); // wait for keyboard to hide
+
+			// Android: keyboard is not dismissed after adding contact in e2e
+			if (device.getPlatform() === 'android') {
+				await element(by.id('NameInput')).tapReturnKey();
+				await sleep(300); // wait for keyboard to hide
+			}
+
 			await element(by.id('SaveContactButton')).tap();
 			await expect(element(by.text(hal.name2.toUpperCase()))).toExist();
 			await element(by.id('NavigationClose')).tap();

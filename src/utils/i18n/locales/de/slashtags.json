@@ -104,12 +104,6 @@
   "onboarding_profile2_text": {
     "string": "Du und deine Kontakte können Bitkit verwenden, um Zahlungen direkt zu senden, ohne Banken, jederzeit und überall."
   },
-  "onboarding_widgets_header": {
-    "string": "Hallo,\n<accent>Widgets</accent>"
-  },
-  "onboarding_widgets_text": {
-    "string": "Genieße dezentrale Feeds von deinen bevorzugten Webdiensten, indem du deinem Bitkit-Wallet lustige und nützliche Widgets hinzufügst."
-  },
   "my_profile": {
     "string": "Mein profil"
   },
@@ -169,72 +163,6 @@
   },
   "offline_enable_explain": {
     "string": "* Dies erfordert das Teilen von Zahlungsdaten."
-  },
-  "widgets": {
-    "string": "Widgets"
-  },
-  "widget_add": {
-    "string": "Widget hinzufügen"
-  },
-  "widget_loading_description": {
-    "string": "Lade Widget Beschreibung..."
-  },
-  "widget_failed_description": {
-    "string": "Laden des Widgets fehlgeschlagen"
-  },
-  "widget_source": {
-    "string": "Quelle"
-  },
-  "widget_price": {
-    "string": "Bitcoin Preis"
-  },
-  "widget_headlines": {
-    "string": "Bitcoin Schlagzeilen"
-  },
-  "widget_blocks": {
-    "string": "Bitcoin Blöcke"
-  },
-  "widget_facts": {
-    "string": "Bitcoin Fakten"
-  },
-  "widget_qr": {
-    "string": "Oder QR scannen"
-  },
-  "widget_error_drive": {
-    "string": "Fehler beim Laden des Widgets"
-  },
-  "widget_feed": {
-    "string": "Widget"
-  },
-  "widget_edit": {
-    "string": "Widget Feed"
-  },
-  "widget_edit_default": {
-    "string": "Standard"
-  },
-  "widget_edit_custom": {
-    "string": "Benutzerdefiniert"
-  },
-  "widget_edit_description": {
-    "string": "Bitte wähle die Felder aus, die du im {name} Widget anzeigen möchtest."
-  },
-  "widget_loading_options": {
-    "string": "Lade Widget Optionen..."
-  },
-  "widget_reset": {
-    "string": "Reset"
-  },
-  "widget_preview": {
-    "string": "Vorschau"
-  },
-  "widget_delete_yes": {
-    "string": "Ja, Löschen"
-  },
-  "widget_delete_title": {
-    "string": "Widget löschen?"
-  },
-  "widget_delete_desc": {
-    "string": "Bist du sicher, dass du '{name}' aus deinen Widgets löschen möchtest?"
   },
   "error_saving_contact": {
     "string": "Fehler beim Speichern des Kontakts"

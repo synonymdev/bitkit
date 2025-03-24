@@ -113,6 +113,14 @@
     "quarter": {
       "string": "25%"
     },
+    "error_min": {
+      "title": {
+        "string": "Minimální zůstatek úspor"
+      },
+      "description": {
+        "string": "K vytvoření disponibilního zůstatku je zapotřebí minimálně ₿ {amount}."
+      }
+    },
     "error_max": {
       "title": {
         "string": "Maximální disponibilní zůstatek"

@@ -104,12 +104,6 @@
   "onboarding_profile2_text": {
     "string": "Vous et vos contacts pouvez utiliser Bitkit pour envoyer des paiements directement, sans banque, à tout moment et en tout lieu."
   },
-  "onboarding_widgets_header": {
-    "string": "Bonjour,\n<accent>Widgets</accent>"
-  },
-  "onboarding_widgets_text": {
-    "string": "Profitez des flux décentralisés de vos services web préférés en ajoutant des widgets amusants et utiles à votre portefeuille Bitkit."
-  },
   "my_profile": {
     "string": "Mon profil"
   },
@@ -169,72 +163,6 @@
   },
   "offline_enable_explain": {
     "string": "* Cela nécessite le partage des données de paiement."
-  },
-  "widgets": {
-    "string": "Widgets"
-  },
-  "widget_add": {
-    "string": "Ajouter un widget"
-  },
-  "widget_loading_description": {
-    "string": "Chargement de la description du widget..."
-  },
-  "widget_failed_description": {
-    "string": "Échec du chargement du widget"
-  },
-  "widget_source": {
-    "string": "Source"
-  },
-  "widget_price": {
-    "string": "Prix du bitcoin"
-  },
-  "widget_headlines": {
-    "string": "Bitcoin à la une"
-  },
-  "widget_blocks": {
-    "string": "Blocs Bitcoin"
-  },
-  "widget_facts": {
-    "string": "Faits itcoin"
-  },
-  "widget_qr": {
-    "string": "Ou scannez le QR code"
-  },
-  "widget_error_drive": {
-    "string": "Impossible d'obtenir les données"
-  },
-  "widget_feed": {
-    "string": "Widget"
-  },
-  "widget_edit": {
-    "string": "Widget de Flux"
-  },
-  "widget_edit_default": {
-    "string": "Défaut"
-  },
-  "widget_edit_custom": {
-    "string": "Personnalisé"
-  },
-  "widget_edit_description": {
-    "string": "Veuillez sélectionner les champs que vous souhaitez afficher dans le widget {name}."
-  },
-  "widget_loading_options": {
-    "string": "Chargement des options du widget..."
-  },
-  "widget_reset": {
-    "string": "Réinitialiser"
-  },
-  "widget_preview": {
-    "string": "Aperçu"
-  },
-  "widget_delete_yes": {
-    "string": "Oui, Supprimer"
-  },
-  "widget_delete_title": {
-    "string": "Supprimer le widget ?"
-  },
-  "widget_delete_desc": {
-    "string": "Êtes-vous sûr de vouloir supprimer '{name}' de vos widgets ?"
   },
   "error_saving_contact": {
     "string": "Impossible d'enregistrer le contact"

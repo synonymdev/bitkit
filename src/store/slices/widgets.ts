@@ -15,7 +15,7 @@ export const initialWidgetsState: TWidgetsState = {
 		blocks: getDefaultOptions('blocks'),
 	},
 	onboardedWidgets: false,
-	sortOrder: [],
+	sortOrder: ['price', 'news', 'blocks'],
 };
 
 export const widgetsSlice = createSlice({
@@ -30,7 +30,9 @@ export const widgetsSlice = createSlice({
 			action: PayloadAction<{ id: string; options?: any }>,
 		) => {
 			const { id, options } = action.payload;
-			state.sortOrder.push(id);
+			if (!state.sortOrder.includes(id)) {
+				state.sortOrder.push(id);
+			}
 			state.widgets[id] = options ?? null;
 		},
 		deleteWidget: (state, action: PayloadAction<string>) => {

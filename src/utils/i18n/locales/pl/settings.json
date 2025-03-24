@@ -1,23 +1,147 @@
 {
+  "settings": {
+    "string": "Ustawienia"
+  },
+  "security_title": {
+    "string": "Bezpieczeństwo i prywatność"
+  },
+  "backup_title": {
+    "string": "Utwórz kopię zapasową lub przywróć"
+  },
+  "advanced_title": {
+    "string": "Zaawansowane"
+  },
+  "support_title": {
+    "string": "Wsparcie"
+  },
   "about": {
     "share": {
       "string": "Udostępnij"
     }
   },
-  "backup": {
-    "category_settings": {
-      "string": "Ustawienia"
+  "general": {
+    "currency_other": {
+      "string": "Inne waluty"
+    },
+    "unit_note": {
+      "string": "Porada: szybko przełączaj się między Bitcoinem a {currency}, dotykając salda portfela."
+    }
+  },
+  "widgets": {
+    "nav_title": {
+      "string": "Widgety"
+    },
+    "showWidgets": {
+      "string": "Widgety"
+    },
+    "showWidgetTitles": {
+      "string": "Pokazuj tytuły widgetów"
+    }
+  },
+  "quickpay": {
+    "nav_title": {
+      "string": "QuickPay"
+    },
+    "intro": {
+      "title": {
+        "string": "<accent>Bezproblemowe</accent>\npłatności"
+      },
+      "description": {
+        "string": "Bitkit QuickPay przyspiesza płatności, automatycznie opłacając zeskanowane kody QR."
+      }
+    },
+    "settings": {
+      "toggle": {
+        "string": "Włącz QuickPay"
+      },
+      "text": {
+        "string": "Jeśli ta opcja jest włączona, zeskanowane faktury poniżej ${amount} zostaną opłacone automatycznie, bez konieczności potwierdzenia lub podania PIN-u*."
+      },
+      "label": {
+        "string": "Próg QuickPay"
+      },
+      "note": {
+        "string": "* Bitkit QuickPay obsługuje wyłącznie płatności z Twojego salda wydatków."
+      }
+    }
+  },
+  "security": {
+    "title": {
+      "string": "Bezpieczeństwo i prywatność"
+    },
+    "clipboard": {
+      "string": "Odczytaj schowek dla wygody użytkowania"
+    },
+    "pin": {
+      "string": "Kod PIN"
+    },
+    "pin_change": {
+      "string": "Zmień kod PIN"
+    },
+    "pin_launch": {
+      "string": "Wymagaj kodu PIN podczas uruchamiania"
+    },
+    "pin_idle": {
+      "string": "Wymagaj PIN-u po bezczynności"
+    },
+    "pin_payments": {
+      "string": "Wymagaj PIN-u do płatności"
+    },
+    "footer": {
+      "string": "Po włączeniu tej opcji możesz używać {biometryTypeName} zamiast kodu PIN do odblokowania portfela lub wysyłania płatności."
     }
   },
   "support": {
+    "title": {
+      "string": "Wsparcie"
+    },
     "text_button": {
       "string": "Wyślij"
+    },
+    "title_success": {
+      "string": "Wysłano pomyślnie"
     },
     "text_success_button": {
       "string": "OK"
     },
     "text_unsuccess_button": {
       "string": "Spróbuj ponownie"
+    }
+  },
+  "adv": {
+    "section_other": {
+      "string": "Inne"
+    },
+    "cs_consolidate_description": {
+      "string": "Użyj wszystkich dostępnych UTXO, niezależnie od wysyłanej kwoty. Skorzystaj z tej metody, gdy opłaty są niskie, aby zmniejszyć koszty przyszłych transakcji."
+    }
+  },
+  "fee": {
+    "fast": {
+      "value": {
+        "string": "Szybko"
+      }
+    },
+    "normal": {
+      "label": {
+        "string": "Normalnie"
+      },
+      "value": {
+        "string": "Normalnie"
+      }
+    },
+    "custom": {
+      "label": {
+        "string": "Własna"
+      },
+      "value": {
+        "string": "Własna"
+      }
+    }
+  },
+  "addr": {
+    "copied": {
+      "string": "Skopiowano do schowka"
     }
   },
   "es": {
@@ -31,6 +155,14 @@
   "gap": {
     "save": {
       "string": "Zapisz"
+    },
+    "reset": {
+      "string": "Resetuj"
+    }
+  },
+  "rgs": {
+    "button_connect": {
+      "string": "Połącz"
     }
   }
 }

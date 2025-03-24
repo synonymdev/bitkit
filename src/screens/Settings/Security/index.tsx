@@ -2,14 +2,13 @@ import React, { memo, ReactElement, useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 
-import { View as ThemedView } from '../../../styles/components';
-
 import { IsSensorAvailableResult } from '../../../components/Biometrics';
 import { EItemType, IListData } from '../../../components/List';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import type { SettingsScreenProps } from '../../../navigation/types';
+import { useSheetRef } from '../../../sheets/SheetRefsProvider';
 import { updateSettings } from '../../../store/slices/settings';
-import { showSheet } from '../../../store/utils/ui';
+import { View as ThemedView } from '../../../styles/components';
 import rnBiometrics from '../../../utils/biometrics';
 import SettingsView from '../SettingsView';
 
@@ -18,6 +17,7 @@ const SecuritySettings = ({
 }: SettingsScreenProps<'SecuritySettings'>): ReactElement => {
 	const { t } = useTranslation('settings');
 	const dispatch = useAppDispatch();
+	const pinSheetRef = useSheetRef('pinNavigation');
 	const [biometryData, setBiometricData] = useState<IsSensorAvailableResult>();
 	const {
 		enableAutoReadClipboard,
@@ -53,6 +53,7 @@ const SecuritySettings = ({
 			? t('security.footer', { biometryTypeName })
 			: undefined;
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: sheetRef doesn't change
 	const settingsListData: IListData[] = useMemo(
 		() => [
 			{
@@ -119,7 +120,7 @@ const SecuritySettings = ({
 							if (pin) {
 								navigation.navigate('DisablePin');
 							} else {
-								showSheet('pinNavigation', { showLaterButton: false });
+								pinSheetRef.current?.present({ showLaterButton: false });
 							}
 						},
 					},

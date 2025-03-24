@@ -8,6 +8,7 @@ import security from './security.json';
 import settings from './settings.json';
 import slashtags from './slashtags.json';
 import wallet from './wallet.json';
+import widgets from './widgets.json';
 
 export default {
 	cards,
@@ -20,4 +21,5 @@ export default {
 	settings,
 	slashtags,
 	wallet,
+	widgets,
 };

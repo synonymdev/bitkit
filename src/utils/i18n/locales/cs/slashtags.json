@@ -107,12 +107,6 @@
   "onboarding_profile2_text": {
     "string": "Vy a vaše kontakty můžete pomocí Bitkitu posílat platby přímo, bez bank, kdykoli a kdekoli."
   },
-  "onboarding_widgets_header": {
-    "string": "Dobrý den,\n<accent>Widgety</accent>"
-  },
-  "onboarding_widgets_text": {
-    "string": "Užívejte si decentralizované kanály ze svých oblíbených webových služeb přidáním zábavných a užitečných widgetů do peněženky Bitkit."
-  },
   "my_profile": {
     "string": "Můj profil"
   },
@@ -184,72 +178,6 @@
   },
   "offline_enable_explain": {
     "string": "* Toto vyžaduje sdílení dat o platbě"
-  },
-  "widgets": {
-    "string": "Widgety"
-  },
-  "widget_add": {
-    "string": "Přidat widget"
-  },
-  "widget_loading_description": {
-    "string": "Načítání popisu widgetu..."
-  },
-  "widget_failed_description": {
-    "string": "Nepodařilo se načíst widget"
-  },
-  "widget_source": {
-    "string": "Zdroj"
-  },
-  "widget_price": {
-    "string": "cena bitcoinu"
-  },
-  "widget_headlines": {
-    "string": "bitcoinové titulky"
-  },
-  "widget_blocks": {
-    "string": "bitcoinové bloky"
-  },
-  "widget_facts": {
-    "string": "bitcoinová fakta"
-  },
-  "widget_qr": {
-    "string": "nebo naskenujte QR"
-  },
-  "widget_error_drive": {
-    "string": "Nelze získat data"
-  },
-  "widget_feed": {
-    "string": "Widget"
-  },
-  "widget_edit": {
-    "string": "Widget Feed"
-  },
-  "widget_edit_default": {
-    "string": "Výchozí"
-  },
-  "widget_edit_custom": {
-    "string": "Vlastní"
-  },
-  "widget_edit_description": {
-    "string": "Vyberte, která pole chcete zobrazit ve widgetu {name}."
-  },
-  "widget_loading_options": {
-    "string": "Načítání nabídky widgetů..."
-  },
-  "widget_reset": {
-    "string": "Obnovit"
-  },
-  "widget_preview": {
-    "string": "Náhled"
-  },
-  "widget_delete_yes": {
-    "string": "Ano, smazat"
-  },
-  "widget_delete_title": {
-    "string": "Smazat Widget?"
-  },
-  "widget_delete_desc": {
-    "string": "Jste si jisti, že chcete smazat ‘{name}‘ ze svých widgetů?"
   },
   "error_saving_contact": {
     "string": "Nelze uložit kontakt"

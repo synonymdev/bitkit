@@ -65,7 +65,7 @@
 		"string": "Invoice"
 	},
 	"send_address_placeholder": {
-		"string": "Enter a Bitcoin or Lightning invoice or address"
+		"string": "Enter an invoice, address, or profile key"
 	},
 	"send_clipboard_empty_title": {
 		"string": "Clipboard Empty"

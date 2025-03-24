@@ -393,18 +393,6 @@
     "cs_auto_mode": {
       "string": "Modalità Autopilot"
     },
-    "cs_max": {
-      "string": "Più privato"
-    },
-    "cs_max_description": {
-      "string": "Ordina e utilizza prima l'UTXO più piccolo. Commissione più alta, ma nasconde i tuoi UTXO più grandi."
-    },
-    "cs_min": {
-      "string": "Commissione più bassa"
-    },
-    "cs_min_description": {
-      "string": "Ordina e utilizza prima l'UTXO più grande. Commissione più bassa, ma rivela i tuoi UTXO più grandi."
-    },
     "cs_consolidate": {
       "string": "Consolidare"
     },

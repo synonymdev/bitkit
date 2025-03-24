@@ -1,11 +1,137 @@
 {
+  "your_name": {
+    "string": "Twoje imie"
+  },
+  "your_name_capital": {
+    "string": "Twoje imię"
+  },
+  "contact_name": {
+    "string": "Nazwa kontaktu"
+  },
+  "contact": {
+    "string": "Kontakt"
+  },
+  "contacts": {
+    "string": "Kontakty"
+  },
+  "contact_add": {
+    "string": "Dodaj kontakt"
+  },
+  "contact_add_capital": {
+    "string": "Dodaj kontakt"
+  },
+  "contact_add_explain": {
+    "string": "Dodaj nowy kontakt, skanując jego kod QR lub wklejając klucz poniżej."
+  },
+  "contact_add_button": {
+    "string": "Dodaj"
+  },
+  "contact_key_paste": {
+    "string": "Wklej klucz"
+  },
+  "contact_error_yourself": {
+    "string": "Nie możesz dodać siebie jako kontakt."
+  },
+  "contact_error_key": {
+    "string": "To nie jest poprawny klucz."
+  },
+  "contact_edit_capital": {
+    "string": "Edytuj kontakt"
+  },
+  "contacts_name": {
+    "string": "Nazwa kontaktu"
+  },
+  "contact_ldk_not_ready": {
+    "string": "Sieć Lightning nie jest jeszcze gotowa."
+  },
+  "contact_share": {
+    "string": "Udostępnij klucz profilu"
+  },
+  "contact_this": {
+    "string": "ten kontakt"
+  },
+  "contact_copied": {
+    "string": "Klucz profilu skopiowany do schowka"
+  },
+  "contact_delete_title": {
+    "string": "Usunąć {name}?"
+  },
+  "contact_delete_text": {
+    "string": "Czy na pewno chcesz usunąć {name} ze swoich kontaktów?"
+  },
+  "contact_delete_yes": {
+    "string": "Tak, usuń"
+  },
+  "contact_select": {
+    "string": "Wybierz kontakt"
+  },
+  "contact_assign": {
+    "string": "Przypisz kontakt"
+  },
+  "contacts_no_found": {
+    "string": "Nie znaleziono kontaktów"
+  },
+  "disabled": {
+    "string": "Slashtagi wyłączone"
+  },
+  "onboarding_text": {
+    "string": "Otrzymuj automatyczne aktualizacje od swoich kontaktów Bitkit, płać im i śledź ich publiczne profile."
+  },
+  "onboarding_button": {
+    "string": "Dodaj pierwszy kontakt"
+  },
+  "onboarding_profile2_text": {
+    "string": "Ty i Twoje kontakty możecie używać Bitkit do bezpośredniego przesyłania płatności – bez banków, zawsze i wszędzie."
+  },
+  "my_profile": {
+    "string": "Mój profil"
+  },
+  "profile": {
+    "string": "Profil"
+  },
   "profile_save": {
     "string": "Zapisz"
+  },
+  "profile_pay_contacts": {
+    "string": "Płać swoim kontaktom"
+  },
+  "profile_create": {
+    "string": "Utwórz profil"
+  },
+  "profile_add_link": {
+    "string": "Dodaj link"
+  },
+  "profile_link_label": {
+    "string": "Etykieta"
+  },
+  "profile_link_label_placeholder": {
+    "string": "Na przykład 'Strona internetowa'"
+  },
+  "profile_link_value": {
+    "string": "Link lub tekst"
   },
   "profile_link_suggestions": {
     "string": "Sugestie"
   },
+  "profile_edit": {
+    "string": "Edytuj profil"
+  },
   "profile_delete": {
     "string": "Usuń"
+  },
+  "profile_delete_dialogue_title": {
+    "string": "Usunąć informacje profilowe?"
+  },
+  "profile_delete_dialogue_yes": {
+    "string": "Tak, usuń"
+  },
+  "profile_delete_success_title": {
+    "string": "Profil usunięty"
+  },
+  "auth_depricated_title": {
+    "string": "Przestarzałe"
+  },
+  "auth_depricated_msg": {
+    "string": "Slashauth jest przestarzałe. Proszę używać Bitkit Beta."
   }
 }

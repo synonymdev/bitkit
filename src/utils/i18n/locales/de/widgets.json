@@ -1,0 +1,64 @@
+{
+  "widgets": {
+    "string": "Widgets"
+  },
+  "onboarding": {
+    "title": {
+      "string": "Hallo,\n<accent>Widgets</accent>"
+    },
+    "description": {
+      "string": "Genieße dezentrale Feeds von deinen bevorzugten Webdiensten, indem du deinem Bitkit-Wallet lustige und nützliche Widgets hinzufügst."
+    }
+  },
+  "widget": {
+    "nav_title": {
+      "string": "Widget"
+    },
+    "edit": {
+      "string": "Widget Feed"
+    },
+    "edit_default": {
+      "string": "Standard"
+    },
+    "edit_custom": {
+      "string": "Benutzerdefiniert"
+    },
+    "edit_description": {
+      "string": "Bitte wähle die Felder aus, die du im {name} Widget anzeigen möchtest."
+    },
+    "source": {
+      "string": "Quelle"
+    }
+  },
+  "add": {
+    "string": "Widget hinzufügen"
+  },
+  "delete": {
+    "title": {
+      "string": "Widget löschen?"
+    },
+    "description": {
+      "string": "Bist du sicher, dass du '{name}' aus deinen Widgets löschen möchtest?"
+    }
+  },
+  "price": {
+    "name": {
+      "string": "Bitcoin Preis"
+    }
+  },
+  "news": {
+    "name": {
+      "string": "Bitcoin Schlagzeilen"
+    }
+  },
+  "blocks": {
+    "name": {
+      "string": "Bitcoin Blöcke"
+    }
+  },
+  "facts": {
+    "name": {
+      "string": "Bitcoin Fakten"
+    }
+  }
+}

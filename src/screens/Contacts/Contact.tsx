@@ -19,7 +19,6 @@ import { useBalance } from '../../hooks/wallet';
 import { RootStackScreenProps } from '../../navigation/types';
 import { contactsSelector } from '../../store/reselect/slashtags';
 import { isLDKReadySelector } from '../../store/reselect/ui';
-import { selectedNetworkSelector } from '../../store/reselect/wallet';
 import { deleteContact } from '../../store/slices/slashtags';
 import { AnimatedView, View } from '../../styles/components';
 import {
@@ -45,7 +44,6 @@ const Contact = ({
 	const [loading, setLoading] = useState(false);
 
 	const dispatch = useAppDispatch();
-	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const contacts = useAppSelector(contactsSelector);
 	const isLDKReady = useAppSelector(isLDKReadySelector);
 
@@ -91,11 +89,7 @@ const Contact = ({
 			});
 		}
 
-		const res = await processUri({
-			uri: url,
-			source: 'send',
-			selectedNetwork,
-		});
+		const res = await processUri({ uri: url });
 		setLoading(false);
 		if (res.isOk()) {
 			navigation.popToTop();

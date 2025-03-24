@@ -1,4 +1,9 @@
 {
+  "drawer": {
+    "contacts": {
+      "string": "جهات الاتصال"
+    }
+  },
   "recipient_contact": {
     "string": "جهة الاتصال"
   },

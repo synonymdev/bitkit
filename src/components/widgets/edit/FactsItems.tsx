@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TFactsWidgetOptions } from '../../../store/types/widgets';
 import { BodySSB, Title } from '../../../styles/text';
@@ -6,7 +7,7 @@ import { EWidgetItemType, TWidgetItem } from './types';
 
 export const getFactsItems = (options: TFactsWidgetOptions): TWidgetItem[] => {
 	const { t } = useTranslation('widgets');
-	const fact = getRandomFact();
+	const fact = useMemo(() => getRandomFact(), []);
 
 	return [
 		{

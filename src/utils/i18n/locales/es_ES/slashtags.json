@@ -89,12 +89,6 @@
   "onboarding_profile2_text": {
     "string": "Usted y sus contactos pueden utilizar Bitkit para enviar pagos directamente, sin bancos, en cualquier momento y en cualquier lugar."
   },
-  "onboarding_widgets_header": {
-    "string": "Hola,\n<accent>Widgets</accent>"
-  },
-  "onboarding_widgets_text": {
-    "string": "Disfruta de fuentes descentralizadas de tus servicios web favoritos, añadiendo widgets divertidos y útiles a tu monedero Bitkit."
-  },
   "my_profile": {
     "string": "Mi perfil"
   },
@@ -148,50 +142,5 @@
   },
   "offline_enable": {
     "string": "Habilitar pagos con contactos*"
-  },
-  "widgets": {
-    "string": "Widgets"
-  },
-  "widget_add": {
-    "string": "Añadir Widget"
-  },
-  "widget_source": {
-    "string": "Fuente"
-  },
-  "widget_price": {
-    "string": "Precio de Bitcoin"
-  },
-  "widget_headlines": {
-    "string": "Titulares Bitcoin"
-  },
-  "widget_blocks": {
-    "string": "Bloques Bitcoin"
-  },
-  "widget_facts": {
-    "string": "Hechos Bitcoin"
-  },
-  "widget_qr": {
-    "string": "O escanear QR"
-  },
-  "widget_feed": {
-    "string": "Widget"
-  },
-  "widget_edit_custom": {
-    "string": "Personalizar"
-  },
-  "widget_edit_description": {
-    "string": "Por favor, seleccione cuales campos quiere mostrar en el widget {name}."
-  },
-  "widget_loading_options": {
-    "string": "Cargando opciones del widget..."
-  },
-  "widget_delete_yes": {
-    "string": "Sí, Borrar"
-  },
-  "widget_delete_title": {
-    "string": "¿Borrar Widget?"
-  },
-  "widget_delete_desc": {
-    "string": "¿Está seguro de querer borrar ‘{name}‘ de sus widgets?"
   }
 }

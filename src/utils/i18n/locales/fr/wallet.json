@@ -1,4 +1,24 @@
 {
+  "drawer": {
+    "activity": {
+      "string": "Activité"
+    },
+    "contacts": {
+      "string": "Contacts"
+    },
+    "profile": {
+      "string": "Profil"
+    },
+    "widgets": {
+      "string": "Widgets"
+    },
+    "settings": {
+      "string": "Paramètres"
+    },
+    "status": {
+      "string": "Statut de l'application"
+    }
+  },
   "send": {
     "string": "Envoyer"
   },
@@ -100,6 +120,11 @@
   },
   "send_pending": {
     "string": "Paiement en attente"
+  },
+  "send_quickpay": {
+    "nav_title": {
+      "string": "QuickPay"
+    }
   },
   "send_pending_note": {
     "string": "Ce paiement prend un peu plus de temps que prévu. Vous pouvez continuer à utiliser Bitkit."

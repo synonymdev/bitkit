@@ -1,4 +1,7 @@
 {
+  "advanced": {
+    "string": "Zaawansowane"
+  },
   "continue": {
     "string": "Dalej"
   },
@@ -19,6 +22,15 @@
   },
   "dialog_cancel": {
     "string": "Nie, anuluj"
+  },
+  "sat_vbyte": {
+    "string": "₿ / vbajt"
+  },
+  "sat_vbyte_compact": {
+    "string": "₿/vbajt"
+  },
+  "edit": {
+    "string": "Edytuj"
   },
   "copy": {
     "string": "Kopiuj"
@@ -41,8 +53,17 @@
   "delete": {
     "string": "Usuń"
   },
+  "delete_yes": {
+    "string": "Tak, usuń"
+  },
   "ok": {
     "string": "OK"
+  },
+  "ok_random": {
+    "string": "Świetnie!\nNieźle!\nSuper!\nWspaniale\nFantastycznie!\nEkstra!\nZnakomicie!\nRewelacyjnie!"
+  },
+  "reset": {
+    "string": "Resetuj"
   },
   "retry": {
     "string": "Spróbuj ponownie"
@@ -52,6 +73,9 @@
   },
   "skip": {
     "string": "Pomiń"
+  },
+  "copied": {
+    "string": "Skopiowano do schowka"
   },
   "yes": {
     "string": "Tak"
@@ -67,5 +91,20 @@
   },
   "understood": {
     "string": "Rozumiem"
+  },
+  "connect": {
+    "string": "Połącz"
+  },
+  "min": {
+    "string": "Min"
+  },
+  "max": {
+    "string": "Max"
+  },
+  "default": {
+    "string": "Domyślne"
+  },
+  "preview": {
+    "string": "Podgląd"
   }
 }

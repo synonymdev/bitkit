@@ -43,7 +43,6 @@ import { updateWallet } from '../../../store/slices/wallet';
 import { TWalletName } from '../../../store/types/wallet';
 import { updateActivityList } from '../../../store/utils/activity';
 import { updateOnchainFeeEstimates } from '../../../store/utils/fees';
-import { showSheet } from '../../../store/utils/ui';
 import {
 	View as ThemedView,
 	TouchableOpacity,
@@ -620,6 +619,7 @@ const AddressViewer = (): ReactElement => {
 	 * The on-chain transaction will retrieve and include the app's receiving address by default.
 	 * Finally, this method will prompt the sendNavigation modal to appear for the user to finalize and confirm the transaction.
 	 */
+	// biome-ignore lint/correctness/useExhaustiveDependencies: sheetRef doesn't change
 	const onSpendFundsPress = useCallback(
 		async (utxosLength, selectedUtxosLength): Promise<void> => {
 			if (utxosLength <= 0) {
@@ -649,7 +649,7 @@ const AddressViewer = (): ReactElement => {
 				}),
 			);
 			sendMax();
-			showSheet('send', { screen: 'ReviewAndSend' });
+			sendSheetRef.current?.present({ screen: 'ReviewAndSend' });
 		},
 		[selectedUtxos, utxos, selectedNetwork, dispatch],
 	);

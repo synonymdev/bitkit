@@ -426,18 +426,6 @@
     "cs_auto_mode": {
       "string": "Autopilot-Modus"
     },
-    "cs_max": {
-      "string": "Mehr privat"
-    },
-    "cs_max_description": {
-      "string": "Sortiere und verwende zuerst die kleinsten UTXOs. Höhere Gebühr, aber versteckt deine größten UTXOs."
-    },
-    "cs_min": {
-      "string": "Niedrigste Gebühr"
-    },
-    "cs_min_description": {
-      "string": "Sortiere und verwende zuerst die größten UTXOs. Niedrigste Gebühr, aber zeigt deine größten UTXOs."
-    },
     "cs_consolidate": {
       "string": "Konsolidieren"
     },

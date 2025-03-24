@@ -393,18 +393,6 @@
     "cs_auto_mode": {
       "string": "Autopilot Mode"
     },
-    "cs_max": {
-      "string": "Meer privé"
-    },
-    "cs_max_description": {
-      "string": "Sorteer op en gebruik eerst de kleinste UTXO. Hogere kosten, maar verbergt uw grootste UTXO's."
-    },
-    "cs_min": {
-      "string": "Laagste kosten"
-    },
-    "cs_min_description": {
-      "string": "Sorteer op en gebruik de grootste UTXO eerst. Laagste kosten, maar onthult uw grootste UTXO's."
-    },
     "cs_consolidate": {
       "string": "Consolideren"
     },

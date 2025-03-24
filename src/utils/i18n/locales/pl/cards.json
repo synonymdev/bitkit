@@ -1,4 +1,52 @@
 {
+  "backupSeedPhrase": {
+    "title": {
+      "string": "Kopia zap."
+    },
+    "description": {
+      "string": "Przechowuj bitcoin"
+    }
+  },
+  "discount": {
+    "title": {
+      "string": "Rabat"
+    },
+    "description": {
+      "string": "Saldo do wydawania"
+    }
+  },
+  "quickpay": {
+    "title": {
+      "string": "QuickPay"
+    },
+    "description": {
+      "string": "Skanuj i zapłać"
+    }
+  },
+  "invite": {
+    "title": {
+      "string": "Zaproś"
+    },
+    "description": {
+      "string": "Udostępnij Bitkit"
+    }
+  },
+  "lightning": {
+    "title": {
+      "string": "Wydawaj"
+    },
+    "description": {
+      "string": "Płatności natychmiastowe"
+    }
+  },
+  "lightningSettingUp": {
+    "title": {
+      "string": "Transfery"
+    },
+    "description": {
+      "string": "W toku..."
+    }
+  },
   "lightningConnecting": {
     "title": {
       "string": "Łączenie"
@@ -15,19 +63,60 @@
       "string": "Połączone!"
     }
   },
+  "transferPending": {
+    "title": {
+      "string": "Transfer"
+    },
+    "description": {
+      "string": "Gotowe za ±{duration}"
+    }
+  },
   "transferClosingChannel": {
+    "title": {
+      "string": "Inicjowanie"
+    },
     "description": {
       "string": "Pozostaw aplikację włączoną"
     }
   },
   "pin": {
+    "title": {
+      "string": "Zabezpiecz"
+    },
     "description": {
       "string": "Ustaw kod PIN"
     }
   },
   "slashtagsProfile": {
+    "title": {
+      "string": "Profil"
+    },
     "description": {
       "string": "Dodaj swoje detale"
+    }
+  },
+  "support": {
+    "title": {
+      "string": "Wsparcie"
+    },
+    "description": {
+      "string": "Otrzymaj wsparcie"
+    }
+  },
+  "buyBitcoin": {
+    "title": {
+      "string": "Kup"
+    },
+    "description": {
+      "string": "Kup trochę bitcoina"
+    }
+  },
+  "btFailed": {
+    "title": {
+      "string": "Niepowodzenie"
+    },
+    "description": {
+      "string": "Spróbuj ponownie"
     }
   },
   "suggestions": {

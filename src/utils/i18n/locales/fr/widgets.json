@@ -1,0 +1,64 @@
+{
+  "widgets": {
+    "string": "Widgets"
+  },
+  "onboarding": {
+    "title": {
+      "string": "Bonjour,\n<accent>Widgets</accent>"
+    },
+    "description": {
+      "string": "Profitez des flux décentralisés de vos services web préférés en ajoutant des widgets amusants et utiles à votre portefeuille Bitkit."
+    }
+  },
+  "widget": {
+    "nav_title": {
+      "string": "Widget"
+    },
+    "edit": {
+      "string": "Widget de Flux"
+    },
+    "edit_default": {
+      "string": "Défaut"
+    },
+    "edit_custom": {
+      "string": "Personnalisé"
+    },
+    "edit_description": {
+      "string": "Veuillez sélectionner les champs que vous souhaitez afficher dans le widget {name}."
+    },
+    "source": {
+      "string": "Source"
+    }
+  },
+  "add": {
+    "string": "Ajouter un widget"
+  },
+  "delete": {
+    "title": {
+      "string": "Supprimer le widget ?"
+    },
+    "description": {
+      "string": "Êtes-vous sûr de vouloir supprimer '{name}' de vos widgets ?"
+    }
+  },
+  "price": {
+    "name": {
+      "string": "Prix du bitcoin"
+    }
+  },
+  "news": {
+    "name": {
+      "string": "Bitcoin à la une"
+    }
+  },
+  "blocks": {
+    "name": {
+      "string": "Blocs Bitcoin"
+    }
+  },
+  "facts": {
+    "name": {
+      "string": "Faits itcoin"
+    }
+  }
+}

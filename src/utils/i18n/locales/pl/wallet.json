@@ -1,4 +1,21 @@
 {
+  "drawer": {
+    "activity": {
+      "string": "Aktywność"
+    },
+    "contacts": {
+      "string": "Kontakty"
+    },
+    "profile": {
+      "string": "Profil"
+    },
+    "widgets": {
+      "string": "Widgety"
+    },
+    "settings": {
+      "string": "Ustawienia"
+    }
+  },
   "send": {
     "string": "Wyślij"
   },
@@ -11,8 +28,26 @@
   "send_to": {
     "string": "Do"
   },
+  "recipient_contact": {
+    "string": "Kontakt"
+  },
+  "recipient_invoice": {
+    "string": "Wklej fakturę"
+  },
+  "recipient_scan": {
+    "string": "Skanuj QR"
+  },
   "send_invoice": {
     "string": "Faktura"
+  },
+  "send_address_placeholder": {
+    "string": "Wprowadź fakturę Bitcoinową lub Lightning, lub adres"
+  },
+  "send_clipboard_empty_title": {
+    "string": "Schowek pusty"
+  },
+  "send_clipboard_empty_text": {
+    "string": "Proszę skopiować adres lub fakturę."
   },
   "send_amount": {
     "string": "Kwota bitcoinów"
@@ -50,10 +85,118 @@
   "send_dialog2": {
     "string": "Wygląda na to, że wysyłasz ponad 50% swojego salda. Czy kontynuować?"
   },
+  "send_sent": {
+    "string": "Wysłane bitcoiny"
+  },
+  "send_quickpay": {
+    "nav_title": {
+      "string": "QuickPay"
+    }
+  },
+  "tags_add_button": {
+    "string": "Dodaj"
+  },
+  "tags_filter": {
+    "string": "Filtruj aktywność za pomocą tagów"
+  },
+  "toast_payment_success_title": {
+    "string": "Płatność wysłana"
+  },
+  "toast_payment_success_description": {
+    "string": "Twoja płatność natychmiastowa została wysłana pomyślnie."
+  },
+  "receive_specify": {
+    "string": "Edytuj fakturę"
+  },
+  "receive_copied": {
+    "string": "Faktura skopiowana do schowka"
+  },
+  "receive_bitcoin_invoice": {
+    "string": "Faktura bitcoinowa"
+  },
+  "receive_show_qr": {
+    "string": "Skanuj kod QR"
+  },
+  "activity": {
+    "string": "Aktywność"
+  },
+  "activity_show_all": {
+    "string": "Pokaż całą aktywność"
+  },
+  "activity_no": {
+    "string": "Nie ma jeszcze aktywności"
+  },
+  "activity_no_explain": {
+    "string": "Otrzymaj trochę środków aby rozpocząć"
+  },
+  "activity_sent": {
+    "string": "Wysłane"
+  },
+  "activity_received": {
+    "string": "Otrzymano"
+  },
+  "activity_failed": {
+    "string": "Niepowodzenie"
+  },
+  "activity_transfer": {
+    "string": "Transfery"
+  },
+  "activity_transfer_spending_pending": {
+    "string": "Z oszczędności (±{duration})"
+  },
+  "activity_transfer_spending_done": {
+    "string": "Z oszczędności"
+  },
+  "activity_bitcoin_sent": {
+    "string": "Wysłanych bitcoinów"
+  },
+  "activity_bitcoin_received": {
+    "string": "Otrzymane Bitcoiny"
+  },
+  "activity_removed_msg": {
+    "string": "Sprawdź swoją listę aktywności. {count} dotkniętych transakcji zostanie wyróżnionych na czerwono."
+  },
+  "activity_contact": {
+    "string": "Kontakt"
+  },
   "activity_successful": {
     "string": "Sukces"
   },
   "activity_invoice": {
     "string": "Faktura"
+  },
+  "activity_all": {
+    "string": "Cała aktywność"
+  },
+  "activity_tabs": {
+    "all": {
+      "string": "Wszystko"
+    },
+    "sent": {
+      "string": "Wysłano"
+    },
+    "received": {
+      "string": "Otrzymane"
+    },
+    "other": {
+      "string": "Inne"
+    }
+  },
+  "details_savings_title": {
+    "string": "Oszczędności"
+  },
+  "savings": {
+    "title": {
+      "string": "Oszczędności"
+    }
+  },
+  "payment_received": {
+    "string": "Otrzymano Bitcoinów"
+  },
+  "instant_payment_received": {
+    "string": "Otrzymano bitcoin natychmiastowo"
+  },
+  "reorg_msg_end": {
+    "string": "Sprawdź swoją listę aktywności, aby zobaczyć dotknięte transakcje."
   }
 }
