@@ -1151,6 +1151,23 @@ export const waitForLdk = async (): Promise<void> => {
 	});
 };
 
+export const waitForLdkChannels = async (): Promise<void> => {
+	await tryNTimes({
+		toTry: async () => {
+			const channelsResult = await ldk.listUsableChannels();
+			if (channelsResult.isOk()) {
+				if (channelsResult.value.length > 0) {
+					return ok(channelsResult.value);
+				}
+				return err('no channels ready');
+			}
+			return err('error getting channels');
+		},
+		times: 5,
+		interval: 1000,
+	});
+};
+
 /**
  * Returns the current LDK node id.
  * @returns {Promise<Result<string>>}
@@ -1579,6 +1596,8 @@ export const payLightningInvoice = async ({
 	amount?: number;
 }): Promise<Result<string>> => {
 	try {
+		await waitForLdkChannels();
+
 		const addPeersResponse = await addPeers();
 		if (addPeersResponse.isErr()) {
 			return err(addPeersResponse.error.message);
