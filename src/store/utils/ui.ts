@@ -19,7 +19,14 @@ export const showSheet = <Id extends keyof SheetsParamList>(
 ): void => {
 	const [id, params] = args;
 	const sheetRef = getSheetRefOutsideComponent(id);
-	sheetRef.current?.present(params);
+
+	if (!sheetRef.current) {
+		// sheetRef not ready, try again after a short wait
+		// NOTE: needed for deeplinks when app is closed
+		setTimeout(() => showSheet(...args), 100);
+	} else {
+		sheetRef.current?.present(params);
+	}
 };
 
 export const closeSheet = async (id: SheetId): Promise<void> => {
