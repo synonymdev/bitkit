@@ -1,7 +1,7 @@
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import React, { ReactElement, memo, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
 import GradientView from '../../../components/GradientView';
@@ -9,7 +9,6 @@ import SafeAreaInset from '../../../components/SafeAreaInset';
 import Switch from '../../../components/Switch';
 import Tag from '../../../components/Tag';
 import Button from '../../../components/buttons/Button';
-import { ScrollView } from '../../../styles/components';
 import { BodyMSB, BodySSB, Caption13Up, Subtitle } from '../../../styles/text';
 
 import { IUtxo } from 'beignet';
@@ -34,7 +33,7 @@ import {
 } from '../../../utils/wallet/transactions';
 
 /**
- * Some UTXO's may contain the same tx_hash.
+ * Some UTXOs may contain the same tx_hash.
  * So we include the tx_pos to ensure we can quickly distinguish.
  * @param {IUtxo} utxo
  * @return string
@@ -65,9 +64,9 @@ const UtxoRow = ({
 
 			{tags && (
 				<ScrollView
+					style={styles.coinTagsScroll}
 					horizontal={true}
-					centerContent={true}
-					style={styles.coinTagsScroll}>
+					centerContent={true}>
 					{tags.map((t) => (
 						<Tag style={styles.tag} key={t} value={t} />
 					))}
@@ -94,7 +93,7 @@ const CoinSelection = ({
 		return transaction.inputs;
 	}, [transaction.inputs]);
 
-	//Combine known utxo's with current transaction inputs in the event we're using utxo's from the address viewer.
+	//Combine known UTXOs with current transaction inputs in the event we're using UTXOs from the address viewer.
 	const combinedUtxos = useMemo(() => {
 		const combined: IUtxo[] = [...utxos, ...inputs];
 
