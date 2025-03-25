@@ -73,6 +73,7 @@ import { updateActivityList } from '../../store/utils/activity';
 import { refreshOrdersList } from '../../store/utils/blocktank';
 import { moveMetaIncTxTags } from '../../store/utils/metadata';
 import { showNewOnchainTxPrompt } from '../../store/utils/ui';
+import { appStateTracker } from '../appState';
 import BitcoinActions from '../bitcoin-actions';
 import { btcToSats } from '../conversion';
 import { promiseTimeout } from '../helpers';
@@ -89,6 +90,9 @@ import { IGenerateAddresses, IGetAddress } from '../types';
 import { BITKIT_WALLET_SEED_HASH_PREFIX } from './constants';
 import { getBlockHeader } from './electrum';
 import { getTransferForTx } from './transfer';
+
+// Initialize app state tracking
+appStateTracker.init();
 
 bitcoin.initEccLib(ecc);
 const bip32 = BIP32Factory(ecc);
@@ -197,7 +201,9 @@ const refreshBeignet = async (scanAllAddresses = false): Promise<void> => {
 		additionalAddresses,
 	});
 	if (refreshWalletRes.isErr()) {
-		handleRefreshError(refreshWalletRes.error.message);
+		if (!appStateTracker.wasRecentlyInBackground()) {
+			handleRefreshError(refreshWalletRes.error.message);
+		}
 	} else {
 		// If refresh was successful, reset the throttled state.
 		if (getStore().ui.isElectrumThrottled) {
