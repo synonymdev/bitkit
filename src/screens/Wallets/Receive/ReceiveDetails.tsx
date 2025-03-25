@@ -1,6 +1,6 @@
 import React, { ReactElement, memo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Platform, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import BottomSheetNavigationHeader from '../../../components/BottomSheetNavigationHeader';
@@ -177,9 +177,7 @@ const ReceiveDetails = ({
 							<Animated.View
 								style={styles.bottom}
 								entering={FadeIn}
-								// FadeOut causing a bug on Android
-								exiting={Platform.OS === 'ios' ? FadeOut : undefined}
-							>
+								exiting={FadeOut}>
 								<Caption13Up style={styles.label} color="secondary">
 									{t('tags')}
 								</Caption13Up>
