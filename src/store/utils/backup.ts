@@ -359,12 +359,12 @@ const performWidgetsRestore = async (): Promise<
 		const backup = backupRes.value.data;
 		const expectedBackupShape = initialWidgetsState;
 
+		// Skip restore if backup contains legacy slashfeed widgets
 		// NOTE: can be removed after all users have updated from 1.0.9
-		const hasSlashfeedWidgets = Object.keys(backup.widgets).some((key) => {
-			return key.includes('slashfeed');
-		});
+		const hasSlashfeedWidgets =
+			Object.keys(backup.widgets).some((key) => key.includes('slashfeed')) ||
+			backup.sortOrder.some((key) => key.includes('slashfeed'));
 
-		// If the backup has slashfeed widgets, skip the restore.
 		if (hasSlashfeedWidgets) {
 			return ok({ backupExists: false });
 		}
