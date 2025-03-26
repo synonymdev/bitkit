@@ -166,8 +166,9 @@ export const claimableBalanceSelector = createSelector(
 			return (
 				channel.closureReason &&
 				[
-					EChannelClosureReason.HolderForceClosed,
 					EChannelClosureReason.CounterpartyForceClosed,
+					EChannelClosureReason.ProcessingError,
+					EChannelClosureReason.HolderForceClosed,
 				].includes(channel.closureReason)
 			);
 		});
