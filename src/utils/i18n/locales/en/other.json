@@ -276,5 +276,37 @@
 				"string": "This Lightning invoice has expired."
 			}
 		}
+	},
+	"gift": {
+		"claiming": {
+			"title": {
+				"string": "Claiming Gift"
+			},
+			"text": {
+				"string": "Claiming your Bitkit gift code..."
+			}
+		},
+		"error": {
+			"title": {
+				"string": "Gift Code Error"
+			},
+			"text": {
+				"string": "Bitkit couldn't claim the funds. Please try again later or contact us."
+			},
+			"button": {
+				"string": "OK"
+			}
+		},
+		"used": {
+			"title": {
+				"string": "Used Code"
+			},
+			"text": {
+				"string": "This Bitkit gift code has already been used, and the funds have been paid out."
+			},
+			"button": {
+				"string": "OK"
+			}
+		}
 	}
 }

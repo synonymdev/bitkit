@@ -4567,12 +4567,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@synonymdev/blocktank-lsp-http-client@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@synonymdev/blocktank-lsp-http-client@npm:2.2.0"
+"@synonymdev/blocktank-lsp-http-client@npm:2.5.0":
+  version: 2.5.0
+  resolution: "@synonymdev/blocktank-lsp-http-client@npm:2.5.0"
   dependencies:
     axios: ^1.4.0
-  checksum: 45be9cf61f0701cc2fe7feab2c1b07dbf3254d4a2e2e0de912f8e58edbbc9bc68bd4244b5b9aae40fa46f7710cb2aca270bf77f70b1c2e5fa9e63ad18f558b2e
+  checksum: 5e4342afea58d6a41340b62f7d754a62117235ed337e3cb1ac0ecf0f1100b220085bae6bd9c41c0781c37dec10cab4bdd54a9107b108e38f64d7621ac8d06509
   languageName: node
   linkType: hard
 
@@ -5825,7 +5825,7 @@ __metadata:
     "@react-navigation/native-stack": 7.2.0
     "@reduxjs/toolkit": 2.2.6
     "@shopify/react-native-skia": next
-    "@synonymdev/blocktank-lsp-http-client": 2.2.0
+    "@synonymdev/blocktank-lsp-http-client": 2.5.0
     "@synonymdev/react-native-ldk": 0.0.159
     "@synonymdev/react-native-lnurl": 0.0.10
     "@synonymdev/react-native-pubky": ^0.3.0

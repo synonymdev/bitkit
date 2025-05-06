@@ -179,6 +179,18 @@ export const parseUri = async (
 		}
 	}
 
+	// Gift Code
+	if (uri.startsWith('gift-')) {
+		const [_, code, amount] = uri.split('-');
+		if (code && amount) {
+			return ok({
+				type: EQRDataType.gift,
+				code,
+				amount: Number.parseInt(amount),
+			});
+		}
+	}
+
 	// Treasure hunt
 	// Airdrop
 	if (uri.includes('cutt.ly/VwQFzhJJ') || uri.includes('bitkit.to/drone')) {
@@ -858,6 +870,10 @@ const handleData = async ({
 		}
 		case EQRDataType.pubkyAuth: {
 			showSheet('pubkyAuth', { url: data.url });
+			return ok('');
+		}
+		case EQRDataType.gift: {
+			showSheet('gift', { code: data.code, amount: data.amount });
 			return ok('');
 		}
 	}

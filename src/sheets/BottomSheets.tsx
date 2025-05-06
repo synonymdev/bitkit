@@ -3,6 +3,7 @@ import React, { JSX, memo } from 'react';
 import BackupNavigation from './BackupNavigation';
 import Boost from './Boost';
 import ConnectionClosed from './ConnectionClosed';
+import GiftNavigation from './GiftNavigation';
 import LNURLWithdrawNavigation from './LNURLWithdrawNavigation';
 import OrangeTicketNavigation from './OrangeTicketNavigation';
 import PINNavigation from './PINNavigation';
@@ -19,6 +20,7 @@ const BottomSheets = (): JSX.Element => {
 			<BackupNavigation />
 			<Boost />
 			<ConnectionClosed />
+			<GiftNavigation />
 			<LNURLWithdrawNavigation />
 			<ReceivedTransaction />
 			<OrangeTicketNavigation />

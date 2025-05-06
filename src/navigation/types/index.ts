@@ -9,6 +9,7 @@ import {
 
 import type { RecoveryStackParamList } from '../../screens/Recovery/RecoveryNavigator';
 import type { BackupStackParamList } from '../../sheets/BackupNavigation';
+import type { GiftStackParamList } from '../../sheets/GiftNavigation';
 import type { LNURLWithdrawStackParamList } from '../../sheets/LNURLWithdrawNavigation';
 import type { OrangeTicketStackParamList } from '../../sheets/OrangeTicketNavigation';
 import type { PinStackParamList } from '../../sheets/PINNavigation';
@@ -102,6 +103,9 @@ export type LNURLWithdrawScreenProps<
 export type OrangeTicketScreenProps<
 	T extends keyof OrangeTicketStackParamList,
 > = NativeStackScreenProps<OrangeTicketStackParamList, T>;
+
+export type GiftScreenProps<T extends keyof GiftStackParamList> =
+	NativeStackScreenProps<GiftStackParamList, T>;
 
 export type TreasureHuntScreenProps<
 	T extends keyof TreasureHuntStackParamList,

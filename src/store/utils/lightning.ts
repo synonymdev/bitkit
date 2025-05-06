@@ -128,8 +128,9 @@ export const updateChannelsThunk = async (): Promise<Result<string>> => {
 			// If the channel is opened by Blocktank, get the payment txId from the order.
 			const orders = getBlocktankStore().orders;
 			const order = orders.find((o) => o.channel?.fundingTx.id === txId);
-			if (order) {
-				txId = order.payment.onchain.transactions[0].txId;
+			const paymentTxId = order?.payment.onchain.transactions[0]?.txId;
+			if (paymentTxId) {
+				txId = paymentTxId;
 			}
 
 			dispatch(updateTransfer({ txId, confirmsIn }));

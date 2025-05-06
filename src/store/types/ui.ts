@@ -42,6 +42,7 @@ export type SheetsParamList = {
 	datePicker: undefined;
 	forceTransfer: undefined;
 	forgotPin: undefined;
+	gift: { code: string; amount: number };
 	highBalance: undefined;
 	lnurlWithdraw: LNURLWithdrawParams;
 	orangeTicket: { ticketId: string };

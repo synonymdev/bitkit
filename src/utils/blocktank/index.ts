@@ -9,6 +9,7 @@ import {
 	ICreateOrderOptions,
 } from '@synonymdev/blocktank-lsp-http-client';
 import { IBtEstimateFeeResponse2 } from '@synonymdev/blocktank-lsp-http-client/dist/shared/IBtEstimateFeeResponse2';
+import { IGift } from '@synonymdev/blocktank-lsp-http-client/dist/shared/IGift';
 import { Result, err, ok } from '@synonymdev/result';
 
 import { __BLOCKTANK_HOST__ } from '../../constants/env';
@@ -99,17 +100,17 @@ export const createOrder = async ({
 		}
 		const nodeId = nodeIdResult.value;
 
-		const buyRes = await bt.createOrder(lspBalance, channelExpiryWeeks, {
+		const order = await bt.createOrder(lspBalance, channelExpiryWeeks, {
 			...options,
-			nodeId,
+			clientNodeId: nodeId,
 			source: options?.source ?? 'bitkit',
 			zeroReserve: true,
 			announceChannel: false,
 		});
-		if (buyRes?.id) {
-			await refreshOrder(buyRes.id);
+		if (order.id) {
+			await refreshOrder(order.id);
 		}
-		return ok(buyRes);
+		return ok(order);
 	} catch (e) {
 		console.log(e);
 		return err(e);
@@ -386,4 +387,35 @@ export const logToBlocktank = async (
 	message: string,
 ): Promise<void> => {
 	return bt.bitkitLog(nodeId, message);
+};
+
+export const giftPay = async (invoice: string): Promise<Result<IGift>> => {
+	try {
+		const response = await bt.giftPay(invoice);
+		return ok(response);
+	} catch (e) {
+		return err(e);
+	}
+};
+
+export const giftOrder = async (code: string): Promise<Result<IGift>> => {
+	// Ensure we're properly connected to the Blocktank node prior to buying a channel.
+	const addPeersRes = await addPeers();
+	if (addPeersRes.isErr()) {
+		return err(i18n.t('other:bt_error_connect'));
+	}
+
+	// Get the node ID to use for the order.
+	const nodeIdResult = await getNodeId();
+	if (nodeIdResult.isErr()) {
+		return err(nodeIdResult.error.message);
+	}
+	const nodeId = nodeIdResult.value;
+
+	try {
+		const response = await bt.giftOrder(nodeId, `blocktank-gift-code:${code}`);
+		return ok(response);
+	} catch (e) {
+		return err(e);
+	}
 };
