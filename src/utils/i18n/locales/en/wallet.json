@@ -15,6 +15,9 @@
 		"widgets": {
 			"string": "Widgets"
 		},
+		"shop": {
+			"string": "Shop"
+		},
 		"settings": {
 			"string": "Settings"
 		},

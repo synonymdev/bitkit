@@ -47,6 +47,7 @@ export type TSettings = {
 	orangeTickets: string[];
 	webRelay: string;
 	quickpayIntroSeen: boolean;
+	shopIntroSeen: boolean;
 	transferIntroSeen: boolean;
 	spendingIntroSeen: boolean;
 	savingsIntroSeen: boolean;

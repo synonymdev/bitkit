@@ -2,8 +2,8 @@ import { BottomSheetSectionList } from '@gorhom/bottom-sheet';
 import React, { ReactElement, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SectionList, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useAppSelector } from '../hooks/redux';
 
+import { useAppSelector } from '../hooks/redux';
 import { useProfile, useSlashtags } from '../hooks/slashtags';
 import { contactsSelector } from '../store/reselect/slashtags';
 import { IContactRecord } from '../store/types/slashtags';

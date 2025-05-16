@@ -44,6 +44,9 @@ export type RootStackParamList = {
 	ContactEdit: { url: string };
 	Contact: { url: string };
 	BuyBitcoin: undefined;
+	ShopIntro: undefined;
+	ShopDiscover: undefined;
+	ShopMain: { page: string };
 	WidgetsOnboarding: undefined;
 	WidgetsSuggestions: undefined;
 	Widget: { id: TWidgetId; preview?: TWidgetOptions };

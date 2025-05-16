@@ -180,6 +180,15 @@ const migrations = {
 			},
 		};
 	},
+	55: (state): PersistedState => {
+		return {
+			...state,
+			settings: {
+				...state.settings,
+				shopIntroSeen: state.user.shopIntroSeen,
+			},
+		};
+	},
 };
 
 export default migrations;

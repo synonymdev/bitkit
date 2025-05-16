@@ -5,7 +5,6 @@ module.exports = {
 			2,
 			'always',
 			[
-				'accounts',
 				'activity',
 				'backup',
 				'boost',
@@ -21,9 +20,8 @@ module.exports = {
 				'security',
 				'send',
 				'settings',
-				'slashpay',
+				'shop',
 				'suggestions',
-				'tokens',
 				'transfer',
 				'ui',
 				'wallet',

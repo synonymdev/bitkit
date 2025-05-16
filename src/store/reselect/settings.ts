@@ -121,6 +121,9 @@ export const webRelaySelector = (state: RootState): string => {
 export const quickpayIntroSeenSelector = (state: RootState): boolean => {
 	return state.settings.quickpayIntroSeen;
 };
+export const shopIntroSeenSelector = (state: RootState): boolean => {
+	return state.settings.shopIntroSeen;
+};
 export const transferIntroSeenSelector = (state: RootState): boolean => {
 	return state.settings.transferIntroSeen;
 };

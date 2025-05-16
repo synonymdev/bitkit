@@ -11,6 +11,7 @@ import { useSheetRef } from '../sheets/SheetRefsProvider';
 import {
 	pinSelector,
 	quickpayIntroSeenSelector,
+	shopIntroSeenSelector,
 	transferIntroSeenSelector,
 } from '../store/reselect/settings';
 import {
@@ -35,6 +36,7 @@ const Suggestions = (): ReactElement => {
 	const quickpayIntroSeen = useAppSelector(quickpayIntroSeenSelector);
 	const suggestions = useAppSelector(todosFullSelector);
 	const newChannels = useAppSelector(newChannelsNotificationsSelector);
+	const shopIntroSeen = useAppSelector(shopIntroSeenSelector);
 	const transferIntroSeen = useAppSelector(transferIntroSeenSelector);
 	const [index, setIndex] = useState(0);
 
@@ -107,6 +109,14 @@ const Suggestions = (): ReactElement => {
 					navigation.navigate('Settings', { screen: 'QuickpaySettings' });
 				} else {
 					navigation.navigate('Settings', { screen: 'QuickpayIntro' });
+				}
+			}
+
+			if (id === 'shop') {
+				if (shopIntroSeen) {
+					navigation.navigate('ShopDiscover');
+				} else {
+					navigation.navigate('ShopIntro');
 				}
 			}
 
