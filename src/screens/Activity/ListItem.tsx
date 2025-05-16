@@ -19,7 +19,7 @@ import {
 import { ETransferStatus } from '../../store/types/wallet';
 import { View as ThemedView, TouchableOpacity } from '../../styles/components';
 import {
-	HeartbeatIcon,
+	ActivityIcon,
 	HourglassSimpleIcon,
 	ReceiveIcon,
 	SendIcon,
@@ -218,7 +218,7 @@ export const EmptyItem = ({
 	const description = t('activity_no_explain');
 	const icon = (
 		<ThemedView color="yellow16" style={styles.icon}>
-			<HeartbeatIcon height={16} color="yellow" />
+			<ActivityIcon height={16} color="yellow" />
 		</ThemedView>
 	);
 

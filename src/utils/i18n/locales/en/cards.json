@@ -90,6 +90,14 @@
       "string": "Set up a PIN code"
     }
   },
+  "shop": {
+    "title": {
+      "string": "Shop"
+    },
+    "description": {
+      "string": "Shop with Bitcoin"
+    }
+  },
   "slashtagsProfile": {
     "title": {
       "string": "Profile"

@@ -12,6 +12,7 @@ export type TTodoType =
 	| 'lightningConnecting'
 	| 'lightningReady'
 	| 'quickpay'
+	| 'shop'
 	| 'slashtagsProfile'
 	| 'support'
 	| 'transferPending'

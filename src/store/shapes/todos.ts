@@ -10,6 +10,7 @@ const imageBitcoin = require('../../assets/illustrations/b-emboss.png');
 const imageGift = require('../../assets/illustrations/gift.png');
 const imageGroup = require('../../assets/illustrations/group.png');
 const imageFastForward = require('../../assets/illustrations/fast-forward.png');
+const imageBag = require('../../assets/illustrations/shopping-bag.png');
 
 export const backupSeedPhraseTodo: ITodo = {
 	id: 'backupSeedPhrase',
@@ -51,6 +52,12 @@ export const quickpayTodo: ITodo = {
 	id: 'quickpay',
 	color: 'green24',
 	image: imageFastForward,
+	dismissable: true,
+};
+export const shopTodo: ITodo = {
+	id: 'shop',
+	color: 'yellow24',
+	image: imageBag,
 	dismissable: true,
 };
 export const transferPendingTodo: ITodo = {

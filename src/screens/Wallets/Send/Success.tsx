@@ -87,7 +87,7 @@ const Success = ({ route }: SendScreenProps<'Success'>): ReactElement => {
 					<Button
 						style={styles.button}
 						size="large"
-						text={t('close')}
+						text={t('ok')}
 						testID="Close"
 						onPress={handleClose}
 					/>

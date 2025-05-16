@@ -122,6 +122,7 @@ export const initialSettingsState: TSettings = {
 	orangeTickets: [],
 	webRelay: __WEB_RELAY__,
 	quickpayIntroSeen: false,
+	shopIntroSeen: false,
 	transferIntroSeen: false,
 	spendingIntroSeen: false,
 	savingsIntroSeen: false,

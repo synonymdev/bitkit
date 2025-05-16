@@ -318,6 +318,8 @@ const Item = memo(_Item, (prevProps, nextProps) => {
 	return isEqual(prevProps, nextProps);
 });
 
+export { Item };
+
 export interface IListData {
 	data: ItemData[];
 	title?: string;

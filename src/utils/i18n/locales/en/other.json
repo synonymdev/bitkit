@@ -308,5 +308,71 @@
 				"string": "OK"
 			}
 		}
+	},
+	"shop": {
+		"intro": {
+			"title": {
+				"string": "Shop"
+			},
+			"description": {
+				"string": "Get your life on the Bitcoin standard. Spend your Bitcoin on digital gift cards, eSIMs, phone refills, and more."
+			},
+			"button": {
+				"string": "Get Started"
+			}
+		},
+		"discover": {
+			"nav_title": {
+				"string": "Shop"
+			},
+			"tabs": {
+				"shop": {
+					"string": "Shop"
+				},
+				"map": {
+					"string": "Map"
+				}
+			},
+			"label": {
+				"string": "Gift card categories"
+			},
+			"gift-cards": {
+				"title": {
+					"string": "Gift Cards"
+				},
+				"description": {
+					"string": "Shop with Bitcoin"
+				}
+			},
+			"esims": {
+				"title": {
+					"string": "ESims"
+				},
+				"description": {
+					"string": "Go borderless"
+				}
+			},
+			"refill": {
+				"title": {
+					"string": "Phone Refill"
+				},
+				"description": {
+					"string": "Top up your phone"
+				}
+			},
+			"travel": {
+				"title": {
+					"string": "Travel"
+				},
+				"description": {
+					"string": "Book your ₿ holiday"
+				}
+			}
+		},
+		"main": {
+			"nav_title": {
+				"string": "Shop"
+			}
+		}
 	}
 }

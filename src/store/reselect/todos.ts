@@ -11,6 +11,7 @@ import {
 	lightningTodo,
 	pinTodo,
 	quickpayTodo,
+	shopTodo,
 	slashtagsProfileTodo,
 	supportTodo,
 	transferClosingChannelTodo,
@@ -19,7 +20,11 @@ import {
 import { ITodo, TTodosState } from '../types/todos';
 import { ETransferType, TTransferToSavings } from '../types/wallet';
 import { blocktankPaidOrdersFullSelector } from './blocktank';
-import { closedChannelsSelector, openChannelsSelector } from './lightning';
+import {
+	closedChannelsSelector,
+	lightningBalanceSelector,
+	openChannelsSelector,
+} from './lightning';
 import { pinSelector } from './settings';
 import { onboardingProfileStepSelector } from './slashtags';
 import {
@@ -27,7 +32,7 @@ import {
 	startCoopCloseTimestampSelector,
 } from './user';
 import { createShallowEqualSelector } from './utils';
-import { pendingTransfersSelector } from './wallet';
+import { onChainBalanceSelector, pendingTransfersSelector } from './wallet';
 
 export const todosSelector = (state: RootState): TTodosState => state.todos;
 
@@ -57,6 +62,8 @@ export const todosFullSelector = createShallowEqualSelector(
 		blocktankPaidOrdersFullSelector,
 		newChannelsNotificationsSelector,
 		pendingTransfersSelector,
+		onChainBalanceSelector,
+		lightningBalanceSelector,
 	],
 	(
 		todos,
@@ -69,6 +76,8 @@ export const todosFullSelector = createShallowEqualSelector(
 		paidOrders,
 		newChannels,
 		transfers,
+		onchainBalance,
+		lightningBalance,
 	): ITodo[] => {
 		const { hide } = todos;
 
@@ -94,6 +103,8 @@ export const todosFullSelector = createShallowEqualSelector(
 			return Number(new Date(order.orderExpiresAt)) > hide.btFailed;
 		});
 
+		const { spendingBalance } = lightningBalance;
+		const hasFunds = onchainBalance + spendingBalance > 0;
 		const hasTransferred = openChannels.length > 0 || closedChannels.length > 0;
 
 		const transferToSpending = transfers.find((t) => {
@@ -139,6 +150,9 @@ export const todosFullSelector = createShallowEqualSelector(
 		}
 		if (!hide.quickpay) {
 			res.push(quickpayTodo);
+		}
+		if (!hide.shop && hasFunds) {
+			res.push(shopTodo);
 		}
 		if (!hide.slashtagsProfile && onboardingStep !== 'Done') {
 			res.push(slashtagsProfileTodo);

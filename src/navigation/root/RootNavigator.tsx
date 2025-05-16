@@ -29,6 +29,9 @@ import Contacts from '../../screens/Contacts/Contacts';
 import Profile from '../../screens/Profile/Profile';
 import ProfileEdit from '../../screens/Profile/ProfileEdit';
 import ScannerScreen from '../../screens/Scanner/MainScanner';
+import ShopDiscover from '../../screens/Shop/ShopDiscover';
+import ShopIntro from '../../screens/Shop/ShopIntro';
+import ShopMain from '../../screens/Shop/ShopMain';
 import Widget from '../../screens/Widgets/Widget';
 import WidgetEdit from '../../screens/Widgets/WidgetEdit';
 import WidgetsOnboarding from '../../screens/Widgets/WidgetsOnboarding';
@@ -153,6 +156,9 @@ const RootNavigator = (): ReactElement => {
 				<Stack.Screen name="ContactEdit" component={ContactEdit} />
 				<Stack.Screen name="Contact" component={Contact} />
 				<Stack.Screen name="BuyBitcoin" component={BuyBitcoin} />
+				<Stack.Screen name="ShopIntro" component={ShopIntro} />
+				<Stack.Screen name="ShopDiscover" component={ShopDiscover} />
+				<Stack.Screen name="ShopMain" component={ShopMain} />
 				<Stack.Screen name="WidgetsOnboarding" component={WidgetsOnboarding} />
 				<Stack.Screen
 					name="WidgetsSuggestions"

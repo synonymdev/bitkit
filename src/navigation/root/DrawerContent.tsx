@@ -9,13 +9,16 @@ import { StyleSheet, View } from 'react-native';
 
 import AppStatus from '../../components/AppStatus';
 import GradientView from '../../components/GradientView';
+import { useAppSelector } from '../../hooks/redux';
+import { shopIntroSeenSelector } from '../../store/reselect/settings';
 import colors from '../../styles/colors';
 import { Pressable } from '../../styles/components';
 import {
+	ActivityIcon,
 	CoinsIcon,
-	HeartbeatIcon,
 	SettingsIcon,
 	StackIcon,
+	StorefrontIcon,
 	UserSquareIcon,
 	UsersIcon,
 } from '../../styles/icons';
@@ -49,6 +52,7 @@ const DrawerItem = ({
 const DrawerContent = (props: DrawerContentComponentProps): ReactElement => {
 	const { t } = useTranslation('wallet');
 	const navigation = useNavigation<DrawerStackNavigationProp>();
+	const shopIntroSeen = useAppSelector(shopIntroSeenSelector);
 
 	return (
 		<GradientView style={[styles.drawer]}>
@@ -63,7 +67,7 @@ const DrawerContent = (props: DrawerContentComponentProps): ReactElement => {
 					onPress={() => navigation.navigate('Wallet')}
 				/>
 				<DrawerItem
-					icon={<HeartbeatIcon color="brand" width={24} height={24} />}
+					icon={<ActivityIcon color="brand" width={24} height={24} />}
 					label={t('drawer.activity')}
 					testID="DrawerActivity"
 					onPress={() => {
@@ -87,6 +91,18 @@ const DrawerContent = (props: DrawerContentComponentProps): ReactElement => {
 					label={t('drawer.widgets')}
 					testID="DrawerWidgets"
 					onPress={() => navigation.navigate('WidgetsSuggestions')}
+				/>
+				<DrawerItem
+					icon={<StorefrontIcon color="brand" width={24} height={24} />}
+					label={t('drawer.shop')}
+					testID="DrawerShop"
+					onPress={() => {
+						if (shopIntroSeen) {
+							navigation.navigate('ShopDiscover');
+						} else {
+							navigation.navigate('ShopIntro');
+						}
+					}}
 				/>
 				<DrawerItem
 					icon={<SettingsIcon color="brand" width={24} height={24} />}
