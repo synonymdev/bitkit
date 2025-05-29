@@ -3,6 +3,5 @@ module.exports = {
 		'preset-default',
 		'removeDimensions', // remove width and height attributes
 		'removeXMLNS', // remove xmlns attribute
-		'removeXlink', // remove xlink:href attribute
 	],
 };
