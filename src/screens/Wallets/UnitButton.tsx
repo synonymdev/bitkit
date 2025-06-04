@@ -40,7 +40,7 @@ const UnitButton = ({
 			<View style={styles.container}>
 				<SwitchIcon color={color} width={16.44} height={13.22} />
 				<Caption13Up style={styles.text} color={color}>
-					{unit === EUnit.BTC ? 'BTC' : fiatTicker}
+					{unit === EUnit.BTC ? 'Bitcoin' : fiatTicker}
 				</Caption13Up>
 			</View>
 		</TouchableHighlight>

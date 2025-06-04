@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { useTranslation } from 'react-i18next';
 import { TFactsWidgetOptions } from '../../store/types/widgets';
 import { CaptionB, Title } from '../../styles/text';
 import { getRandomFact } from '../../utils/widgets';

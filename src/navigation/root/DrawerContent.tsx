@@ -8,10 +8,10 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import AppStatus from '../../components/AppStatus';
-import GradientView from '../../components/GradientView';
 import { useAppSelector } from '../../hooks/redux';
 import { shopIntroSeenSelector } from '../../store/reselect/settings';
 import colors from '../../styles/colors';
+import { View as ThemedView } from '../../styles/components';
 import { Pressable } from '../../styles/components';
 import {
 	ActivityIcon,
@@ -55,19 +55,19 @@ const DrawerContent = (props: DrawerContentComponentProps): ReactElement => {
 	const shopIntroSeen = useAppSelector(shopIntroSeenSelector);
 
 	return (
-		<GradientView style={[styles.drawer]}>
+		<ThemedView style={[styles.drawer]} color="brand">
 			<DrawerContentScrollView
 				contentContainerStyle={styles.drawerContent}
 				bounces={false}
 				{...props}>
 				<DrawerItem
-					icon={<CoinsIcon color="brand" width={24} height={24} />}
+					icon={<CoinsIcon color="white" width={24} height={24} />}
 					label={t('drawer.wallet')}
 					testID="DrawerWallet"
 					onPress={() => navigation.navigate('Wallet')}
 				/>
 				<DrawerItem
-					icon={<ActivityIcon color="brand" width={24} height={24} />}
+					icon={<ActivityIcon color="white" width={24} height={24} />}
 					label={t('drawer.activity')}
 					testID="DrawerActivity"
 					onPress={() => {
@@ -75,25 +75,25 @@ const DrawerContent = (props: DrawerContentComponentProps): ReactElement => {
 					}}
 				/>
 				<DrawerItem
-					icon={<UsersIcon color="brand" width={24} height={24} />}
+					icon={<UsersIcon color="white" width={24} height={24} />}
 					label={t('drawer.contacts')}
 					testID="DrawerContacts"
 					onPress={() => navigation.navigate('Contacts')}
 				/>
 				<DrawerItem
-					icon={<UserSquareIcon color="brand" width={24} height={24} />}
+					icon={<UserSquareIcon color="white" width={24} height={24} />}
 					label={t('drawer.profile')}
 					testID="DrawerProfile"
 					onPress={() => navigation.navigate('Profile')}
 				/>
 				<DrawerItem
-					icon={<StackIcon color="brand" width={24} height={24} />}
+					icon={<StackIcon color="white" width={24} height={24} />}
 					label={t('drawer.widgets')}
 					testID="DrawerWidgets"
 					onPress={() => navigation.navigate('WidgetsSuggestions')}
 				/>
 				<DrawerItem
-					icon={<StorefrontIcon color="brand" width={24} height={24} />}
+					icon={<StorefrontIcon color="white" width={24} height={24} />}
 					label={t('drawer.shop')}
 					testID="DrawerShop"
 					onPress={() => {
@@ -105,7 +105,7 @@ const DrawerContent = (props: DrawerContentComponentProps): ReactElement => {
 					}}
 				/>
 				<DrawerItem
-					icon={<SettingsIcon color="brand" width={24} height={24} />}
+					icon={<SettingsIcon color="white" width={24} height={24} />}
 					label={t('drawer.settings')}
 					testID="DrawerSettings"
 					onPress={() => {
@@ -117,13 +117,14 @@ const DrawerContent = (props: DrawerContentComponentProps): ReactElement => {
 					style={styles.appStatus}
 					showText={true}
 					showReady={true}
+					color="black"
 					testID="DrawerAppStatus"
 					onPress={() => {
 						navigation.navigate('Settings', { screen: 'AppStatus' });
 					}}
 				/>
 			</DrawerContentScrollView>
-		</GradientView>
+		</ThemedView>
 	);
 };
 

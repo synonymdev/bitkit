@@ -17,11 +17,16 @@ import { ArrowsClockwiseIcon, PowerIcon, WarningIcon } from '../styles/icons';
 import { BodyMSB } from '../styles/text';
 import { IThemeColors } from '../styles/themes';
 
-type Props = PressableProps & { showText?: boolean; showReady?: boolean };
+type Props = PressableProps & {
+	showText?: boolean;
+	showReady?: boolean;
+	color?: keyof IThemeColors;
+};
 
 const AppStatus = ({
 	showText = false,
 	showReady = false,
+	color: overrideColor,
 	style,
 	testID,
 	onPress,
@@ -99,7 +104,7 @@ const AppStatus = ({
 		return 'red';
 	};
 
-	const color = appStatusColor();
+	const color = overrideColor || appStatusColor();
 
 	if (appStatus === 'ready' && !showReady) {
 		return null;
