@@ -147,7 +147,7 @@ const Contact = ({
 							{loading ? (
 								<ActivityIndicator />
 							) : (
-								<CoinsIcon height={22} width={22} color="brand" />
+								<CoinsIcon height={24} width={24} color="brand" />
 							)}
 						</IconButton>
 						<IconButton

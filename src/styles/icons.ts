@@ -342,8 +342,8 @@ export const CloudCheckIcon = styled(SvgXml).attrs((props) => ({
 
 export const CoinsIcon = styled(SvgXml).attrs((props) => ({
 	xml: coinsIcon(props.color ? props.theme.colors[props.color] : 'white'),
-	height: props.height ?? '12.8',
-	width: props.width ?? '12.8',
+	height: props.height ?? '24px',
+	width: props.width ?? '24px',
 }))<IconProps>((props) => ({
 	color: props.color ? props.theme.colors[props.color] : 'white',
 }));
