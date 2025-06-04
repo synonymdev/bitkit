@@ -399,12 +399,6 @@ export const giftPay = async (invoice: string): Promise<Result<IGift>> => {
 };
 
 export const giftOrder = async (code: string): Promise<Result<IGift>> => {
-	// Ensure we're properly connected to the Blocktank node prior to buying a channel.
-	const addPeersRes = await addPeers();
-	if (addPeersRes.isErr()) {
-		return err(i18n.t('other:bt_error_connect'));
-	}
-
 	// Get the node ID to use for the order.
 	const nodeIdResult = await getNodeId();
 	if (nodeIdResult.isErr()) {
