@@ -1,6 +1,7 @@
 import React, { memo, ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 
 import NavigationHeader from '../../components/NavigationHeader';
@@ -15,6 +16,7 @@ const ShopMain = ({
 }: RootStackScreenProps<'ShopMain'>): ReactElement => {
 	const { page } = route.params;
 	const { t } = useTranslation('other');
+	const insets = useSafeAreaInsets();
 
 	const baseUrl = 'https://embed.bitrefill.com';
 	// Payment method "bitcoin" gives a unified invoice
@@ -38,8 +40,9 @@ const ShopMain = ({
 
 			<View style={styles.content}>
 				<WebView
-					style={styles.webview}
+					containerStyle={[styles.webview, { marginBottom: insets.bottom }]}
 					source={{ uri }}
+					forceDarkOn={true}
 					onMessage={handleMessage}
 				/>
 			</View>
@@ -58,8 +61,6 @@ const styles = StyleSheet.create({
 	webview: {
 		backgroundColor: '#141716',
 		borderRadius: 8,
-		flex: 1,
-		marginBottom: 16,
 	},
 });
 

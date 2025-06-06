@@ -1151,6 +1151,23 @@ export const waitForLdk = async (): Promise<void> => {
 	});
 };
 
+export const waitForLdkPeers = async (): Promise<void> => {
+	await tryNTimes({
+		toTry: async () => {
+			const peersResult = await ldk.listPeers();
+			if (peersResult.isOk()) {
+				if (peersResult.value.length > 0) {
+					return ok(peersResult.value);
+				}
+				return err('no peers connected');
+			}
+			return err('error getting peers');
+		},
+		times: 5,
+		interval: 1000,
+	});
+};
+
 export const waitForLdkChannels = async (): Promise<void> => {
 	await tryNTimes({
 		toTry: async () => {

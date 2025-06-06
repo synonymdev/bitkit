@@ -5,14 +5,13 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import AppStatus from '../../components/AppStatus';
 import { useAppSelector } from '../../hooks/redux';
 import { shopIntroSeenSelector } from '../../store/reselect/settings';
 import colors from '../../styles/colors';
 import { View as ThemedView } from '../../styles/components';
-import { Pressable } from '../../styles/components';
 import {
 	ActivityIcon,
 	CoinsIcon,
@@ -40,8 +39,7 @@ const DrawerItem = ({
 }: DrawerItemProps): ReactElement => (
 	<Pressable
 		style={styles.drawerItem}
-		color="transparent"
-		hitSlop={{ horizontal: 16 }}
+		hitSlop={{ left: 16, right: 16 }}
 		testID={testID}
 		onPress={onPress}>
 		<View style={styles.drawerItemIcon}>{icon}</View>
@@ -134,6 +132,8 @@ const styles = StyleSheet.create({
 	},
 	drawerContent: {
 		flex: 1,
+		paddingStart: 16,
+		paddingEnd: 16,
 	},
 	drawerItem: {
 		borderBottomWidth: 1,

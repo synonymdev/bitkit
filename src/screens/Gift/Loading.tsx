@@ -23,6 +23,7 @@ import { showSheet } from '../../store/utils/ui';
 import { BodyM } from '../../styles/text';
 import { giftOrder, giftPay, openChannel } from '../../utils/blocktank';
 import { vibrate } from '../../utils/helpers';
+import { waitForLdkPeers } from '../../utils/lightning';
 
 const imageSrc = require('../../assets/illustrations/gift.png');
 
@@ -116,6 +117,8 @@ const Loading = ({
 
 			sheetRef.current?.close();
 		};
+
+		await waitForLdkPeers();
 
 		if (maxInboundCapacity >= amount) {
 			await getWithLiquidity();
