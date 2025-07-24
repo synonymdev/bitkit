@@ -51,6 +51,8 @@ export type TSettings = {
 	transferIntroSeen: boolean;
 	spendingIntroSeen: boolean;
 	savingsIntroSeen: boolean;
+	max_dust_htlc_exposure_type?: 'fixed_limit' | 'fee_rate_multiplier';
+	max_dust_htlc_exposure?: number;
 };
 
 export const settingsSlice = createSlice({
