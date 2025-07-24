@@ -483,6 +483,16 @@ export const setupLdk = async ({
 					negotiate_anchors_zero_fee_htlc_tx: true,
 				},
 				manually_accept_inbound_channels: true,
+				channel_config: {
+					...defaultUserConfig.channel_config,
+					...(getStore().settings.max_dust_htlc_exposure_type && {
+						max_dust_htlc_exposure_type:
+							getStore().settings.max_dust_htlc_exposure_type,
+					}),
+					...(getStore().settings.max_dust_htlc_exposure && {
+						max_dust_htlc_exposure: getStore().settings.max_dust_htlc_exposure,
+					}),
+				},
 			},
 			rapidGossipSyncUrl,
 			skipParamCheck: true, //Switch off for debugging LDK networking issues

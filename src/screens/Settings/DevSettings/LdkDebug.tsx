@@ -2,7 +2,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import lm from '@synonymdev/react-native-ldk';
 import React, { ReactElement, memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
 
@@ -13,17 +13,19 @@ import { useLightningBalance } from '../../../hooks/lightning';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { useSheetRef } from '../../../sheets/SheetRefsProvider';
 import { openChannelsSelector } from '../../../store/reselect/lightning';
+import { settingsSelector } from '../../../store/reselect/settings';
 import {
 	selectedNetworkSelector,
 	selectedWalletSelector,
 } from '../../../store/reselect/wallet';
 import { removeLightningPeer } from '../../../store/slices/lightning';
+import { updateSettings } from '../../../store/slices/settings';
 import {
 	createLightningInvoice,
 	savePeer,
 } from '../../../store/utils/lightning';
 import { TextInput, View as ThemedView } from '../../../styles/components';
-import { Caption13Up } from '../../../styles/text';
+import { BodyM, Caption13Up } from '../../../styles/text';
 import {
 	addPeer,
 	getNodeId,
@@ -53,6 +55,15 @@ const LdkDebug = (): ReactElement => {
 	const selectedWallet = useAppSelector(selectedWalletSelector);
 	const selectedNetwork = useAppSelector(selectedNetworkSelector);
 	const openChannels = useAppSelector(openChannelsSelector);
+	const settings = useAppSelector(settingsSelector);
+
+	// Max Dust HTLC Exposure form state
+	const [selectedType, setSelectedType] = useState<
+		'fixed_limit' | 'fee_rate_multiplier' | null
+	>(settings?.max_dust_htlc_exposure_type ?? null);
+	const [exposureValue, setExposureValue] = useState<string>(
+		settings?.max_dust_htlc_exposure?.toString() ?? '1000',
+	);
 
 	const onNodeId = async (): Promise<void> => {
 		const nodeId = await getNodeId();
@@ -435,6 +446,97 @@ const LdkDebug = (): ReactElement => {
 					</>
 				)}
 
+				<Caption13Up style={styles.sectionTitle} color="secondary">
+					Max Dust HTLC Exposure
+				</Caption13Up>
+
+				{/* Radio buttons for type selection */}
+				<TouchableOpacity
+					style={styles.radioOption}
+					onPress={() =>
+						setSelectedType(
+							selectedType === 'fixed_limit' ? null : 'fixed_limit',
+						)
+					}>
+					<View
+						style={[
+							styles.radioButton,
+							selectedType === 'fixed_limit' && styles.radioButtonSelected,
+						]}
+					/>
+					<BodyM style={styles.radioLabel}>Fixed Limit (sats)</BodyM>
+				</TouchableOpacity>
+
+				<TouchableOpacity
+					style={styles.radioOption}
+					onPress={() =>
+						setSelectedType(
+							selectedType === 'fee_rate_multiplier'
+								? null
+								: 'fee_rate_multiplier',
+						)
+					}>
+					<View
+						style={[
+							styles.radioButton,
+							selectedType === 'fee_rate_multiplier' &&
+								styles.radioButtonSelected,
+						]}
+					/>
+					<BodyM style={styles.radioLabel}>Fee Rate Multiplier</BodyM>
+				</TouchableOpacity>
+
+				{/* Number input - only show when a type is selected */}
+				{selectedType && (
+					<TextInput
+						style={styles.textInput}
+						value={exposureValue}
+						onChangeText={setExposureValue}
+						placeholder={selectedType === 'fixed_limit' ? '1000' : '10'}
+						keyboardType="numeric"
+						autoCapitalize="none"
+						autoComplete="off"
+						autoCorrect={false}
+					/>
+				)}
+
+				{/* Action buttons */}
+				<View style={styles.buttonRow}>
+					<Button
+						style={[styles.button, styles.buttonHalf]}
+						text="Set max dust"
+						disabled={!selectedType || !exposureValue}
+						onPress={(): void => {
+							const numValue = Number.parseInt(exposureValue, 10);
+							if (!Number.isNaN(numValue) && selectedType) {
+								dispatch(
+									updateSettings({
+										max_dust_htlc_exposure_type: selectedType,
+										max_dust_htlc_exposure: numValue,
+									}),
+								);
+							}
+						}}
+					/>
+					{(settings?.max_dust_htlc_exposure_type ||
+						settings?.max_dust_htlc_exposure) && (
+						<Button
+							style={[styles.button, styles.buttonHalf]}
+							text="Reset max dust"
+							onPress={(): void => {
+								setSelectedType(null);
+								setExposureValue('1000');
+								dispatch(
+									updateSettings({
+										max_dust_htlc_exposure_type: undefined,
+										max_dust_htlc_exposure: undefined,
+									}),
+								);
+							}}
+						/>
+					)}
+				</View>
+
 				<SafeAreaInset type="bottom" minPadding={16} />
 			</ScrollView>
 		</ThemedView>
@@ -466,6 +568,35 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		marginTop: 8,
+	},
+	radioOption: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginTop: 12,
+	},
+	radioButton: {
+		width: 20,
+		height: 20,
+		borderRadius: 10,
+		borderWidth: 2,
+		borderColor: '#666',
+		marginRight: 12,
+	},
+	radioButtonSelected: {
+		borderColor: '#FF6600',
+		backgroundColor: '#FF6600',
+	},
+	radioLabel: {
+		flex: 1,
+	},
+	buttonRow: {
+		flexDirection: 'row',
+		marginTop: 16,
+		gap: 8,
+	},
+	buttonHalf: {
+		flex: 1,
+		marginTop: 0,
 	},
 });
 
