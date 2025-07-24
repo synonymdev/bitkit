@@ -464,7 +464,7 @@ const LdkDebug = (): ReactElement => {
 							selectedType === 'fixed_limit' && styles.radioButtonSelected,
 						]}
 					/>
-					<BodyM style={styles.radioLabel}>Fixed Limit (sats)</BodyM>
+					<BodyM style={styles.radioLabel}>Fixed Limit (msats)</BodyM>
 				</TouchableOpacity>
 
 				<TouchableOpacity
