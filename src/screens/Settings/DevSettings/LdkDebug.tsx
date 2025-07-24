@@ -6,6 +6,7 @@ import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
 
+import KeyboardAvoidingView from '../../../components/KeyboardAvoidingView';
 import NavigationHeader from '../../../components/NavigationHeader';
 import SafeAreaInset from '../../../components/SafeAreaInset';
 import Button from '../../../components/buttons/Button';
@@ -327,218 +328,226 @@ const LdkDebug = (): ReactElement => {
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
 			<NavigationHeader title="LDK Debug" />
-			<ScrollView contentContainerStyle={styles.content}>
-				<Caption13Up color="secondary">Add Peer</Caption13Up>
-				<TextInput
-					style={styles.textInput}
-					autoCapitalize="none"
-					autoComplete="off"
-					autoCorrect={false}
-					autoFocus={false}
-					value={peer}
-					placeholder="publicKey@ip:port"
-					multiline={true}
-					blurOnSubmit
-					returnKeyType="done"
-					testID="AddPeerInput"
-					onChangeText={setPeer}
-				/>
-				<Button
-					style={styles.button}
-					text={
-						peer ? 'Add Lightning Peer' : 'Paste Lightning Peer From Clipboard'
-					}
-					testID="AddPeerButton"
-					onPress={onAddPeer}
-				/>
-
-				<Caption13Up style={styles.sectionTitle} color="secondary">
-					Debug
-				</Caption13Up>
-				<Button
-					style={styles.button}
-					text="Get Node ID"
-					testID="CopyNodeId"
-					onPress={onNodeId}
-				/>
-				<Button
-					style={styles.button}
-					text="Refresh LDK"
-					loading={refreshingLdk}
-					testID="RefreshLDK"
-					onPress={onRefreshLdk}
-				/>
-				<Button
-					style={styles.button}
-					text="Restart LDK"
-					loading={restartingLdk}
-					testID="RestartLDK"
-					onPress={onRestartLdk}
-				/>
-				<Button style={styles.button} text="List Peers" onPress={onListPeers} />
-				<Button
-					style={styles.button}
-					text="Disconnect Peers"
-					onPress={onDisconnectPeers}
-				/>
-				<Button
-					style={styles.button}
-					text="Remove Unused Peers"
-					onPress={onRemoveUnusedPeers}
-				/>
-				<Button
-					style={styles.button}
-					text="Rebroadcast LDK Txs"
-					loading={rebroadcastingLdk}
-					testID="RebroadcastLDKTXS"
-					onPress={onRebroadcastLdkTxs}
-				/>
-				<Button
-					style={styles.button}
-					text="Spend Stuck Outputs"
-					loading={spendingStuckOutputs}
-					onPress={onSpendStuckOutputs}
-				/>
-				<Button
-					style={styles.button}
-					text="Force Close Channels"
-					onPress={onForceCloseChannels}
-				/>
-				<Button
-					style={styles.button}
-					text="Spend outputs from force close"
-					loading={spendingStuckOutputs}
-					onPress={onSpendOutputsFromForceClose}
-				/>
-				<Button
-					style={styles.button}
-					text="Export Logs"
-					onPress={onExportLogs}
-				/>
-				<Button
-					style={styles.button}
-					text="Save Logs"
-					onPress={onSaveLogs}
-					testID="SaveLogs"
-				/>
-
-				{openChannels.length > 0 && (
-					<>
-						<Button
-							style={styles.button}
-							text="Create Invoice: 100 sats"
-							disabled={remoteBalance < 100}
-							onPress={() => onCreateInvoice(100)}
-						/>
-						<Button
-							style={styles.button}
-							text="Create Invoice: 5000 sats"
-							disabled={remoteBalance < 5000}
-							onPress={() => onCreateInvoice(5000)}
-						/>
-						<Button
-							style={styles.button}
-							text="Pay Invoice From Clipboard"
-							loading={payingInvoice}
-							disabled={localBalance <= 0}
-							onPress={onPayInvoiceFromClipboard}
-						/>
-					</>
-				)}
-
-				<Caption13Up style={styles.sectionTitle} color="secondary">
-					Max Dust HTLC Exposure
-				</Caption13Up>
-
-				{/* Radio buttons for type selection */}
-				<TouchableOpacity
-					style={styles.radioOption}
-					onPress={() =>
-						setSelectedType(
-							selectedType === 'fixed_limit' ? null : 'fixed_limit',
-						)
-					}>
-					<View
-						style={[
-							styles.radioButton,
-							selectedType === 'fixed_limit' && styles.radioButtonSelected,
-						]}
-					/>
-					<BodyM style={styles.radioLabel}>Fixed Limit (msats)</BodyM>
-				</TouchableOpacity>
-
-				<TouchableOpacity
-					style={styles.radioOption}
-					onPress={() =>
-						setSelectedType(
-							selectedType === 'fee_rate_multiplier'
-								? null
-								: 'fee_rate_multiplier',
-						)
-					}>
-					<View
-						style={[
-							styles.radioButton,
-							selectedType === 'fee_rate_multiplier' &&
-								styles.radioButtonSelected,
-						]}
-					/>
-					<BodyM style={styles.radioLabel}>Fee Rate Multiplier</BodyM>
-				</TouchableOpacity>
-
-				{/* Number input - only show when a type is selected */}
-				{selectedType && (
+			<KeyboardAvoidingView style={styles.content}>
+				<ScrollView contentContainerStyle={styles.scrollContent}>
+					<Caption13Up color="secondary">Add Peer</Caption13Up>
 					<TextInput
 						style={styles.textInput}
-						value={exposureValue}
-						onChangeText={setExposureValue}
-						placeholder={selectedType === 'fixed_limit' ? '1000' : '10'}
-						keyboardType="numeric"
 						autoCapitalize="none"
 						autoComplete="off"
 						autoCorrect={false}
+						autoFocus={false}
+						value={peer}
+						placeholder="publicKey@ip:port"
+						multiline={true}
+						blurOnSubmit
+						returnKeyType="done"
+						testID="AddPeerInput"
+						onChangeText={setPeer}
 					/>
-				)}
-
-				{/* Action buttons */}
-				<View style={styles.buttonRow}>
 					<Button
-						style={[styles.button, styles.buttonHalf]}
-						text="Set max dust"
-						disabled={!selectedType || !exposureValue}
-						onPress={(): void => {
-							const numValue = Number.parseInt(exposureValue, 10);
-							if (!Number.isNaN(numValue) && selectedType) {
-								dispatch(
-									updateSettings({
-										max_dust_htlc_exposure_type: selectedType,
-										max_dust_htlc_exposure: numValue,
-									}),
-								);
-							}
-						}}
+						style={styles.button}
+						text={
+							peer
+								? 'Add Lightning Peer'
+								: 'Paste Lightning Peer From Clipboard'
+						}
+						testID="AddPeerButton"
+						onPress={onAddPeer}
 					/>
-					{(settings?.max_dust_htlc_exposure_type ||
-						settings?.max_dust_htlc_exposure) && (
-						<Button
-							style={[styles.button, styles.buttonHalf]}
-							text="Reset max dust"
-							onPress={(): void => {
-								setSelectedType(null);
-								setExposureValue('1000');
-								dispatch(
-									updateSettings({
-										max_dust_htlc_exposure_type: undefined,
-										max_dust_htlc_exposure: undefined,
-									}),
-								);
-							}}
+
+					<Caption13Up style={styles.sectionTitle} color="secondary">
+						Debug
+					</Caption13Up>
+					<Button
+						style={styles.button}
+						text="Get Node ID"
+						testID="CopyNodeId"
+						onPress={onNodeId}
+					/>
+					<Button
+						style={styles.button}
+						text="Refresh LDK"
+						loading={refreshingLdk}
+						testID="RefreshLDK"
+						onPress={onRefreshLdk}
+					/>
+					<Button
+						style={styles.button}
+						text="Restart LDK"
+						loading={restartingLdk}
+						testID="RestartLDK"
+						onPress={onRestartLdk}
+					/>
+					<Button
+						style={styles.button}
+						text="List Peers"
+						onPress={onListPeers}
+					/>
+					<Button
+						style={styles.button}
+						text="Disconnect Peers"
+						onPress={onDisconnectPeers}
+					/>
+					<Button
+						style={styles.button}
+						text="Remove Unused Peers"
+						onPress={onRemoveUnusedPeers}
+					/>
+					<Button
+						style={styles.button}
+						text="Rebroadcast LDK Txs"
+						loading={rebroadcastingLdk}
+						testID="RebroadcastLDKTXS"
+						onPress={onRebroadcastLdkTxs}
+					/>
+					<Button
+						style={styles.button}
+						text="Spend Stuck Outputs"
+						loading={spendingStuckOutputs}
+						onPress={onSpendStuckOutputs}
+					/>
+					<Button
+						style={styles.button}
+						text="Force Close Channels"
+						onPress={onForceCloseChannels}
+					/>
+					<Button
+						style={styles.button}
+						text="Spend outputs from force close"
+						loading={spendingStuckOutputs}
+						onPress={onSpendOutputsFromForceClose}
+					/>
+					<Button
+						style={styles.button}
+						text="Export Logs"
+						onPress={onExportLogs}
+					/>
+					<Button
+						style={styles.button}
+						text="Save Logs"
+						onPress={onSaveLogs}
+						testID="SaveLogs"
+					/>
+
+					{openChannels.length > 0 && (
+						<>
+							<Button
+								style={styles.button}
+								text="Create Invoice: 100 sats"
+								disabled={remoteBalance < 100}
+								onPress={() => onCreateInvoice(100)}
+							/>
+							<Button
+								style={styles.button}
+								text="Create Invoice: 5000 sats"
+								disabled={remoteBalance < 5000}
+								onPress={() => onCreateInvoice(5000)}
+							/>
+							<Button
+								style={styles.button}
+								text="Pay Invoice From Clipboard"
+								loading={payingInvoice}
+								disabled={localBalance <= 0}
+								onPress={onPayInvoiceFromClipboard}
+							/>
+						</>
+					)}
+
+					<Caption13Up style={styles.sectionTitle} color="secondary">
+						Max Dust HTLC Exposure
+					</Caption13Up>
+
+					{/* Radio buttons for type selection */}
+					<TouchableOpacity
+						style={styles.radioOption}
+						onPress={() =>
+							setSelectedType(
+								selectedType === 'fixed_limit' ? null : 'fixed_limit',
+							)
+						}>
+						<View
+							style={[
+								styles.radioButton,
+								selectedType === 'fixed_limit' && styles.radioButtonSelected,
+							]}
+						/>
+						<BodyM style={styles.radioLabel}>Fixed Limit (msats)</BodyM>
+					</TouchableOpacity>
+
+					<TouchableOpacity
+						style={styles.radioOption}
+						onPress={() =>
+							setSelectedType(
+								selectedType === 'fee_rate_multiplier'
+									? null
+									: 'fee_rate_multiplier',
+							)
+						}>
+						<View
+							style={[
+								styles.radioButton,
+								selectedType === 'fee_rate_multiplier' &&
+									styles.radioButtonSelected,
+							]}
+						/>
+						<BodyM style={styles.radioLabel}>Fee Rate Multiplier</BodyM>
+					</TouchableOpacity>
+
+					{/* Number input - only show when a type is selected */}
+					{selectedType && (
+						<TextInput
+							style={styles.textInput}
+							value={exposureValue}
+							onChangeText={setExposureValue}
+							placeholder={selectedType === 'fixed_limit' ? '1000' : '10'}
+							keyboardType="numeric"
+							autoCapitalize="none"
+							autoComplete="off"
+							autoCorrect={false}
 						/>
 					)}
-				</View>
 
-				<SafeAreaInset type="bottom" minPadding={16} />
-			</ScrollView>
+					{/* Action buttons */}
+					<View style={styles.buttonRow}>
+						<Button
+							style={[styles.button, styles.buttonHalf]}
+							text="Set max dust"
+							disabled={!selectedType || !exposureValue}
+							onPress={(): void => {
+								const numValue = Number.parseInt(exposureValue, 10);
+								if (!Number.isNaN(numValue) && selectedType) {
+									dispatch(
+										updateSettings({
+											max_dust_htlc_exposure_type: selectedType,
+											max_dust_htlc_exposure: numValue,
+										}),
+									);
+								}
+							}}
+						/>
+						{(settings?.max_dust_htlc_exposure_type ||
+							settings?.max_dust_htlc_exposure) && (
+							<Button
+								style={[styles.button, styles.buttonHalf]}
+								text="Reset max dust"
+								onPress={(): void => {
+									setSelectedType(null);
+									setExposureValue('1000');
+									dispatch(
+										updateSettings({
+											max_dust_htlc_exposure_type: undefined,
+											max_dust_htlc_exposure: undefined,
+										}),
+									);
+								}}
+							/>
+						)}
+					</View>
+
+					<SafeAreaInset type="bottom" minPadding={16} />
+				</ScrollView>
+			</KeyboardAvoidingView>
 		</ThemedView>
 	);
 };
@@ -548,6 +557,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	content: {
+		flex: 1,
+	},
+	scrollContent: {
 		flexGrow: 1,
 		paddingHorizontal: 16,
 	},
