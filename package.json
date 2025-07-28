@@ -58,7 +58,7 @@
     "@synonymdev/web-relay": "1.0.7",
     "beignet": "0.0.54",
     "bip21": "2.0.3",
-    "bip32": "4.0.0",
+    "bip32": "5.0.0-rc.0",
     "bitcoin-address-validation": "2.2.3",
     "bitcoin-units": "0.3.0",
     "bitcoinjs-lib": "6.1.7",
