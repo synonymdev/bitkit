@@ -10,11 +10,11 @@ concurrency:
 
 env:
   E2E_TESTS: 1 # build without transform-remove-console babel plugin
-  DEBUG: 'lnurl* lnurl server'
+  DEBUG: "lnurl* lnurl server"
 
 jobs:
   e2e:
-    runs-on: self-hosted
+    runs-on: [self-hosted, macOS]
 
     steps:
       - name: Checkout
