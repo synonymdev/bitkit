@@ -164,6 +164,9 @@
     "rn-electrum-client": "^0.0.22",
     "typescript": "5.7.3"
   },
+  "resolutions": {
+    "tiny-secp256k1": "1.1.7"
+  },
   "react-native": {
     "net": "react-native-tcp-socket",
     "tls": "react-native-tcp-socket"
