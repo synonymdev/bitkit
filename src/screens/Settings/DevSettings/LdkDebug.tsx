@@ -2,7 +2,13 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import lm, { ldk } from '@synonymdev/react-native-ldk';
 import React, { ReactElement, memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+	Alert,
+	ScrollView,
+	StyleSheet,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
 
@@ -53,6 +59,8 @@ const LdkDebug = (): ReactElement => {
 	const [rebroadcastingLdk, setRebroadcastingLdk] = useState(false);
 	const [spendingStuckOutputs, setSpendingStuckOutputs] = useState(false);
 	const [settingConfirmedTx, setSettingConfirmedTx] = useState(false);
+	const [runningComprehensiveDebug, setRunningComprehensiveDebug] =
+		useState(false);
 
 	const { localBalance, remoteBalance } = useLightningBalance();
 	const selectedWallet = useAppSelector(selectedWalletSelector);
@@ -446,7 +454,9 @@ const LdkDebug = (): ReactElement => {
 				showToast({
 					type: 'success',
 					title: 'Transaction Confirmed',
-					description: `Transaction ${txid.slice(0, 8)}... set as confirmed at height ${tx.status.block_height}`,
+					description: `Transaction ${txid.slice(0, 8)}... set as confirmed at height ${
+						tx.status.block_height
+					}`,
 				});
 			}
 		} catch (error) {
@@ -459,6 +469,116 @@ const LdkDebug = (): ReactElement => {
 		} finally {
 			setSettingConfirmedTx(false);
 		}
+	};
+
+	const sleep = (ms: number) =>
+		new Promise((resolve) => setTimeout(resolve, ms));
+
+	const onComprehensiveDebug = async (): Promise<void> => {
+		Alert.alert(
+			'Hard Refresh & Recovery',
+			'This will perform a hard refresh of LDK and attempt to recover any stuck funds. This can take up to 2 minutes.\n\nPlease keep the app open on this screen until complete.',
+			[
+				{
+					text: 'Cancel',
+					style: 'cancel',
+				},
+				{
+					text: 'Continue',
+					onPress: async () => {
+						setRunningComprehensiveDebug(true);
+						let currentStep = '';
+
+						try {
+							// Step 1: Refresh LDK
+							currentStep = 'Refreshing LDK';
+							showToast({
+								type: 'info',
+								title: 'Step 1/5',
+								description: currentStep,
+							});
+							await refreshLdk({ selectedWallet, selectedNetwork });
+
+							await sleep(2000);
+
+							// Step 2: Rebroadcast LDK Txs
+							currentStep = 'Rebroadcasting LDK Transactions';
+							showToast({
+								type: 'info',
+								title: 'Step 2/5',
+								description: currentStep,
+							});
+							await rebroadcastAllKnownTransactions();
+
+							await sleep(2000);
+
+							// Step 3: Spend Stuck Outputs
+							currentStep = 'Spending Stuck Outputs';
+							showToast({
+								type: 'info',
+								title: 'Step 3/5',
+								description: currentStep,
+							});
+							const stuckOutputsRes = await recoverOutputs();
+							if (stuckOutputsRes.isOk()) {
+								showToast({
+									type: 'info',
+									title: 'Stuck Outputs',
+									description: stuckOutputsRes.value,
+								});
+							}
+
+							await sleep(2000);
+
+							// Step 4: Spend Outputs from Force Close
+							currentStep = 'Spending Outputs from Force Close';
+							showToast({
+								type: 'info',
+								title: 'Step 4/5',
+								description: currentStep,
+							});
+							const forceCloseRes = await recoverOutputsFromForceClose();
+							if (forceCloseRes.isOk()) {
+								showToast({
+									type: 'info',
+									title: 'Force Close Outputs',
+									description: forceCloseRes.value,
+								});
+							}
+
+							await sleep(2000);
+
+							// Step 5: Final Refresh LDK
+							currentStep = 'Final LDK Refresh';
+							showToast({
+								type: 'info',
+								title: 'Step 5/5',
+								description: currentStep,
+							});
+							await refreshLdk({ selectedWallet, selectedNetwork });
+
+							// Success
+							showToast({
+								type: 'success',
+								title: 'Hard Refresh & Recovery Complete',
+								description: 'All operations completed successfully',
+							});
+						} catch (error) {
+							showToast({
+								type: 'error',
+								title: `Failed at: ${currentStep}`,
+								description:
+									error instanceof Error
+										? error.message
+										: 'Unknown error occurred',
+							});
+						} finally {
+							setRunningComprehensiveDebug(false);
+						}
+					},
+				},
+			],
+		);
 	};
 
 	return (
@@ -504,6 +624,7 @@ const LdkDebug = (): ReactElement => {
 						autoFocus={false}
 						value={txid}
 						placeholder="Transaction ID"
+						blurOnSubmit
 						returnKeyType="done"
 						testID="TxidInput"
 						onChangeText={setTxid}
@@ -521,6 +642,13 @@ const LdkDebug = (): ReactElement => {
 					<Caption13Up style={styles.sectionTitle} color="secondary">
 						Debug
 					</Caption13Up>
+					<Button
+						style={styles.button}
+						text="Hard Refresh & Recovery"
+						loading={runningComprehensiveDebug}
+						testID="HardRefreshRecovery"
+						onPress={onComprehensiveDebug}
+					/>
 					<Button
 						style={styles.button}
 						text="Get Node ID"
