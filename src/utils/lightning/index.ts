@@ -355,7 +355,7 @@ export const getFees: TGetFees = async () => {
 		nonAnchorChannelFee: fees.normal,
 		channelCloseMinimum: fees.minimum,
 		outputSpendingFee: fees.fast,
-		maximumFeeEstimate: fees.fast,
+		maximumFeeEstimate: fees.fast * 10, //To avoid htlc_minimum_msat limit issue when making payments until LND fixes this https://github.com/lightningnetwork/lnd/pull/8876#issuecomment-2665969183
 		urgentOnChainSweep: fees.fast,
 	};
 };

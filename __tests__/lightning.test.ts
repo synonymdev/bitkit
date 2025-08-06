@@ -56,7 +56,7 @@ describe('getFees', () => {
 			nonAnchorChannelFee: 110,
 			channelCloseMinimum: 108,
 			outputSpendingFee: 111,
-			maximumFeeEstimate: 111,
+			maximumFeeEstimate: 111 * 10,
 			urgentOnChainSweep: 111,
 		});
 		expect(fetch).toHaveBeenCalledTimes(2);
@@ -87,7 +87,7 @@ describe('getFees', () => {
 			nonAnchorChannelFee: 998,
 			channelCloseMinimum: 997,
 			outputSpendingFee: 999,
-			maximumFeeEstimate: 999,
+			maximumFeeEstimate: 999 * 10,
 			urgentOnChainSweep: 999,
 		});
 		expect(fetch).toHaveBeenCalledTimes(3);
