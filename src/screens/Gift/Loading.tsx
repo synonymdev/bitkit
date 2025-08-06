@@ -44,6 +44,8 @@ const Loading = ({
 			if (orderResult.isErr()) {
 				if (orderResult.error.message.includes('GIFT_CODE_ALREADY_USED')) {
 					navigation.navigate('Used', { amount });
+				} else if (orderResult.error.message.includes('GIFT_CODE_USED_UP')) {
+					navigation.navigate('UsedUp');
 				} else {
 					navigation.navigate('Error');
 				}
@@ -108,6 +110,8 @@ const Loading = ({
 			if (result.isErr()) {
 				if (result.error.message.includes('GIFT_CODE_ALREADY_USED')) {
 					navigation.navigate('Used', { amount });
+				} else if (result.error.message.includes('GIFT_CODE_USED_UP')) {
+					navigation.navigate('UsedUp');
 				} else {
 					navigation.navigate('Error');
 				}

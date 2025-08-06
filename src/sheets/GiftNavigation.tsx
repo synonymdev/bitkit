@@ -10,6 +10,7 @@ import BottomSheet from '../components/BottomSheet';
 import ErrorScreen from '../screens/Gift/Error';
 import Loading from '../screens/Gift/Loading';
 import Used from '../screens/Gift/Used';
+import UsedUp from '../screens/Gift/UsedUp';
 import { SheetsParamList } from '../store/types/ui';
 import BottomSheetNavigationContainer from './BottomSheetNavigationContainer';
 
@@ -18,6 +19,7 @@ export type GiftNavigationProp = NativeStackNavigationProp<GiftStackParamList>;
 export type GiftStackParamList = {
 	Loading: { code: string; amount: number };
 	Used: { amount: number };
+	UsedUp: undefined;
 	Error: undefined;
 };
 
@@ -45,6 +47,7 @@ const SheetContent = ({
 						initialParams={{ code, amount }}
 					/>
 					<Stack.Screen name="Used" component={Used} />
+					<Stack.Screen name="UsedUp" component={UsedUp} />
 					<Stack.Screen name="Error" component={ErrorScreen} />
 				</Stack.Navigator>
 			</BottomSheetNavigationContainer>
