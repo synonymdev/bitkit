@@ -1,8 +1,14 @@
 import Clipboard from '@react-native-clipboard/clipboard';
-import lm from '@synonymdev/react-native-ldk';
+import lm, { ldk } from '@synonymdev/react-native-ldk';
 import React, { ReactElement, memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+	Alert,
+	ScrollView,
+	StyleSheet,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
 
@@ -46,11 +52,15 @@ const LdkDebug = (): ReactElement => {
 	const dispatch = useAppDispatch();
 	const sheetRef = useSheetRef('forceTransfer');
 	const [peer, setPeer] = useState('');
+	const [txid, setTxid] = useState('');
 	const [payingInvoice, setPayingInvoice] = useState(false);
 	const [refreshingLdk, setRefreshingLdk] = useState(false);
 	const [restartingLdk, setRestartingLdk] = useState(false);
 	const [rebroadcastingLdk, setRebroadcastingLdk] = useState(false);
 	const [spendingStuckOutputs, setSpendingStuckOutputs] = useState(false);
+	const [settingConfirmedTx, setSettingConfirmedTx] = useState(false);
+	const [runningComprehensiveDebug, setRunningComprehensiveDebug] =
+		useState(false);
 
 	const { localBalance, remoteBalance } = useLightningBalance();
 	const selectedWallet = useAppSelector(selectedWalletSelector);
@@ -324,6 +334,253 @@ const LdkDebug = (): ReactElement => {
 		setPayingInvoice(false);
 	};
 
+	const onSetConfirmedTx = async (): Promise<void> => {
+		if (!txid) {
+			// Attempt to grab and set txid string from clipboard.
+			const clipboardStr = await Clipboard.getString();
+			setTxid(clipboardStr);
+			return;
+		}
+
+		setSettingConfirmedTx(true);
+		try {
+			// Get network endpoint
+			const baseUrl = 'https://mempool.space/api';
+
+			// Fetch transaction details
+			const txResponse = await fetch(`${baseUrl}/tx/${txid.trim()}`);
+			if (!txResponse.ok) {
+				showToast({
+					type: 'error',
+					title: 'Transaction Not Found',
+					description: 'Unable to find transaction on mempool.space',
+				});
+				setSettingConfirmedTx(false);
+				return;
+			}
+
+			const tx = await txResponse.json();
+
+			// Check if transaction is confirmed
+			if (!tx.status?.confirmed || !tx.status?.block_height) {
+				showToast({
+					type: 'error',
+					title: 'Transaction Not Confirmed',
+					description: 'Transaction is not yet confirmed on the blockchain',
+				});
+				setSettingConfirmedTx(false);
+				return;
+			}
+
+			// Fetch transaction hex data
+			const txHexResponse = await fetch(`${baseUrl}/tx/${txid.trim()}/hex`);
+			if (!txHexResponse.ok) {
+				showToast({
+					type: 'error',
+					title: 'Transaction Hex Error',
+					description: 'Unable to fetch transaction hex data',
+				});
+				setSettingConfirmedTx(false);
+				return;
+			}
+
+			const txHex = await txHexResponse.text();
+
+			// Fetch block header
+			const blockHash = tx.status.block_hash;
+			const blockResponse = await fetch(`${baseUrl}/block/${blockHash}/header`);
+			if (!blockResponse.ok) {
+				showToast({
+					type: 'error',
+					title: 'Block Header Error',
+					description: 'Unable to fetch block header',
+				});
+				setSettingConfirmedTx(false);
+				return;
+			}
+
+			const blockHeader = await blockResponse.text();
+
+			// Validate all required parameters
+			if (!blockHeader) {
+				showToast({
+					type: 'error',
+					title: 'Missing Block Header',
+					description: 'Block header is empty or invalid',
+				});
+				setSettingConfirmedTx(false);
+				return;
+			}
+
+			if (!txHex) {
+				showToast({
+					type: 'error',
+					title: 'Missing Transaction Data',
+					description: 'Transaction hex data is missing',
+				});
+				setSettingConfirmedTx(false);
+				return;
+			}
+
+			if (!tx.status.block_height) {
+				showToast({
+					type: 'error',
+					title: 'Missing Block Height',
+					description: 'Block height is missing or invalid',
+				});
+				setSettingConfirmedTx(false);
+				return;
+			}
+
+			// Call ldk.setTxConfirmed
+			const setTxConfirmedRes = await ldk.setTxConfirmed({
+				header: blockHeader,
+				txData: [
+					{
+						transaction: txHex,
+						pos: tx.status.block_time || 0, // Using block_time as position fallback
+					},
+				],
+				height: tx.status.block_height,
+			});
+
+			if (setTxConfirmedRes.isErr()) {
+				showToast({
+					type: 'error',
+					title: 'Set Confirmed Failed',
+					description: setTxConfirmedRes.error.message,
+				});
+			} else {
+				showToast({
+					type: 'success',
+					title: 'Transaction Confirmed',
+					description: `Transaction ${txid.slice(0, 8)}... set as confirmed at height ${
+						tx.status.block_height
+					}`,
+				});
+			}
+		} catch (error) {
+			showToast({
+				type: 'error',
+				title: 'Error',
+				description:
+					error instanceof Error ? error.message : 'Unknown error occurred',
+			});
+		} finally {
+			setSettingConfirmedTx(false);
+		}
+	};
+
+	const sleep = (ms: number) =>
+		new Promise((resolve) => setTimeout(resolve, ms));
+
+	const onComprehensiveDebug = async (): Promise<void> => {
+		Alert.alert(
+			'Hard Refresh & Recovery',
+			'This will perform a hard refresh of LDK and attempt to recover any stuck funds. This can take up to 2 minutes.\n\nPlease keep the app open on this screen until complete.',
+			[
+				{
+					text: 'Cancel',
+					style: 'cancel',
+				},
+				{
+					text: 'Continue',
+					onPress: async () => {
+						setRunningComprehensiveDebug(true);
+						let currentStep = '';
+
+						try {
+							// Step 1: Refresh LDK
+							currentStep = 'Refreshing LDK';
+							showToast({
+								type: 'info',
+								title: 'Step 1/5',
+								description: currentStep,
+							});
+							await refreshLdk({ selectedWallet, selectedNetwork });
+
+							await sleep(2000);
+
+							// Step 2: Rebroadcast LDK Txs
+							currentStep = 'Rebroadcasting LDK Transactions';
+							showToast({
+								type: 'info',
+								title: 'Step 2/5',
+								description: currentStep,
+							});
+							await rebroadcastAllKnownTransactions();
+
+							await sleep(2000);
+
+							// Step 3: Spend Stuck Outputs
+							currentStep = 'Spending Stuck Outputs';
+							showToast({
+								type: 'info',
+								title: 'Step 3/5',
+								description: currentStep,
+							});
+							const stuckOutputsRes = await recoverOutputs();
+							if (stuckOutputsRes.isOk()) {
+								showToast({
+									type: 'info',
+									title: 'Stuck Outputs',
+									description: stuckOutputsRes.value,
+								});
+							}
+
+							await sleep(2000);
+
+							// Step 4: Spend Outputs from Force Close
+							currentStep = 'Spending Outputs from Force Close';
+							showToast({
+								type: 'info',
+								title: 'Step 4/5',
+								description: currentStep,
+							});
+							const forceCloseRes = await recoverOutputsFromForceClose();
+							if (forceCloseRes.isOk()) {
+								showToast({
+									type: 'info',
+									title: 'Force Close Outputs',
+									description: forceCloseRes.value,
+								});
+							}
+
+							await sleep(2000);
+
+							// Step 5: Final Refresh LDK
+							currentStep = 'Final LDK Refresh';
+							showToast({
+								type: 'info',
+								title: 'Step 5/5',
+								description: currentStep,
+							});
+							await refreshLdk({ selectedWallet, selectedNetwork });
+
+							// Success
+							showToast({
+								type: 'success',
+								title: 'Hard Refresh & Recovery Complete',
+								description: 'All operations completed successfully',
+							});
+						} catch (error) {
+							showToast({
+								type: 'error',
+								title: `Failed at: ${currentStep}`,
+								description:
+									error instanceof Error
+										? error.message
+										: 'Unknown error occurred',
+							});
+						} finally {
+							setRunningComprehensiveDebug(false);
+						}
+					},
+				},
+			],
+		);
+	};
+
 	return (
 		<ThemedView style={styles.root}>
 			<SafeAreaInset type="top" />
@@ -357,8 +614,41 @@ const LdkDebug = (): ReactElement => {
 					/>
 
 					<Caption13Up style={styles.sectionTitle} color="secondary">
+						Set Confirmed Transaction
+					</Caption13Up>
+					<TextInput
+						style={styles.textInput}
+						autoCapitalize="none"
+						autoComplete="off"
+						autoCorrect={false}
+						autoFocus={false}
+						value={txid}
+						placeholder="Transaction ID"
+						blurOnSubmit
+						returnKeyType="done"
+						testID="TxidInput"
+						onChangeText={setTxid}
+					/>
+					<Button
+						style={styles.button}
+						text={
+							txid ? 'Set Confirmed Tx' : 'Paste Transaction ID From Clipboard'
+						}
+						loading={settingConfirmedTx}
+						testID="SetConfirmedTxButton"
+						onPress={onSetConfirmedTx}
+					/>
+
+					<Caption13Up style={styles.sectionTitle} color="secondary">
 						Debug
 					</Caption13Up>
+					<Button
+						style={styles.button}
+						text="Hard Refresh & Recovery"
+						loading={runningComprehensiveDebug}
+						testID="HardRefreshRecovery"
+						onPress={onComprehensiveDebug}
+					/>
 					<Button
 						style={styles.button}
 						text="Get Node ID"
