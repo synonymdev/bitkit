@@ -3,7 +3,7 @@
     "string": "Avanzado"
   },
   "continue": {
-    "string": "Continúe en"
+    "string": "Continuar"
   },
   "cancel": {
     "string": "Cancelar"
@@ -15,13 +15,22 @@
     "string": "¿Está seguro?"
   },
   "yes_proceed": {
-    "string": "Sí, proceda"
+    "string": "Sí, continuar"
   },
   "try_again": {
-    "string": "Inténtelo de nuevo"
+    "string": "Intente de nuevo"
   },
   "dialog_cancel": {
     "string": "No, Cancelar"
+  },
+  "sat_vbyte": {
+    "string": "₿ / vbyte"
+  },
+  "sat_vbyte_compact": {
+    "string": "₿/vbyte"
+  },
+  "edit": {
+    "string": "Editar"
   },
   "copy": {
     "string": "Copiar"
@@ -30,7 +39,7 @@
     "string": "Compartir"
   },
   "search": {
-    "string": "Busqueda"
+    "string": "Buscar"
   },
   "discard": {
     "string": "Descartar"
@@ -50,14 +59,23 @@
   "ok": {
     "string": "OK"
   },
+  "ok_random": {
+    "string": "¡Impresionante!\n¡Genial!\n¡Genial!\n¡Fantástico!\n¡Fantástico!\n¡Genial!\n¡Excelente!\n¡Estupendo!"
+  },
+  "reset": {
+    "string": "Reset"
+  },
   "retry": {
-    "string": "Vuelva a intentarlo"
+    "string": "Re-intentar"
   },
   "later": {
-    "string": "Más tarde"
+    "string": "Después"
   },
   "skip": {
     "string": "Saltar"
+  },
+  "copied": {
+    "string": "Copiado"
   },
   "yes": {
     "string": "Sí"
@@ -66,12 +84,27 @@
     "string": "No"
   },
   "back": {
-    "string": "Volver"
+    "string": "Atras"
   },
   "learn_more": {
-    "string": "Más informaciónes"
+    "string": "Más info."
   },
   "understood": {
-    "string": "Comprendido"
+    "string": "Entendido"
+  },
+  "connect": {
+    "string": "Conectar"
+  },
+  "min": {
+    "string": "Min"
+  },
+  "max": {
+    "string": "Max"
+  },
+  "default": {
+    "string": "Default"
+  },
+  "preview": {
+    "string": "Vista Previa"
   }
 }

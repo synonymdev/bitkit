@@ -1,7 +1,10 @@
 {
   "instant": {
+    "title": {
+      "string": "Instantáneo"
+    },
     "description": {
-      "string": "±2-10 segundos"
+      "string": "±2-10 seg."
     },
     "shortRange": {
       "string": "2-10s"
@@ -68,7 +71,7 @@
   },
   "custom": {
     "title": {
-      "string": "personalizado"
+      "string": "Personalizado"
     },
     "description": {
       "string": "Depende de la tarifa"

@@ -263,5 +263,24 @@
     "body": {
       "string": "Откройте Bitkit, чтобы завершить перевод"
     }
+  },
+  "gift": {
+    "error": {
+      "button": {
+        "string": "ОК"
+      }
+    },
+    "used": {
+      "button": {
+        "string": "ОК"
+      }
+    }
+  },
+  "shop": {
+    "intro": {
+      "button": {
+        "string": "Начать"
+      }
+    }
   }
 }

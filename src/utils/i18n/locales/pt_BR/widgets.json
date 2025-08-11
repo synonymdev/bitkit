@@ -44,21 +44,93 @@
   "price": {
     "name": {
       "string": "Preço do Bitcoin"
+    },
+    "description": {
+      "string": "Verifique as últimas taxas de câmbio de Bitcoin para uma variedade de moedas fiduciárias."
+    },
+    "error": {
+      "string": "Não foi possível obter dados sobre preços"
     }
   },
   "news": {
     "name": {
       "string": "Manchetes sobre Bitcoin"
+    },
+    "description": {
+      "string": "Leia as melhores e mais recentes manchetes sobre Bitcoin de vários sites de notícias."
+    },
+    "error": {
+      "string": "Não foi possível obter as últimas notícias"
     }
   },
   "blocks": {
     "name": {
       "string": "Blocos do Bitcoin"
+    },
+    "description": {
+      "string": "Examinar várias estatísticas sobre blocos de Bitcoin recém-minerados."
+    },
+    "error": {
+      "string": "Não foi possível obter dados de blocos"
     }
   },
   "facts": {
     "name": {
       "string": "Fatos sobre o Bitcoin"
+    },
+    "description": {
+      "string": "Descubra fatos divertidos sobre o Bitcoin, sempre que abrir sua carteira."
+    }
+  },
+  "calculator": {
+    "name": {
+      "string": "Calculadora de Bitcoin"
+    },
+    "description": {
+      "string": "Converta ₿ para {fiatSymbol} ou vice-versa."
+    }
+  },
+  "weather": {
+    "name": {
+      "string": "Tempo do Bitcoin"
+    },
+    "description": {
+      "string": "Descubra quando é um bom momento para fazer transações na blockchain do Bitcoin."
+    },
+    "condition": {
+      "good": {
+        "title": {
+          "string": "Condições favoráveis"
+        },
+        "description": {
+          "string": "Tudo limpo. Agora seria um bom momento para fazer transações na blockchain."
+        }
+      },
+      "average": {
+        "title": {
+          "string": "Condições normais"
+        },
+        "description": {
+          "string": "A taxa do próximo bloco está próxima das médias mensais."
+        }
+      },
+      "poor": {
+        "title": {
+          "string": "Condições ruins"
+        },
+        "description": {
+          "string": "Se você não estiver com pressa para fazer uma transação, talvez seja melhor esperar um pouco."
+        }
+      }
+    },
+    "current_fee": {
+      "string": "Tarifa média atual"
+    },
+    "next_block": {
+      "string": "Inclusão no próximo bloco"
+    },
+    "error": {
+      "string": "Não foi possível obter o tempo atual da taxa"
     }
   }
 }

@@ -45,13 +45,16 @@
     "string": "Nome público\ndo seu perfil"
   },
   "contact_retrieving": {
-    "string": "Recebimento\ninformações do contato..."
+    "string": "Recebendo\ninformações do contato..."
   },
   "contact_no_links": {
     "string": "Nenhum link adicionado ainda..."
   },
   "contact_pay_error": {
-    "string": "Não foi Possível Pagar Contato"
+    "string": "Não foi Possível Pagar o Contato"
+  },
+  "contact_ldk_not_ready": {
+    "string": "Lightning ainda não está pronta"
   },
   "contact_share": {
     "string": "Compartilhar Chave do Perfil"
@@ -155,8 +158,20 @@
   "profile_delete": {
     "string": "Deletar"
   },
+  "profile_delete_dialogue_title": {
+    "string": "Excluir informações do perfil?"
+  },
+  "profile_delete_dialogue_msg": {
+    "string": "Você tem certeza de que deseja excluir todas as informações do seu perfil do Bitkit?"
+  },
   "profile_delete_dialogue_yes": {
     "string": "Sim, Excluir"
+  },
+  "profile_delete_success_title": {
+    "string": "Perfil excluído"
+  },
+  "profile_delete_success_msg": {
+    "string": "Suas informações de perfil da Bitkit foram excluídas."
   },
   "offline_enable": {
     "string": "Habilitar pagamentos para contatos*"
@@ -170,8 +185,14 @@
   "error_saving_profile": {
     "string": "Não foi possível salvar o perfil."
   },
+  "error_deleting_profile": {
+    "string": "Não é possível excluir o perfil"
+  },
   "error_pay_title": {
     "string": "Não foi Possível Pagar Contato"
+  },
+  "error_pay_empty_msg": {
+    "string": "O contato para o qual você está tentando enviar não habilitou pagamentos."
   },
   "auth_depricated_title": {
     "string": "Desativado"

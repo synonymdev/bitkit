@@ -16,6 +16,9 @@
     }
   },
   "quickpay": {
+    "title": {
+      "string": "QuickPay"
+    },
     "description": {
       "string": "Escanear e pagar"
     }
@@ -69,6 +72,9 @@
     }
   },
   "transferClosingChannel": {
+    "title": {
+      "string": "Iniciando"
+    },
     "description": {
       "string": "Mantenha o app aberto"
     }
@@ -79,6 +85,14 @@
     },
     "description": {
       "string": "Configure um PIN"
+    }
+  },
+  "shop": {
+    "title": {
+      "string": "Compras"
+    },
+    "description": {
+      "string": "Compre com Bitcoin"
     }
   },
   "slashtagsProfile": {
@@ -94,7 +108,7 @@
       "string": "Suporte"
     },
     "description": {
-      "string": "Obtenha ajuda"
+      "string": "Peça ajuda"
     }
   },
   "buyBitcoin": {

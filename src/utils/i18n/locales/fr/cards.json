@@ -12,7 +12,7 @@
       "string": "Réductions"
     },
     "description": {
-      "string": "Solde des dépenses"
+      "string": "Solde Dépenses"
     }
   },
   "quickpay": {
@@ -85,6 +85,14 @@
     },
     "description": {
       "string": "Définir un code PIN"
+    }
+  },
+  "shop": {
+    "title": {
+      "string": "Boutique"
+    },
+    "description": {
+      "string": "Acheter avec Bitcoin"
     }
   },
   "slashtagsProfile": {

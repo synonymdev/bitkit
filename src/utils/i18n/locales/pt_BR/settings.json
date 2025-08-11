@@ -1,4 +1,7 @@
 {
+  "settings": {
+    "string": "Ajustes"
+  },
   "dev_enabled_title": {
     "string": "Modo Desenvolvedor Ativado"
   },
@@ -44,6 +47,9 @@
     },
     "version": {
       "string": "Versão"
+    },
+    "shareText": {
+      "string": "Mude de carteira, mude o mundo. Baixe a Bitkit para iPhone {appStoreUrl} ou Android {playStoreUrl}"
     }
   },
   "dev_title": {
@@ -125,12 +131,39 @@
       "string": "Mostrar Títulos dos Widgets"
     }
   },
+  "quickpay": {
+    "nav_title": {
+      "string": "QuickPay"
+    },
+    "intro": {
+      "title": {
+        "string": "Pagamentos\n<accent>Sem atrito</accent>"
+      },
+      "description": {
+        "string": "O Bitkit QuickPay agiliza o check-out pagando automaticamente os códigos QR quando escaneados."
+      }
+    },
+    "settings": {
+      "toggle": {
+        "string": "Ativar o QuickPay"
+      },
+      "text": {
+        "string": "Se ativado, os invoices digitalizados abaixo de ${amount} serão pagos automaticamente sem a necessidade de confirmação ou PIN*."
+      },
+      "label": {
+        "string": "Limite do Quickpay"
+      },
+      "note": {
+        "string": "* O QuickPay suporta exclusivamente pagamentos a partir do seu saldo de gastos."
+      }
+    }
+  },
   "security": {
     "title": {
       "string": "Segurança e Privacidade"
     },
     "swipe_balance_to_hide": {
-      "string": "Deslize o saldo para ocultar"
+      "string": "Arraste o saldo para ocultar"
     },
     "hide_balance_on_open": {
       "string": "Ocultar saldo ao abrir o app"
@@ -148,7 +181,7 @@
       "string": "Alterar o código PIN"
     },
     "pin_launch": {
-      "string": "Solicitar PIN para desbloquear"
+      "string": "Exigir PIN ao abrir"
     },
     "pin_idle": {
       "string": "Exigir PIN quando ocioso"
@@ -186,10 +219,10 @@
       "string": "Falha no Backup"
     },
     "failed_message": {
-      "string": "A Bitkit falhou ao fazer o backup dos dados da carteira. Tentando novamente em {interval, plural, one {# minute} outros {# minutes}}."
+      "string": "A Bitkit falhou ao fazer o backup dos dados da carteira. Tentando novamente em {interval, plural, one {# minute} other {# minutes}}."
     },
     "latest": {
-      "string": "backups de dados mais recentes"
+      "string": "backups recentes"
     },
     "status_failed": {
       "string": "Falha no backup: {time}"
@@ -206,8 +239,11 @@
     "category_transaction_log": {
       "string": "Histórico de transações"
     },
+    "category_wallet": {
+      "string": "Boosts e transferências"
+    },
     "category_settings": {
-      "string": "Configurações"
+      "string": "Ajustes"
     },
     "category_widgets": {
       "string": "Widgets"
@@ -388,13 +424,37 @@
       "string": "Piloto automático"
     },
     "cs_auto_mode": {
-      "string": "Modo de Piloto Automático"
+      "string": "Modo Piloto Automático"
+    },
+    "cs_max": {
+      "string": "Menor Primeiro"
+    },
+    "cs_max_description": {
+      "string": "Use o menor UTXO primeiro. Taxa potencialmente mais alta, mas oculta os maiores UTXOs."
+    },
+    "cs_min": {
+      "string": "Maior Primeiro"
+    },
+    "cs_min_description": {
+      "string": "Use o maior UTXO primeiro. Taxa potencialmente mais baixa, mas revela seus maiores UTXOs."
     },
     "cs_consolidate": {
-      "string": "Consolidação máxima"
+      "string": "Consolidar"
     },
     "cs_consolidate_description": {
-      "string": "Gasta todos UTXOs, independentemente do valor enviado. Use esse método quando as taxas estiverem baixas para minimizar as taxas em transações futuras."
+      "string": "Use todos os UTXOs disponíveis, independentemente do valor que está sendo enviado. Use esse método quando as taxas forem baixas para reduzir as taxas em transações futuras."
+    },
+    "cs_first_in_first_out": {
+      "string": "Primeiro a entrar, primeiro a sair"
+    },
+    "cs_first_in_first_out_description": {
+      "string": "Use UTXOs antigos primeiro (por altura de bloco)."
+    },
+    "cs_last_in_last_out": {
+      "string": "Último a entrar, Último a sair"
+    },
+    "cs_last_in_last_out_description": {
+      "string": "Use novos UTXOs primeiro (por altura de bloco)."
     },
     "payment_preference": {
       "string": "Preferência de Recebimento"
@@ -424,13 +484,13 @@
       "string": "Resetar Sugestões"
     },
     "reset_title": {
-      "string": "Redefinir Sugestões?"
+      "string": "Resetar Sugestões?"
     },
     "reset_desc": {
-      "string": "Tem certeza de que deseja redefinir as sugestões? Eles reaparecerão na tela inicial caso você tenha removido."
+      "string": "Tem certeza de que deseja resetar as sugestões? Eles reaparecerão na tela inicial caso você tenha removido."
     },
     "reset_confirm": {
-      "string": "Sim, Redefinir"
+      "string": "Sim, Resetar"
     },
     "lightning_connections": {
       "string": "Conexões Lightning"
@@ -520,7 +580,7 @@
       "string": "O Re-escaneamento Falhou."
     },
     "rescan_error_description": {
-      "string": "O Bitkit não conseguiu verificar os saldos do endereço."
+      "string": "Bitkit não conseguiu verificar os saldos do endereço."
     },
     "spend_number": {
       "string": "{count, plural, one {Spend ₿ {fundsToSpend} From # address} many {Spend ₿ {fundsToSpend} From # addresses} other {Gastar ₿ {fundsToSpend} de # endereços}}"
@@ -591,7 +651,7 @@
       "string": "Falha na Conexão do Electrum"
     },
     "server_error_description": {
-      "string": "O Bitkit não conseguiu estabelecer uma conexão com o Electrum."
+      "string": "Bitkit não conseguiu estabelecer uma conexão com o Electrum."
     },
     "connected_to": {
       "string": "Atualmente conectado a"
@@ -627,6 +687,18 @@
     },
     "gap_limit_update_description": {
       "string": "As alterações terão após a reinicialização do aplicativo."
+    },
+    "look_behind": {
+      "string": "Olhar para trás"
+    },
+    "look_ahead": {
+      "string": "Olhar para frente"
+    },
+    "look_behind_change": {
+      "string": "Olhar Atrás Troco"
+    },
+    "look_ahead_change": {
+      "string": "Olhar à frente Troco"
     }
   },
   "rgs": {
@@ -640,7 +712,7 @@
       "string": "Servidor de Rapid-Gossip-Sync Atualizado"
     },
     "update_success_description": {
-      "string": "Pode ser necessário reiniciar o aplicativo uma ou duas vezes para que essa alteração seja aplicada."
+      "string": "Pode ser necessário reiniciar o aplicativo uma ou duas vezes para que esta alteração seja aplicada."
     }
   },
   "wr": {

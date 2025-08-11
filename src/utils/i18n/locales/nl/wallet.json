@@ -58,9 +58,6 @@
   "send_invoice": {
     "string": "Factuur"
   },
-  "send_address_placeholder": {
-    "string": "Voer een Bitcoin of Lightning factuur of adres in"
-  },
   "send_clipboard_empty_title": {
     "string": "Klembord Leeg"
   },
@@ -198,9 +195,6 @@
   },
   "send_output_to_small_description": {
     "string": "Verhoog het bedrag om verder te gaan."
-  },
-  "send_coin_selection_output_to_small_description": {
-    "string": "Verwijder UTXO's of verhoog het bedrag om verder te gaan."
   },
   "send_fee_error_min": {
     "string": "Kan de vergoeding niet verder verlagen."

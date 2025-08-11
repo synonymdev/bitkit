@@ -15,6 +15,9 @@
     "widgets": {
       "string": "Widgety"
     },
+    "shop": {
+      "string": "Nakoupit"
+    },
     "settings": {
       "string": "Nastavení"
     },
@@ -65,7 +68,7 @@
     "string": "Faktura"
   },
   "send_address_placeholder": {
-    "string": "Zadejte bitcoinovou adresu nebo lightningovou fakturu"
+    "string": "Zadejte fakturu, adresu nebo profilový klíč."
   },
   "send_clipboard_empty_title": {
     "string": "Schránka je prázdná"

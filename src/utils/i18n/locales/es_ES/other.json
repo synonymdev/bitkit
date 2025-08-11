@@ -168,5 +168,24 @@
   },
   "try_again": {
     "string": "Por favor, intente de nuevo."
+  },
+  "gift": {
+    "error": {
+      "button": {
+        "string": "OK"
+      }
+    },
+    "used": {
+      "button": {
+        "string": "OK"
+      }
+    }
+  },
+  "shop": {
+    "intro": {
+      "button": {
+        "string": "Empezar"
+      }
+    }
   }
 }

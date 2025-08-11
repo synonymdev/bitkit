@@ -2,8 +2,11 @@
   "backup_wallet": {
     "string": "Copia de seguridad de la cartera"
   },
+  "backup_title": {
+    "string": "<accent>Almacene seguro</accent> sus Bitcoin"
+  },
   "backup_funds": {
-    "string": "Ahora que tiene fondos en su cartera, ¡és el momento de hacer una copia de seguridad de su dinero!"
+    "string": "Ahora que tiene fondos en su cartera, ¡és momento de hacer una copia de seguridad de su dinero!"
   },
   "backup_funds_no": {
     "string": "Todavía no hay fondos en su cartera, pero puede crear una copia de seguridad si lo desea."
@@ -17,14 +20,23 @@
   "pass_your": {
     "string": "Su frase de acesso"
   },
+  "pass_text": {
+    "string": "Ha añadido una frase de acceso a su frase de recuperación durante la configuración."
+  },
+  "pass_never_share": {
+    "string": "<accent>Nunca comparta</accent> su frase de acceso con nadie, ya que podría perder sus fondos."
+  },
   "pass_confirm": {
     "string": "Confirmar frase de acesso"
   },
   "pass_confirm_text": {
     "string": "Introduzca la frase de acesso que añadió al configurar y crear su monedero."
   },
+  "pass_recovery": {
+    "string": "<accent>Frase de accceso:</accent> {passphrase}"
+  },
   "mnemonic_phrase": {
-    "string": "Frase mnemotécnica"
+    "string": "Frase semilla"
   },
   "mnemonic_your": {
     "string": "Su frase de recuperación"
@@ -33,7 +45,7 @@
     "string": "Falla de la billetera"
   },
   "mnemonic_error_description": {
-    "string": "BitKit no podría leer tu frase de recuperación"
+    "string": "BitKit no pudo leer tu frase de recuperación"
   },
   "mnemonic_write": {
     "string": "Anote estas palabras {length} en el orden correcto y guárdelas en un lugar seguro."
@@ -44,6 +56,9 @@
   "mnemonic_reveal": {
     "string": "Toque para revelar"
   },
+  "mnemonic_never_share": {
+    "string": "<accent>Nunca comparta</accent> su frase de recuperación con nadie, ya que podría perder los fondos."
+  },
   "mnemonic_confirm": {
     "string": "Confirmar frase de recuperación"
   },
@@ -53,8 +68,17 @@
   "mnemonic_result_header": {
     "string": "Éxito"
   },
+  "mnemonic_result_text": {
+    "string": "Asegúrese de guardar su frase de recuperación en un <accent>lugar seguro</accent>, ¡ya que es la <accent>única forma de recuperar</accent> su dinero!"
+  },
+  "mnemonic_keep_header": {
+    "string": "Manténgala segura"
+  },
+  "mnemonic_keep_text": {
+    "string": "Recuerde, <accent>¡nunca comparta su frase de recuperación</accent> con nadie! Si lo hace, pueden robarle su dinero, su perfil y otros datos."
+  },
   "mnemonic_data_header": {
-    "string": "Datos del monedero"
+    "string": "Datos de billetera"
   },
   "mnemonic_data_text": {
     "string": "Se realizará una copia de seguridad automática de su perfil, contactos, cuentas, etiquetas y actividad en nuestro servicio gratuito en la nube."
@@ -71,11 +95,20 @@
   "pin_security_header": {
     "string": "Aumentar la seguridad"
   },
+  "pin_security_title": {
+    "string": "<accent>Proteja</accent>\nsus bitcoin"
+  },
+  "pin_security_text": {
+    "string": "Para aumentar la seguridad del monedero, puede configurar un código PIN y el Face ID."
+  },
+  "pin_security_button": {
+    "string": "Proteger billetera"
+  },
   "pin_choose_header": {
     "string": "Elija el PIN de 4 dígitos"
   },
   "pin_choose_text": {
-    "string": "Por favor, utilice un PIN que recuerde. Si olvida su PIN puede restablecerlo, pero para ello tendrá que restaurar su monedero."
+    "string": "Por favor, utilice un PIN que recuerde. Si olvida su PIN puede restablecerlo, pero para ello tendrá que restaurar su billetera."
   },
   "pin_retype_header": {
     "string": "Vuelva a introducir el PIN de 4 dígitos"
@@ -99,7 +132,7 @@
     "string": "Por favor, introduzca su código PIN"
   },
   "pin_last_attempt": {
-    "string": "Último intento. Si vuelve a introducir un PIN erróneo, se reiniciará su monedero."
+    "string": "Último intento. Si vuelve a introducir un PIN erróneo, se borrará su billetera."
   },
   "pin_attempts": {
     "string": "{attemptsRemaining} intentos restantes. ¿Ha olvidado su PIN?"
@@ -108,19 +141,22 @@
     "string": "¿Ha olvidado el PIN?"
   },
   "pin_forgot_text": {
-    "string": "¿Ha olvidado su PIN? Reinicie y recupere su monedero Bitkit con su frase de recuperación. Establezca un nuevo PIN después de completar la recuperación."
+    "string": "¿Olvidaste tu PIN? Restablece y recupera tu billetera de Bitkit con tu frase de recuperación. Establece un nuevo PIN al finalizar."
   },
   "pin_forgot_reset": {
-    "string": "Reempezar a los padrones iniciales (requiere frase de recuperación)"
+    "string": "Resetear (requiere frase de recuperación)"
   },
   "pin_send": {
     "string": "Por favor, introduzca su código PIN para confirmar y enviar este pago."
+  },
+  "pin_send_title": {
+    "string": "Introduzca su PIN"
   },
   "pin_use_biometrics": {
     "string": "Usar {biometricsName}"
   },
   "bio": {
-    "string": "Biometría"
+    "string": "Biométricos"
   },
   "bio_auth_with": {
     "string": "Autentificarse con {biometricsName}"
@@ -138,10 +174,19 @@
     "string": "Confirme {biometricsName}"
   },
   "bio_error_title": {
-    "string": "la configuración de los datos biométricos he fallado"
+    "string": "la configuración de los datos biométricos ha fallado"
+  },
+  "bio_error_message": {
+    "string": "Bitkit no ha podido configurar {type} para su dispositivo."
   },
   "bio_loading": {
     "string": "Cargando..."
+  },
+  "bio_not_available": {
+    "string": "Parece que aún no ha configurado la seguridad biométrica (o no es compatible). Intente activarla en los ajustes de su teléfono."
+  },
+  "bio_ask": {
+    "string": "Código PIN configurado. ¿Te gustaría usar {biometricsName} en lugar del PIN?"
   },
   "bio_use": {
     "string": "Usar {biometricsName}"
@@ -150,49 +195,61 @@
     "string": "Ajustes del teléfono"
   },
   "success_title": {
-    "string": "Cartera asegurada"
+    "string": "Billetera protegida"
+  },
+  "success_bio": {
+    "string": "Ha configurado correctamente un código PIN y {biometricsName} para mejorar la seguridad de la billetera."
   },
   "success_no_bio": {
-    "string": "Ha configurado correctamente un código PIN para mejorar la seguridad de su monedero."
+    "string": "Ha configurado correctamente un código PIN para mejorar la seguridad de su billetera."
   },
   "success_payments": {
-    "string": "También se requiere para los pagos"
+    "string": "También requerir para pagos"
   },
   "reset_title": {
-    "string": "Restablecer y restaurar"
+    "string": "Restablecer y resetear"
   },
   "reset_text": {
-    "string": "Haga primero una copia de seguridad de su monedero para evitar la pérdida de sus fondos y datos de monedero. Al restablecer sobrescribirá su configuración actual de Bitkit."
+    "string": "Haz una copia de seguridad de tu wallet antes para evitar perder tus fondos y datos. Restablecer sobrescribirá tu configuración actual de Bitkit."
   },
   "reset_button_backup": {
-    "string": "Primero, la copia de seguridad"
+    "string": "Respaldar primero"
   },
   "reset_button_reset": {
-    "string": "Restablecer cartera"
+    "string": "Resetear cartera"
   },
   "reset_dialog_title": {
-    "string": "¿Restablecer Bitkit a los padrones iniciales?"
+    "string": "¿Resetear Bitkit?"
   },
   "reset_dialog_desc": {
-    "string": "¿Está seguro de que desea restablecer su monedero Bitkit? ¿Tiene una copia de seguridad de su frase de recuperación y de los datos de su monedero?"
+    "string": "Estás seguro de que quieres restablecer tu wallet de Bitkit? ¿Tienes una copia de tu frase de recuperación y los datos de tu billetera?"
   },
   "reset_confirm": {
-    "string": "Sí, Restaurar"
+    "string": "Sí, Resetear"
   },
   "recovery": {
     "string": "Recuperación"
   },
+  "recovery_text": {
+    "string": "Has ingresado al modo de recuperación de Bitkit. Aquí tienes algunas acciones para resolver problemas que impiden que la app funcione correctamente. Reinicia la app para iniciar normalmente."
+  },
+  "display_seed": {
+    "string": "Mostrar frase semilla"
+  },
   "contact_support": {
-    "string": "Contactar servicio de asistencia"
+    "string": "Contactar a soporte"
   },
   "wipe_app": {
-    "string": "Borrar App"
+    "string": "Eliminar datos de la app"
   },
   "close_app": {
     "string": "Cerrar Bitkit"
   },
   "export_title": {
     "string": "Exportar a teléfono"
+  },
+  "export_text": {
+    "string": "Puedes exportar una copia de los datos de tu wallet en un archivo .ZIP. Este archivo estará encriptado con la contraseña que definas abajo."
   },
   "export_password": {
     "string": "Contraseña"
@@ -202,6 +259,21 @@
   },
   "export_share": {
     "string": "Compartir el archivo de copia de seguridad"
+  },
+  "export_success_title": {
+    "string": "Copia de seguridad exportada"
+  },
+  "export_success_msg": {
+    "string": "Bitkit ha exportado correctamente el archivo de copia de seguridad a su teléfono."
+  },
+  "export_error_title": {
+    "string": "Copia de seguridad fallida"
+  },
+  "export_error_msg": {
+    "string": "Bitkit no ha podido exportar el archivo de copia de seguridad a su teléfono."
+  },
+  "export_error_file": {
+    "string": "Bitkit no ha podido crear el archivo de copia de seguridad."
   },
   "cp_title": {
     "string": "Cambiar PIN"
@@ -219,7 +291,7 @@
     "string": "Establecer nuevo PIN"
   },
   "cp_setnew_text": {
-    "string": "Por favor, utilice un PIN que recuerde. Si olvida su PIN puede restablecerlo, pero para ello tendrá que restaurar su monedero."
+    "string": "Por favor, utilice un PIN que recuerde. Si olvida su PIN puede restablecerlo, pero para ello tendrá que resetear su billetera."
   },
   "cp_try_again": {
     "string": "Inténtelo de nuevo, no es el mismo PIN."
@@ -232,5 +304,49 @@
   },
   "use_pin": {
     "string": "Utilizar código PIN"
+  },
+  "wiped_title": {
+    "string": "Datos de la billetera borrados"
+  },
+  "wiped_message": {
+    "string": "Bitkit ha sido reseteado y todos los datos han sido borrados."
+  },
+  "authorization": {
+    "title": {
+      "string": "Autorización"
+    },
+    "description": {
+      "string": "Asegúrese de que confía en este servicio antes de concederle permiso para gestionar sus datos."
+    },
+    "authorize": {
+      "string": "Autorizar"
+    },
+    "deny": {
+      "string": "Negar"
+    },
+    "authorizing": {
+      "string": "Autorizando..."
+    },
+    "success": {
+      "string": "Éxito"
+    },
+    "claims": {
+      "string": "Este servicio asegura ser"
+    },
+    "requested_permissions": {
+      "string": "Permisos solicitados"
+    },
+    "pubky_secret_error_title": {
+      "string": "Pubky Error"
+    },
+    "pubky_secret_error_description": {
+      "string": "No se puede recuperar la clave Pubky"
+    },
+    "pubky_auth_error_title": {
+      "string": "Error de autenticación de Pubky"
+    },
+    "pubky_auth_error_description": {
+      "string": "No se puede autentificar con el servicio Pubky"
+    }
   }
 }

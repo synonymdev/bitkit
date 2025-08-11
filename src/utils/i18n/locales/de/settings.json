@@ -429,9 +429,6 @@
     "cs_consolidate": {
       "string": "Konsolidieren"
     },
-    "cs_consolidate_description": {
-      "string": "Verwende alle verfügbaren UTXOs unabhängig von der gesendeten Menge. Verwende diese Methode, wenn die Gebühren niedrig sind, um Gebühren bei zukünftigen Transaktionen zu reduzieren."
-    },
     "payment_preference": {
       "string": "Zahlungspräferenz"
     },

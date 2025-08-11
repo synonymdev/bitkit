@@ -18,7 +18,7 @@
     "string": "Você pode ser \n<accent>a mudança</accent>"
   },
   "welcome_text": {
-    "string": "Use a Bitkit para pagar qualquer pessoa, em qualquer lugar, a qualquer momento, e gaste seu bitcoin no que valoriza."
+    "string": "Use a Bitkit para pagar qualquer pessoa, em qualquer lugar, a qualquer momento, e gaste seu bitcoin no que você valoriza."
   },
   "get_started": {
     "string": "Começar"
@@ -33,7 +33,7 @@
     "string": "Liberdade no\n<accent>seu bolso</accent>"
   },
   "slide0_text": {
-    "string": "O Bitkit lhe dá as chaves para gerenciar seu dinheiro. Gaste agora ou economize para depois. A escolha é sua."
+    "string": "A Bitkit lhe dá as chaves para gerenciar seu dinheiro. Gaste agora ou economize para depois. A escolha é sua."
   },
   "slide1_header": {
     "string": "Pagamentos\n<accent>instantâneos</accent>"
@@ -41,11 +41,14 @@
   "slide1_text": {
     "string": "Envie bitcoin mais rápido do que nunca. Aproveite os pagamentos instantâneos e baratos com amigos, familiares e comerciantes."
   },
+  "slide1_note": {
+    "string": "*No momento, a Bitkit não fornece serviços Lightning em seu país, mas você ainda pode se conectar a outros nós."
+  },
   "slide2_header": {
     "string": "Bitcoiners,\n<accent>sem fronteiras</accent>"
   },
   "slide2_text": {
-    "string": "Assuma o controle de sua vida digital com perfis portáteis e contatos pagáveis."
+    "string": "Assuma o controle de sua vida digital com perfis e contatos pagáveis."
   },
   "slide3_header": {
     "string": "Privacidade\n<accent>não é crime</accent>"
@@ -111,7 +114,7 @@
     "string": "A Restauração da Carteira Falhou."
   },
   "restore_error_description": {
-    "string": "O Bitkit não pôde restaurar sua carteira a partir do backup ou frase de recuperação."
+    "string": "Bitkit não pôde restaurar sua carteira a partir do backup ou frase de recuperação."
   },
   "loading_header": {
     "string": "Configurando\n<accent>sua carteira</accent>"
@@ -120,13 +123,13 @@
     "string": "Carteira <accent>restaurada</accent>"
   },
   "restore_success_text": {
-    "string": "Sua carteira foi restauração a partir do backup. Aproveite o Bitkit!"
+    "string": "Sua carteira foi restaurada a partir do backup. Aproveite a Bitkit!"
   },
   "restore_failed_header": {
     "string": "<accent>Erro</accent> no saldo de gastos"
   },
   "restore_failed_text": {
-    "string": "A Bitkit restaurou seu saldo de poupança, mas não restaurou seu saldo de gastos atual (conexão Lightning) e os dados da carteira."
+    "string": "Bitkit restaurou seu saldo de poupança, mas não restaurou seu saldo de gastos atual (conexão Lightning) e os dados da carteira."
   },
   "restore_no_backup_button": {
     "string": "Continuar sem Backup"

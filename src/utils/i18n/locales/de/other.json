@@ -276,5 +276,24 @@
         "string": "Diese Lightning-Rechnung ist abgelaufen."
       }
     }
+  },
+  "gift": {
+    "error": {
+      "button": {
+        "string": "OK"
+      }
+    },
+    "used": {
+      "button": {
+        "string": "OK"
+      }
+    }
+  },
+  "shop": {
+    "intro": {
+      "button": {
+        "string": "Los geht's"
+      }
+    }
   }
 }

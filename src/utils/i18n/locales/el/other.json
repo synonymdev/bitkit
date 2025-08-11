@@ -3,5 +3,18 @@
     "continue": {
       "string": "Κατανοητό"
     }
-  }
+  },
+  "gift": {
+    "error": {
+      "button": {
+        "string": "ΟΚ"
+      }
+    },
+    "used": {
+      "button": {
+        "string": "ΟΚ"
+      }
+    }
+  },
+  "shop": {}
 }

@@ -396,9 +396,6 @@
     "cs_consolidate": {
       "string": "Consolidare"
     },
-    "cs_consolidate_description": {
-      "string": "Utilizza tutti gli UTXO disponibili indipendentemente dall'importo inviato. Utilizza questo metodo quando le commissioni sono basse per ridurre le commissioni nelle transazioni future."
-    },
     "payment_preference": {
       "string": "Preferenze Pagamento"
     },

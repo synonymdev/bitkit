@@ -58,9 +58,6 @@
   "send_invoice": {
     "string": "Invoice"
   },
-  "send_address_placeholder": {
-    "string": "Inserisci una fattura o un indirizzo Bitcoin o Lightning"
-  },
   "send_clipboard_empty_title": {
     "string": "Appunti Vuoti"
   },
@@ -201,9 +198,6 @@
   },
   "send_output_to_small_description": {
     "string": "Per favore aumenta l'importo da inviare per procedere."
-  },
-  "send_coin_selection_output_to_small_description": {
-    "string": "Rimuovi gli UTXO o aumenta l'importo da inviare per procedere."
   },
   "send_fee_error_min": {
     "string": "Impossibile diminuire ulteriormente la commissione."
