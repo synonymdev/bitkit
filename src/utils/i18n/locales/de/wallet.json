@@ -61,9 +61,6 @@
   "send_invoice": {
     "string": "Rechnung"
   },
-  "send_address_placeholder": {
-    "string": "Gib eine Bitcoin- oder Lightning-Rechnung oder Adresse ein"
-  },
   "send_clipboard_empty_title": {
     "string": "Zwischenablage leer"
   },
@@ -223,9 +220,6 @@
   },
   "send_output_to_small_description": {
     "string": "Bitte erhöhe deinen Betrag, um fortzufahren."
-  },
-  "send_coin_selection_output_to_small_description": {
-    "string": "Bitte entferne UTXOs oder erhöhe deinen Betrag, um fortzufahren."
   },
   "send_fee_error_min": {
     "string": "Gebühr kann nicht weiter reduziert werden."

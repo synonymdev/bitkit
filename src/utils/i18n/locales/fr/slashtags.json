@@ -42,16 +42,19 @@
     "string": "Nom du contact"
   },
   "contact_your_name": {
-    "string": "Votre nom\nde profil public"
+    "string": "Votre nom \nde profil public"
   },
   "contact_retrieving": {
-    "string": "Récupérer\nles informations du contact..."
+    "string": "Récupérer \nles informations du contact..."
   },
   "contact_no_links": {
     "string": "Aucun lien n'a encore été ajouté..."
   },
   "contact_pay_error": {
     "string": "Incapable de payer le contact"
+  },
+  "contact_ldk_not_ready": {
+    "string": "Lightning n'est pas encore prêt"
   },
   "contact_share": {
     "string": "Partager la clé du profil"
@@ -84,7 +87,7 @@
     "string": "Slashtags désactivés"
   },
   "onboarding_header": {
-    "string": "Dynamique\n<accent>contacts</accent>"
+    "string": "Dynamique \n<accent>contacts</accent>"
   },
   "onboarding_text": {
     "string": "Recevez des mises à jour automatiques de vos contacts Bitkit, payez-les et suivez leurs profils publics."
@@ -93,13 +96,13 @@
     "string": "Ajouter un premier contact"
   },
   "onboarding_profile1_header": {
-    "string": "Détenez votre\n<accent>profil</accent>"
+    "string": "Détenez votre \n<accent>profil</accent>"
   },
   "onboarding_profile1_text": {
     "string": "Configurez votre profil public et vos liens, afin que vos contacts Bitkit puissent vous joindre ou vous payer à tout moment et en tout lieu."
   },
   "onboarding_profile2_header": {
-    "string": "Payer <accent>Bitkit\ncontacts</accent>"
+    "string": "Payer <accent>Bitkit \ncontacts</accent>"
   },
   "onboarding_profile2_text": {
     "string": "Vous et vos contacts pouvez utiliser Bitkit pour envoyer des paiements directement, sans banque, à tout moment et en tout lieu."
@@ -155,8 +158,20 @@
   "profile_delete": {
     "string": "Supprimer"
   },
+  "profile_delete_dialogue_title": {
+    "string": "Supprimer les informations du profil ?"
+  },
+  "profile_delete_dialogue_msg": {
+    "string": "Êtes-vous sûr de vouloir supprimer toutes les informations de votre profil Bitkit ?"
+  },
   "profile_delete_dialogue_yes": {
     "string": "Oui, Supprimer"
+  },
+  "profile_delete_success_title": {
+    "string": "Profil supprimé"
+  },
+  "profile_delete_success_msg": {
+    "string": "Les informations de votre profil Bitkit ont été supprimées."
   },
   "offline_enable": {
     "string": "Permettre les paiements par contact*"
@@ -170,8 +185,14 @@
   "error_saving_profile": {
     "string": "Impossible d'enregistrer le profil"
   },
+  "error_deleting_profile": {
+    "string": "Impossible de supprimer le profil"
+  },
   "error_pay_title": {
     "string": "Incapable de payer le contact"
+  },
+  "error_pay_empty_msg": {
+    "string": "Le contact à qui vous essayez d'envoyer n'a pas activé les paiements."
   },
   "auth_depricated_title": {
     "string": "Déclassé"

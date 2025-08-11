@@ -2,12 +2,32 @@
   "widgets": {
     "string": "Widgets"
   },
+  "onboarding": {
+    "title": {
+      "string": "Hola,\n<accent>Widgets</accent>"
+    },
+    "description": {
+      "string": "Disfruta feeds descentralizados de tus servicios web favoritos añadiendo widgets útiles y divertidos a tu wallet de Bitkit."
+    }
+  },
   "widget": {
+    "nav_title": {
+      "string": "Widget"
+    },
     "edit": {
-      "string": "Widget Feed"
+      "string": "Feed de widgets"
+    },
+    "edit_default": {
+      "string": "Default"
     },
     "edit_custom": {
       "string": "personalizado"
+    },
+    "edit_description": {
+      "string": "Seleccione los campos que desea mostrar en el widget {name}."
+    },
+    "source": {
+      "string": "Fuente"
     }
   },
   "add": {
@@ -24,11 +44,93 @@
   "price": {
     "name": {
       "string": "Precio del Bitcoin"
+    },
+    "description": {
+      "string": "Compruebe los últimos tipos de cambio de Bitcoin para una variedad de monedas fiat."
+    },
+    "error": {
+      "string": "No se pudieron obtener datos sobre precios"
+    }
+  },
+  "news": {
+    "name": {
+      "string": "Titulares de Bitcoin"
+    },
+    "description": {
+      "string": "Lea los últimos y mejores titulares sobre Bitcoin de varios sitios de noticias."
+    },
+    "error": {
+      "string": "No pudo obtener las últimas noticias"
     }
   },
   "blocks": {
     "name": {
-      "string": "Bitcoin Bloques"
+      "string": "Bloques de Bitcoin"
+    },
+    "description": {
+      "string": "Examine diversas estadísticas sobre los nuevos bloques de Bitcoin minados."
+    },
+    "error": {
+      "string": "No se pueden obtener datos de los bloques"
+    }
+  },
+  "facts": {
+    "name": {
+      "string": "Datos sobre Bitcoin"
+    },
+    "description": {
+      "string": "Descubra datos curiosos sobre Bitcoin, cada vez que abra su billetera."
+    }
+  },
+  "calculator": {
+    "name": {
+      "string": "Calculadora Bitcoin"
+    },
+    "description": {
+      "string": "Convierta los importes ₿ en {fiatSymbol} o viceversa."
+    }
+  },
+  "weather": {
+    "name": {
+      "string": "Clima Bitcoin"
+    },
+    "description": {
+      "string": "Sepa cuándo es un buen momento para realizar transacciones en la blockchain de Bitcoin."
+    },
+    "condition": {
+      "good": {
+        "title": {
+          "string": "Condiciones favorables"
+        },
+        "description": {
+          "string": "Todo despejado. Ahora sería un buen momento para realizar transacciones en la blockchain."
+        }
+      },
+      "average": {
+        "title": {
+          "string": "Condiciones promedio"
+        },
+        "description": {
+          "string": "La tasa del siguiente bloque se acerca a las medias mensuales."
+        }
+      },
+      "poor": {
+        "title": {
+          "string": "Malas condiciones"
+        },
+        "description": {
+          "string": "Si no tiene prisa por realizar una transacción, quizá sea mejor esperar un poco."
+        }
+      }
+    },
+    "current_fee": {
+      "string": "Tasa media actual"
+    },
+    "next_block": {
+      "string": "Inclusión en siguiente bloque"
+    },
+    "error": {
+      "string": "No se pudo consultar la condición actual de fees"
     }
   }
 }

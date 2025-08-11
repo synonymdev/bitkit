@@ -396,9 +396,6 @@
     "cs_consolidate": {
       "string": "Consolideren"
     },
-    "cs_consolidate_description": {
-      "string": "Gebruik alle beschikbare UTXO's, ongeacht het bedrag dat verzonden wordt. Gebruik deze methode wanneer de kosten laag zijn om de kosten bij toekomstige transacties te verlagen."
-    },
     "payment_preference": {
       "string": "Betaalvoorkeuren"
     },

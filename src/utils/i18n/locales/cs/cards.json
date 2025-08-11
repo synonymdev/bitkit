@@ -87,6 +87,14 @@
       "string": "Nastavte PIN kód"
     }
   },
+  "shop": {
+    "title": {
+      "string": "Nakoupit"
+    },
+    "description": {
+      "string": "Nakoupit s Bitcoinem"
+    }
+  },
   "slashtagsProfile": {
     "title": {
       "string": "Profil"

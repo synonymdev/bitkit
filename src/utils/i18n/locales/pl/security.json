@@ -66,7 +66,7 @@
     "string": "Nie używaj jednego hasła Bitkit na wielu urządzeniach jednocześnie, ponieważ może to spowodować uszkodzenie danych."
   },
   "mnemonic_latest_backup": {
-    "string": "<brand>Ostatni backup danych: </brand>{time}"
+    "string": "<bold>Ostatni backup danych:</bold> {time}"
   },
   "pin_security_header": {
     "string": "Zwieksz bezpieczeństwo"

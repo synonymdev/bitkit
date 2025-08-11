@@ -6,19 +6,19 @@
     "string": "Incapaz de Ler o QR"
   },
   "qr_error_text": {
-    "string": "O Bitkit não consegue ler este código QR."
+    "string": "A Bitkit não consegue ler este código QR."
   },
   "qr_error_no_data_header": {
     "string": "Incapaz de Ler os Dados"
   },
   "qr_error_no_data_text": {
-    "string": "O Bitkit não conseguiu ler os dados fornecidos."
+    "string": "A Bitkit não conseguiu ler os dados fornecidos."
   },
   "qr_error_network_header": {
     "string": "Rede Incorreta"
   },
   "qr_error_network_text": {
-    "string": "O Bitkit está atualmente definido com a {selectedNetwork} mas os dados são para {dataNetwork}."
+    "string": "A Bitkit está atualmente configurada para {selectedNetwork} mas os dados são para {dataNetwork}."
   },
   "qr_paste": {
     "string": "Colar código QR"
@@ -42,7 +42,7 @@
     "string": "Conexão Electrum Restaurada"
   },
   "connection_restored_message": {
-    "string": "O Bitkit reconectou ao Electrum com sucesso."
+    "string": "A Bitkit reconectou ao Electrum com sucesso."
   },
   "connection_issue": {
     "string": "Problemas de Conectividade com a Internet"
@@ -60,7 +60,7 @@
     "string": "Conexão com a Internet Restaurada."
   },
   "connection_back_msg": {
-    "string": "O Bitkit reconectou à Internet com sucesso."
+    "string": "Bitkit se reconectou com sucesso."
   },
   "high_balance": {
     "nav_title": {
@@ -83,25 +83,25 @@
     "string": "Atualização Crítica"
   },
   "update_critical_title": {
-    "string": "Atualize\n<accent>o app</accent>"
+    "string": "Atualize\n<accent>agora</accent>"
   },
   "update_critical_text": {
     "string": "Há uma atualização disponível para a Bitkit. Atualize para continuar usando o app."
   },
   "update_critical_button": {
-    "string": "Atualizar o Bitkit"
+    "string": "Atualize a Bitkit"
   },
   "camera_ask_title": {
     "string": "Permissão para usar a câmera"
   },
   "camera_ask_msg": {
-    "string": "O Bitkit precisa de permissão para usar a câmera"
+    "string": "Bitkit precisa de permissão para usar a câmera"
   },
   "camera_no_text": {
-    "string": "<bold>Parece que o Bitkit não tem permissão para acessar sua câmera.</bold>\n\n\nPara utilizar esse recurso no futuro, você precisará ativar as permissões da câmera para este aplicativo nas configurações do seu telefone."
+    "string": "<bold>Parece que a Bitkit não tem permissão para acessar sua câmera.</bold>\n\n\nPara utilizar este recurso no futuro, você precisará ativar as permissões da câmera para este aplicativo nas configurações do seu telefone."
   },
   "clipboard_redirect_title": {
-    "string": "Dados da Aréa de Transferência Detectados"
+    "string": "Dados na Aréa de Transferência Detectados"
   },
   "clipboard_redirect_msg": {
     "string": "Deseja ser redirecionado para a tela relevante?"
@@ -113,22 +113,22 @@
     "string": "Saldo de Gastos Insuficiente"
   },
   "pay_insufficient_savings_description": {
-    "string": "Você precisa de mais bitcoin para fazer esse pagamento."
+    "string": "Você precisa de mais bitcoin para pagar este invoice"
   },
   "pay_insufficient_savings_amount_description": {
-    "string": "Você precisa de mais ₿ {amount} para fazer esse pagamento."
+    "string": "Você precisa de mais ₿ {amount} para pagar este invoice"
   },
   "pay_insufficient_spending_amount_description": {
-    "string": "Você precisa de mais ₿ {amount} para fazer esse pagamento."
+    "string": "Você precisa de mais ₿ {amount} para pagar este invoice"
   },
   "swipe": {
-    "string": "Deslizar Para Confirmar"
+    "string": "Arrastar Para Confirmar"
   },
   "scan_err_decoding": {
     "string": "Erro de Decodificação"
   },
   "scan_err_interpret_title": {
-    "string": "Incapacidade de Interpretar os Dados Fornecidos"
+    "string": "Incapaz de Interpretar os Dados Fornecidos"
   },
   "scan_err_not_payable_msg": {
     "string": "Este código QR parece não conter dados de pagamento."
@@ -137,19 +137,19 @@
     "string": "Atualização do Preço do Bitcoin Falhou"
   },
   "rate_error_msg_date": {
-    "string": "O Bitkit não conseguiu atualizar a taxa de câmbio atual do Bitcoin. Usando o preço de {date}"
+    "string": "Bitkit não conseguiu atualizar a cotação atual do Bitcoin. Usando o preço de {date}"
   },
   "rate_error_msg_nodate": {
-    "string": "O Bitkit não conseguiu atualizar a taxa de câmbio atual do Bitcoin. Por favor, tente novamente mais tarde."
+    "string": "Bitkit não conseguiu atualizar a cotação atual do Bitcoin. Por favor, tente novamente mais tarde."
   },
   "lnurl_pay_error": {
     "string": "Incapaz de Pagar (LNURL)"
   },
   "lnurl_ln_error_msg": {
-    "string": "Não foi possível iniciar o nó local do Lightning. Por favor, tente novamente ou reinicie o Bitkit."
+    "string": "Não foi possível iniciar o nó local Lightning. Por favor, tente novamente ou reinicie a Bitkit."
   },
   "lnurl_pay_error_no_capacity": {
-    "string": "Capacidade de saída/envio insuficiente para completar a solicitação lnurl-pay."
+    "string": "Capacidade de envio insuficiente para completar a solicitação lnurl-pay."
   },
   "lnurl_channel_error": {
     "string": "Incapaz de Abrir Canal (LNURL)"
@@ -164,7 +164,7 @@
     "string": "Novo\nconexão\n<accent>lightning</accent>"
   },
   "lnurl_channel_message": {
-    "string": "Você deseja abrir uma conexão Lightning com este Provedor de Serviço Lightning?"
+    "string": "Você deseja abrir uma conexão Lightning com este Provedor de Serviço?"
   },
   "lnurl_channel_lsp": {
     "string": "Provedor de serviço Lightning."
@@ -179,7 +179,7 @@
     "string": "Porta"
   },
   "lnurl_blocktank_error": {
-    "string": "O Bitkit não conseguiu se conectar ao Blocktank."
+    "string": "Bitkit não conseguiu se conectar ao Blocktank."
   },
   "lnurl_channel_success_title": {
     "string": "Canal Solicitado"
@@ -215,13 +215,16 @@
     "string": "Capacidade de recebimento insuficiente para concluir a solicitação de saque."
   },
   "lnurl_withdr_error_create_invoice": {
-    "string": "Não foi possível criar uma fatura para o saque."
+    "string": "Não foi possível criar um invoice para o saque."
   },
   "lnurl_withdr_error_minmax": {
     "string": "Parâmetros de saque LNURL incorretos, mínimo/máximo não configurados corretamente."
   },
   "lnurl_withdr_success_title": {
-    "string": "Retirada Solicitada"
+    "string": "Saque solicitado"
+  },
+  "lnurl_withdr_success_msg": {
+    "string": "Seu saque foi solicitado com sucesso. Aguardando pagamento."
   },
   "phone_settings": {
     "string": "Abrir as configurações do telefone"
@@ -230,13 +233,13 @@
     "string": "A Transferência Falhou"
   },
   "bt_error_connect": {
-    "string": "Não é possível adicionar o nó LSP como um par no momento."
+    "string": "Não é possível adicionar o nó LSP no momento."
   },
   "bt_error_retrieve_msg": {
     "string": "Ocorreu um erro ao movimentar os fundos. {raw}"
   },
   "bt_channel_purchase_cost_error": {
-    "string": "Você precisa de mais {delta} para concluir essa transação."
+    "string": "Você precisa de mais {delta} para concluir esta transação."
   },
   "earlier": {
     "string": "MAIS ANTIGOS"
@@ -248,12 +251,128 @@
     "string": "Atualizar\n<accent>Bitkit</accent>"
   },
   "update_text": {
-    "string": "Atualize o Bitkit para obter novos recursos e correções de bugs!"
+    "string": "Atualize a Bitkit para obter novos recursos e correções de bugs!"
   },
   "update_button": {
     "string": "Atualizar"
   },
   "try_again": {
     "string": "Por favor, tente novamente."
+  },
+  "transfer_notification": {
+    "title": {
+      "string": "Importante: Transferência Bitkit"
+    },
+    "body": {
+      "string": "Abra a Bitkit para concluir sua transferência"
+    }
+  },
+  "scan": {
+    "error": {
+      "generic": {
+        "string": "Bitkit não consegue ler os dados fornecidos."
+      },
+      "expired": {
+        "string": "Este invoice lightning expirou."
+      }
+    }
+  },
+  "gift": {
+    "claiming": {
+      "title": {
+        "string": "Reivindicando presente"
+      },
+      "text": {
+        "string": "Reivindicando seu gitf code Bitkit..."
+      }
+    },
+    "error": {
+      "title": {
+        "string": "Erro no código de presente"
+      },
+      "text": {
+        "string": "A Bitkit não pôde reivindicar os fundos. Tente novamente mais tarde ou entre em contato conosco."
+      },
+      "button": {
+        "string": "OK"
+      }
+    },
+    "used": {
+      "title": {
+        "string": "Código usado"
+      },
+      "text": {
+        "string": "Este gift code da Bitkit já foi usado e os fundos já foram pagos."
+      },
+      "button": {
+        "string": "OK"
+      }
+    }
+  },
+  "shop": {
+    "intro": {
+      "title": {
+        "string": "Compras"
+      },
+      "description": {
+        "string": "Coloque sua vida no padrão Bitcoin. Gaste seu Bitcoin em cartões-presente digitais, eSIMs, recargas de telefone e muito mais."
+      },
+      "button": {
+        "string": "Começar"
+      }
+    },
+    "discover": {
+      "nav_title": {
+        "string": "Compras"
+      },
+      "tabs": {
+        "shop": {
+          "string": "Compras"
+        },
+        "map": {
+          "string": "Mapa"
+        }
+      },
+      "label": {
+        "string": "Categorias de Gift cards"
+      },
+      "gift-cards": {
+        "title": {
+          "string": "Gift cards"
+        },
+        "description": {
+          "string": "Compre com Bitcoin"
+        }
+      },
+      "esims": {
+        "title": {
+          "string": "ESims"
+        },
+        "description": {
+          "string": "Sem fronteiras"
+        }
+      },
+      "refill": {
+        "title": {
+          "string": "Recarga de telefone"
+        },
+        "description": {
+          "string": "Recarregar seu telefone"
+        }
+      },
+      "travel": {
+        "title": {
+          "string": "Viagem"
+        },
+        "description": {
+          "string": "Reserve suas férias ₿."
+        }
+      }
+    },
+    "main": {
+      "nav_title": {
+        "string": "Compras"
+      }
+    }
   }
 }

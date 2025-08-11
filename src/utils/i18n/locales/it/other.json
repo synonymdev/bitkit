@@ -255,5 +255,24 @@
   },
   "try_again": {
     "string": "Per favore riprova."
+  },
+  "gift": {
+    "error": {
+      "button": {
+        "string": "OK"
+      }
+    },
+    "used": {
+      "button": {
+        "string": "OK"
+      }
+    }
+  },
+  "shop": {
+    "intro": {
+      "button": {
+        "string": "Inizia"
+      }
+    }
   }
 }

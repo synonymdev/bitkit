@@ -41,17 +41,29 @@
   "contacts_name": {
     "string": "Apellido del contacto"
   },
+  "contact_your_name": {
+    "string": "Su\nnombre de perfil"
+  },
   "contact_retrieving": {
     "string": "Confirmando\ninformación de contacto..."
   },
   "contact_no_links": {
     "string": "Aún no se han añadido enlaces..."
   },
+  "contact_pay_error": {
+    "string": "Incapaz de pagar a Contacto"
+  },
+  "contact_ldk_not_ready": {
+    "string": "Lightning aún no está listo"
+  },
   "contact_share": {
     "string": "Compartir clave de perfil"
   },
   "contact_this": {
     "string": "este contacto"
+  },
+  "contact_copied": {
+    "string": "Clave de perfil copiada al portapapeles"
   },
   "contact_delete_title": {
     "string": "¿Borrar {name}?"
@@ -74,8 +86,26 @@
   "disabled": {
     "string": "Slashtags desactivadas"
   },
+  "onboarding_header": {
+    "string": "Dinámico\n<accent>contactos</accent>"
+  },
+  "onboarding_text": {
+    "string": "Reciba actualizaciones automáticas de sus contactos de Bitkit, págueles y siga sus perfiles públicos."
+  },
+  "onboarding_button": {
+    "string": "Añadir primer contacto"
+  },
+  "onboarding_profile1_header": {
+    "string": "Sea dueño de su\n<accent>perfil</accent>"
+  },
+  "onboarding_profile1_text": {
+    "string": "Configura tu perfil público y tus enlaces para que tus contactos en Bitkit puedan encontrarte o pagarte en cualquier momento y lugar."
+  },
+  "onboarding_profile2_header": {
+    "string": "Pagar <accent>Contactos\nBitkit</accent>"
+  },
   "onboarding_profile2_text": {
-    "string": "Usted y sus contactos pueden utilizar Bitkit para enviar pagos directamente, sin bancos, en cualquier momento y en cualquier lugar."
+    "string": "Tú y tus contactos pueden usar Bitkit para enviar pagos directamente, sin bancos, en cualquier momento y lugar."
   },
   "my_profile": {
     "string": "Mi perfil"
@@ -101,6 +131,9 @@
   "profile_add_link": {
     "string": "Añadir enlace"
   },
+  "profile_link_label": {
+    "string": "Etiqueta"
+  },
   "profile_link_label_placeholder": {
     "string": "Por ejemplo \"Sitio web\""
   },
@@ -125,13 +158,46 @@
   "profile_delete": {
     "string": "Borrar"
   },
+  "profile_delete_dialogue_title": {
+    "string": "¿Borrar información del perfil?"
+  },
+  "profile_delete_dialogue_msg": {
+    "string": "¿Está seguro de que desea eliminar toda la información de su perfil de Bitkit?"
+  },
   "profile_delete_dialogue_yes": {
     "string": "Sí, Borrar"
+  },
+  "profile_delete_success_title": {
+    "string": "Perfil eliminado"
+  },
+  "profile_delete_success_msg": {
+    "string": "La información de su perfil de Bitkit ha sido eliminada."
   },
   "offline_enable": {
     "string": "Habilitar pagos con contactos*"
   },
   "offline_enable_explain": {
     "string": "* Esto requiere compartir los datos de pago."
+  },
+  "error_saving_contact": {
+    "string": "No se puede guardar el contacto"
+  },
+  "error_saving_profile": {
+    "string": "No se puede guardar el perfil"
+  },
+  "error_deleting_profile": {
+    "string": "No se puede eliminar el perfil"
+  },
+  "error_pay_title": {
+    "string": "Incapaz de pagar a Contacto"
+  },
+  "error_pay_empty_msg": {
+    "string": "El contacto al que intenta enviar no ha habilitado los pagos."
+  },
+  "auth_depricated_title": {
+    "string": "Descontinuado"
+  },
+  "auth_depricated_msg": {
+    "string": "Slashauth está descontinuado. Por favor, utilice Bitkit Beta."
   }
 }

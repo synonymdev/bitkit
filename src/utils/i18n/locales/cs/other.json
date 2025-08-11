@@ -276,5 +276,103 @@
         "string": "Platnost lightning faktury vypršela."
       }
     }
+  },
+  "gift": {
+    "claiming": {
+      "title": {
+        "string": "Uplatnění daru"
+      },
+      "text": {
+        "string": "Uplatnění dárkového kódu Bitkit..."
+      }
+    },
+    "error": {
+      "title": {
+        "string": "Chyba dárkového kódu"
+      },
+      "text": {
+        "string": "Bitkit nemohl nárokovat prostředky. Zkuste to prosím znovu později nebo nás kontaktujte."
+      },
+      "button": {
+        "string": "OK"
+      }
+    },
+    "used": {
+      "title": {
+        "string": "Použitý kód"
+      },
+      "text": {
+        "string": "Tento dárkový kód BitKitu již byl použit a prostředky byly vyplaceny."
+      },
+      "button": {
+        "string": "OK"
+      }
+    }
+  },
+  "shop": {
+    "intro": {
+      "title": {
+        "string": "Nakoupit"
+      },
+      "description": {
+        "string": "Zařiď si život podle Bitcoin standardu. Utrácej své Bitcoiny za digitální dárkové karty, eSIMky, dobíjení kreditu a mnohem víc."
+      },
+      "button": {
+        "string": "Začít"
+      }
+    },
+    "discover": {
+      "nav_title": {
+        "string": "Nakoupit"
+      },
+      "tabs": {
+        "shop": {
+          "string": "Nakoupit"
+        },
+        "map": {
+          "string": "Mapa"
+        }
+      },
+      "label": {
+        "string": "Kategorie dárkových karet"
+      },
+      "gift-cards": {
+        "title": {
+          "string": "Dárkové karty"
+        },
+        "description": {
+          "string": "Nakoupit s Bitcoinem"
+        }
+      },
+      "esims": {
+        "title": {
+          "string": "eSims"
+        },
+        "description": {
+          "string": "Žij bez hranic"
+        }
+      },
+      "refill": {
+        "title": {
+          "string": "Dobití kreditu"
+        },
+        "description": {
+          "string": "Dobijte kredit"
+        }
+      },
+      "travel": {
+        "title": {
+          "string": "Cestování"
+        },
+        "description": {
+          "string": "Rezervujte si svou ₿ dovolenou"
+        }
+      }
+    },
+    "main": {
+      "nav_title": {
+        "string": "Nakoupit"
+      }
+    }
   }
 }

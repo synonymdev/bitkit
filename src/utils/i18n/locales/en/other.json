@@ -307,17 +307,6 @@
 			"button": {
 				"string": "OK"
 			}
-		},
-		"used_up": {
-			"title": {
-				"string": "Out of Gifts"
-			},
-			"text": {
-				"string": "Sorry, you're too late! All gifts for this code have already been claimed."
-			},
-			"button": {
-				"string": "OK"
-			}
 		}
 	},
 	"shop": {

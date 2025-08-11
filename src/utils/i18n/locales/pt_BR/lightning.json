@@ -20,6 +20,12 @@
     "text": {
       "string": "Use seu saldo de poupança ou receba bitcoin de outra carteira."
     },
+    "text_blocked": {
+      "string": "Bitkit não fornece serviços de Lightning no seu paús atualmente, mas você ainda pode se conectar diretamente a outros nodes"
+    },
+    "text_blocked_cjit": {
+      "string": "Bitkit não fornece serviços de Lightning no seu paús atualmente, mas você ainda pode se conectar diretamente a outros nodes"
+    },
     "button1": {
       "string": "Transferir do Saldo de Poupança"
     },
@@ -33,6 +39,12 @@
   "funding_advanced": {
     "nav_title": {
       "string": "Saldo de Gastos"
+    },
+    "title": {
+      "string": "<accent>Configuração</accent> avançada"
+    },
+    "text": {
+      "string": "Escaneie um QR para reivindicar seu canal LNURL de outro LSP ou escolha o setup manual."
     }
   },
   "no_funds": {
@@ -53,11 +65,20 @@
     "confirm": {
       "string": "Por favor\n<accent>confirme</accent>"
     },
+    "custom_fee": {
+      "string": "<accent>Taxa</accent> personalizada"
+    },
     "swipe": {
       "string": "Deslizar Para Transferir"
     }
   },
   "spending_intro": {
+    "title": {
+      "string": "Transferir\n<accent>para gastos</accent>"
+    },
+    "text": {
+      "string": "Transfira fundos para seu saldo de gastos para desfrutar de transações instantâneas e baratas com amigos, familiares e comerciantes."
+    },
     "button": {
       "string": "Começar"
     }
@@ -79,22 +100,119 @@
       "string": "Tente novamente"
     }
   },
+  "spending_amount": {
+    "title": {
+      "string": "Transferir\n<accent>para gastos</accent>"
+    },
+    "error_min": {
+      "title": {
+        "string": "Saldo mínimo de poupança"
+      },
+      "description": {
+        "string": "É necessário um mínimo de ₿ {amount} para estabelecer seu saldo de gastos."
+      }
+    },
+    "error_max": {
+      "title": {
+        "string": "Saldo de gastos Máximo"
+      },
+      "description": {
+        "string": "O valor que você pode transferir para seu saldo de gastos está atualmente limitado a ₿ {amount}."
+      },
+      "description_zero": {
+        "string": "Sua transferência para o saldo de gastos é limitada devido à política de liquidez. Para obter detalhes, visite a Central de Ajuda."
+      }
+    }
+  },
+  "spending_confirm": {
+    "network_fee": {
+      "string": "Taxa da rede"
+    },
+    "lsp_fee": {
+      "string": "Taxa de serviço"
+    },
+    "amount": {
+      "string": "Para gastos"
+    },
+    "total": {
+      "string": "Total"
+    },
+    "default": {
+      "string": "Usar padrões"
+    }
+  },
+  "spending_advanced": {
+    "title": {
+      "string": "Capacidade de recebimento\n<accent>capacidade</accent>"
+    },
+    "fee": {
+      "string": "Taxa de liquidez"
+    }
+  },
+  "liquidity": {
+    "title": {
+      "string": "Liquidez\n<accent>e routing</accent>"
+    },
+    "text": {
+      "string": "Seu Saldo de Gastos usa a Lightning Network para tornar seus pagamentos mais baratos, mais rápidos e mais privados.\n\nIsso funciona como o acesso à Internet, mas você paga por liquidez e roteamento em vez de largura de banda.\n\nEssa configuração inclui alguns custos únicos."
+    },
+    "label": {
+      "string": "Liquidez do Saldo de Gastos"
+    }
+  },
   "savings_intro": {
+    "title": {
+      "string": "Transferir\n<accent>para poupança</accent>"
+    },
+    "text": {
+      "string": "Transfira seu saldo de gastos para sua poupança para armazenar seu Bitcoin a longo prazo e garantir seu futuro."
+    },
     "button": {
       "string": "Começar"
     }
   },
   "availability": {
+    "title": {
+      "string": "Disponibilidade\n<accent>de fundos</accent>"
+    },
     "text": {
       "string": "A transferência de fundos para a poupança geralmente é instantânea, mas pode levar até <accent>14 dias</accent> em determinadas condições da rede."
     }
   },
+  "savings_confirm": {
+    "label": {
+      "string": "Transferência para poupança"
+    },
+    "transfer_all": {
+      "string": "Transferir tudo"
+    }
+  },
   "savings_advanced": {
+    "title": {
+      "string": "Selecione fundos\n<accent>para transferir</accent>"
+    },
+    "text": {
+      "string": "Você pode transferir parte do seu saldo de gastos para a poupança, porque tem várias conecções Lightning ativas."
+    },
     "total": {
       "string": "Total selecionado"
     }
   },
+  "savings_progress": {
+    "title": {
+      "string": "Fundos\n<accent>em transferência</accent>"
+    },
+    "text": {
+      "string": "Aguarde, sua transferência de fundos está em andamento. Isso deve levar <accent>±10 segundos.</accent>"
+    }
+  },
   "savings_interrupted": {
+    "nav_title": {
+      "string": "Transferência\n<accent>interrompida</accent>"
+    },
+    "title": {
+      "string": "Mantenha a Bitkit\n<accent>aberta</accent>"
+    },
     "text": {
       "string": "Os fundos ainda não foram transferidos. A Bitkit tentará iniciar a transferência durante os próximos <accent>30 minutos</accent>. Por favor, mantenha o aplicativo aberto."
     }
@@ -103,8 +221,17 @@
     "nav_title": {
       "string": "Transferência bem-sucedida"
     },
+    "title_spending": {
+      "string": "Fundos transferidos\n<accent>para gastos</accent>"
+    },
     "text_spending": {
       "string": "Seus fundos foram transferidos e seu saldo de gastos está pronto para ser usado."
+    },
+    "title_savings": {
+      "string": "Fundos transferidos\n<accent>para poupança</accent>"
+    },
+    "text_savings": {
+      "string": "Seus fundos foram transferidos. Você já pode usar esses fundos imediatamente."
     }
   },
   "external": {
@@ -113,6 +240,12 @@
     }
   },
   "external_manual": {
+    "title": {
+      "string": "<accent>Setup manual</accent>"
+    },
+    "text": {
+      "string": "Você pode usar um nó externo para abrir manualmente uma conexão Lightning. Digite os detalhes do nó para continuar."
+    },
     "node_id": {
       "string": "ID do nó"
     },
@@ -122,8 +255,16 @@
     "port": {
       "string": "Porta"
     },
+    "paste": {
+      "string": "Colar URI do nó"
+    },
     "scan": {
       "string": "Escanear QR"
+    }
+  },
+  "external_amount": {
+    "title": {
+      "string": "Saldo de\n<accent>gastos</accent>"
     }
   },
   "external_success": {
@@ -135,7 +276,7 @@
     }
   },
   "error_channel_purchase": {
-    "string": "Falha na Configuração de Pagamentos Instantâneos"
+    "string": "Setup dos Pagamentos Instantâneos falhou"
   },
   "error_channel_setup_msg": {
     "string": "Ocorreu um erro ao configurar seu saldo de gastos. {raw}"
@@ -180,13 +321,13 @@
     "string": "Nó Lightning"
   },
   "node_id": {
-    "string": "ID LDK do Node"
+    "string": "ID do LDK Node "
   },
   "node_disconnected": {
     "string": "desconectado"
   },
   "node_failed": {
-    "string": "O Bitkit falhou a inicialização do node Lightning."
+    "string": "Bitkit não conseguiu inicializar o node Lightning."
   },
   "connections": {
     "string": "Conexões Lightning"
@@ -210,13 +351,13 @@
     "string": "Ocultar Fechadas e com Falhas"
   },
   "conn_button_export_logs": {
-    "string": "Exportar Registros"
+    "string": "Exportar Logs"
   },
   "conn_button_add": {
     "string": "Adicionar Conexão"
   },
   "export_logs": {
-    "string": "Exportar Registros da Lightning"
+    "string": "Exportar Logs da Lightning"
   },
   "error_logs": {
     "string": "Exportação de Logs Falhou"
@@ -225,31 +366,34 @@
     "string": "Bitkit não foi capaz de exportar os Logs LDK."
   },
   "error_invoice": {
-    "string": "Falha ao Gerar a Fatura"
+    "string": "Falha ao Gerar Invoice"
   },
   "error_add_title": {
-    "string": "Não foi possível adicionar o par Lightning."
+    "string": "Não foi possível adicionar o Peer Lightning."
   },
   "error_add": {
     "string": "Bitkit não foi capaz de adicionar o par Lightning."
   },
   "error_add_uri": {
-    "string": "O URI parece ser inválido."
+    "string": "A URI parece ser inválida."
+  },
+  "error_add_tor": {
+    "string": "Bitkit não consegue adicionar nós Tor."
   },
   "error_save_title": {
-    "string": "Não foi possível salvar o par Lightning"
+    "string": "Não foi possível salvar o peer Lightning"
   },
   "error_save": {
-    "string": "Não foi possível salvar o par Lightning"
+    "string": "Não foi possível salvar o peer Lightning"
   },
   "error_decode": {
-    "string": "Não Foi Possível Decodificar a Fatura"
+    "string": "Não Foi Possível Decodificar o Invoice"
   },
   "peer_saved": {
-    "string": "O par Lightning foi adicionado e salvo com sucesso."
+    "string": "O peer Lightning foi adicionado e salvo com sucesso."
   },
   "invoice_copied": {
-    "string": "Fatura copiada para a área de transferência"
+    "string": "Invoice copiado para a área de transferência"
   },
   "connection": {
     "string": "Conexão"
@@ -266,6 +410,9 @@
   "created_on": {
     "string": "Criado em"
   },
+  "order_expiry": {
+    "string": "Expiração do pedido"
+  },
   "transaction": {
     "string": "Transação"
   },
@@ -275,14 +422,26 @@
   "balance": {
     "string": "Saldo"
   },
+  "reserve_balance": {
+    "string": "Saldo de reserva (não utilizável)"
+  },
   "total_size": {
     "string": "Tamanho total do canal"
   },
   "fees": {
     "string": "Taxas"
   },
+  "base_fee": {
+    "string": "Taxa base de gastos"
+  },
+  "fee_rate": {
+    "string": "Taxa por bytes"
+  },
   "other": {
     "string": "Outros"
+  },
+  "is_usable": {
+    "string": "É utilizável"
   },
   "opened_on": {
     "string": "Aberto em"
@@ -290,12 +449,27 @@
   "closed_on": {
     "string": "Fechado em"
   },
+  "channel_node_id": {
+    "string": "ID do Peer"
+  },
+  "channel_id": {
+    "string": "ID do canal"
+  },
+  "channel_point": {
+    "string": "Ponto do canal"
+  },
+  "closure_reason": {
+    "string": "Motivo do fechamento"
+  },
   "support": {
     "string": "Suporte"
   },
   "connection_closed": {
     "title": {
       "string": "Conexão Desativada"
+    },
+    "description": {
+      "string": "Os fundos de seu saldo de gastos foram transferidos para sua poupança."
     }
   },
   "close_conn": {
@@ -314,7 +488,7 @@
     "string": "Seus fundos estão sendo transferidos de volta para sua poupança."
   },
   "close_text": {
-    "string": "A tarifa para encerrar essa conexão Lightning e transferir seus fundos de volta para sua poupança depende das condições da rede.\n\nA transferência de fundos para a poupança geralmente é instantânea, mas pode levar até <accent>14 dias</accent> em determinadas condições de rede."
+    "string": "A taxa para encerrar essa conexão Lightning e transferir seus fundos de volta para sua poupança depende das condições da rede.\n\nA transferência de fundos para a poupança geralmente é instantânea, mas pode levar até <accent>14 dias</accent> em determinadas condições de rede."
   },
   "close_button": {
     "string": "Fechar"
@@ -356,7 +530,7 @@
     "string": "O processo de configuração expirou. Por favor, tente novamente."
   },
   "order_expired_title": {
-    "string": "Falha na Configuração de Pagamentos Instantâneos"
+    "string": "Falha no setup dos Pagamentos Instantâneos"
   },
   "order_expired_msg": {
     "string": "O processo de configuração expirou. Por favor, tente novamente."
@@ -381,10 +555,10 @@
       "string": "Na fila para abertura"
     },
     "opening": {
-      "string": "Conexão de abertura"
+      "string": "Abrindo conexão"
     },
     "closing": {
-      "string": "Fechamento da conexão"
+      "string": "Fechando conexão"
     },
     "given_up": {
       "string": "Desistir"
@@ -397,10 +571,13 @@
     },
     "open": {
       "string": "Conexão aberta"
+    },
+    "inactive": {
+      "string": "Conexão inativa"
     }
   },
   "wait_text_top": {
-    "string": "Por favor, aguarde o Bitkit se conectar à rede de pagamento (±10 segundos)."
+    "string": "Por favor, sepere que a Bitkit se conecte à rede de pagamento (±10 segundos)."
   },
   "wait_text_bottom": {
     "string": "Conectando e Sincronizando..."

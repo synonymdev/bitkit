@@ -24,7 +24,7 @@
     "string": "Collez le QR code "
   },
   "buy_header": {
-    "string": "Achetez des\n<accent>Bitcoin</accent>"
+    "string": "Achetez des \n<accent>Bitcoin</accent>"
   },
   "buy_text": {
     "string": "Vous n'avez pas de bitcoin ou vous avez besoin de plus d'informations ?"
@@ -34,6 +34,9 @@
   },
   "error_keychain": {
     "string": "Problème de connexion des données"
+  },
+  "error_keychain_msg": {
+    "string": "Impossible de charger la clé primaire à partir du trousseau de clés."
   },
   "connection_restored_title": {
     "string": "Connection Electrum restauré"
@@ -67,7 +70,7 @@
       "string": "Haut\n<accent>Solde</accent>"
     },
     "text": {
-      "string": "<accent>Le solde de votre portefeuille dépasse 500 $.</accent>\nPour votre sécurité, envisagez de transférer une partie de votre épargne vers un portefeuille hors ligne."
+      "string": "<accent>Le solde de votre portefeuille dépasse 500 $.</accent>\nPour votre sécurité, envisagez de transférer une partie de votre Épargne vers un portefeuille hors ligne."
     },
     "continue": {
       "string": "Compris"
@@ -107,7 +110,7 @@
     "string": "Épargne insuffisante"
   },
   "pay_insufficient_spending": {
-    "string": "Insuffisance du solde des dépenses"
+    "string": "Insuffisance du solde Dépenses"
   },
   "pay_insufficient_savings_description": {
     "string": "Plus de ₿ nécessaires pour payer cette facture en bitcoins."
@@ -220,11 +223,14 @@
   "lnurl_withdr_success_title": {
     "string": "Retrait demandé"
   },
+  "lnurl_withdr_success_msg": {
+    "string": "Votre retrait a été demandé avec succès. En attente de paiement."
+  },
   "phone_settings": {
     "string": "Ouvrez les paramètres du téléphone"
   },
   "bt_error_retrieve": {
-    "string": "Échec de transfer "
+    "string": "Échec du transfer "
   },
   "bt_error_connect": {
     "string": "Impossible d'ajouter un nœud LSP comme pair pour le moment."
@@ -252,5 +258,121 @@
   },
   "try_again": {
     "string": "Veuillez réessayer."
+  },
+  "transfer_notification": {
+    "title": {
+      "string": "Important : Transfert de Bitkit"
+    },
+    "body": {
+      "string": "Ouvrez Bitkit pour terminer votre transfert"
+    }
+  },
+  "scan": {
+    "error": {
+      "generic": {
+        "string": "Bitkit ne peut pas lire les données fournies."
+      },
+      "expired": {
+        "string": "Cette facture Lightning a expiré."
+      }
+    }
+  },
+  "gift": {
+    "claiming": {
+      "title": {
+        "string": "Réclamer un cadeau"
+      },
+      "text": {
+        "string": "Réclamer votre code cadeau Bitkit..."
+      }
+    },
+    "error": {
+      "title": {
+        "string": "Erreur de code cadeau"
+      },
+      "text": {
+        "string": "Bitkit n'a pas pu réclamer les fonds. Veuillez réessayer plus tard ou nous contacter."
+      },
+      "button": {
+        "string": "OK"
+      }
+    },
+    "used": {
+      "title": {
+        "string": "Code utilisé"
+      },
+      "text": {
+        "string": "Ce code cadeau Bitkit a déjà été utilisé et les fonds ont été versés."
+      },
+      "button": {
+        "string": "OK"
+      }
+    }
+  },
+  "shop": {
+    "intro": {
+      "title": {
+        "string": "Boutique"
+      },
+      "description": {
+        "string": "Passez à la norme Bitcoin. Dépensez vos bitcoins en cartes-cadeaux numériques, eSIM, recharges téléphoniques, et plus encore."
+      },
+      "button": {
+        "string": "Commencer"
+      }
+    },
+    "discover": {
+      "nav_title": {
+        "string": "Boutique"
+      },
+      "tabs": {
+        "shop": {
+          "string": "Boutique"
+        },
+        "map": {
+          "string": "Carte"
+        }
+      },
+      "label": {
+        "string": "Catégories de cartes-cadeaux"
+      },
+      "gift-cards": {
+        "title": {
+          "string": "Cartes-cadeaux"
+        },
+        "description": {
+          "string": "Acheter avec Bitcoin"
+        }
+      },
+      "esims": {
+        "title": {
+          "string": "ESims"
+        },
+        "description": {
+          "string": "Passez au sans-frontières"
+        }
+      },
+      "refill": {
+        "title": {
+          "string": "Recharge téléphonique"
+        },
+        "description": {
+          "string": "Rechargez votre téléphone"
+        }
+      },
+      "travel": {
+        "title": {
+          "string": "Voyage"
+        },
+        "description": {
+          "string": "Réservez votre séjour ₿"
+        }
+      }
+    },
+    "main": {
+      "nav_title": {
+        "string": "Boutique"
+      }
+    }
   }
 }

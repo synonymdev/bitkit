@@ -4,7 +4,7 @@
   },
   "onboarding": {
     "title": {
-      "string": "Bonjour,\n<accent>Widgets</accent>"
+      "string": "Bonjour, \n<accent>Widgets</accent>"
     },
     "description": {
       "string": "Profitez des flux décentralisés de vos services web préférés en ajoutant des widgets amusants et utiles à votre portefeuille Bitkit."
@@ -44,21 +44,93 @@
   "price": {
     "name": {
       "string": "Prix du bitcoin"
+    },
+    "description": {
+      "string": "Consultez les derniers taux de change de bitcoin pour une variété de monnaies fiat."
+    },
+    "error": {
+      "string": "Impossible d'obtenir des données sur les prix"
     }
   },
   "news": {
     "name": {
       "string": "Bitcoin à la une"
+    },
+    "description": {
+      "string": "Lisez les derniers titres sur le Bitcoin provenant de différents sites d'information."
+    },
+    "error": {
+      "string": "Impossible d'obtenir les dernières news"
     }
   },
   "blocks": {
     "name": {
       "string": "Blocs Bitcoin"
+    },
+    "description": {
+      "string": "Examinez diverses statistiques sur les blocs Bitcoin nouvellement extraits."
+    },
+    "error": {
+      "string": "Impossible d'obtenir des données sur les blocs"
     }
   },
   "facts": {
     "name": {
       "string": "Faits itcoin"
+    },
+    "description": {
+      "string": "Découvrez des faits amusants sur Bitcoin, chaque fois que vous ouvrez votre portefeuille."
+    }
+  },
+  "calculator": {
+    "name": {
+      "string": "Calculateur Bitcoin"
+    },
+    "description": {
+      "string": "Convertissez les montants en ₿ en {fiatSymbol} ou vice versa."
+    }
+  },
+  "weather": {
+    "name": {
+      "string": "Météo Bitcoin"
+    },
+    "description": {
+      "string": "Découvrez quel est le bon moment pour effectuer des transactions sur la blockchain Bitcoin."
+    },
+    "condition": {
+      "good": {
+        "title": {
+          "string": "Conditions favorables"
+        },
+        "description": {
+          "string": "Tout est clair. C'est le bon moment pour effectuer des transactions sur la blockchain."
+        }
+      },
+      "average": {
+        "title": {
+          "string": "Conditions moyennes"
+        },
+        "description": {
+          "string": "Les frais du bloc suivant sont proches des moyennes mensuelles."
+        }
+      },
+      "poor": {
+        "title": {
+          "string": "Mauvaises conditions"
+        },
+        "description": {
+          "string": "Si vous n'êtes pas pressé d'effectuer une transaction, il peut être préférable d'attendre un peu."
+        }
+      }
+    },
+    "current_fee": {
+      "string": "Frais moyen actuel"
+    },
+    "next_block": {
+      "string": "Inclusion dans le bloc suivant"
+    },
+    "error": {
+      "string": "Impossible d’obtenir les frais de transaction actuels"
     }
   }
 }
