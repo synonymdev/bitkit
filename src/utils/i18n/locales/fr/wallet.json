@@ -1,5 +1,8 @@
 {
   "drawer": {
+    "wallet": {
+      "string": "Wallet"
+    },
     "activity": {
       "string": "Activité"
     },
@@ -12,8 +15,11 @@
     "widgets": {
       "string": "Widgets"
     },
+    "shop": {
+      "string": "Boutique"
+    },
     "settings": {
-      "string": "Paramètres"
+      "string": "Config"
     },
     "status": {
       "string": "Statut de l'application"
@@ -24,6 +30,9 @@
   },
   "receive": {
     "string": "Recevoir"
+  },
+  "balance_total_pending": {
+    "string": "<text> (</text><pending/><text> en attente)</text>"
   },
   "create_wallet_error": {
     "string": "Veuillez rouvrir l'application et réessayer."
@@ -59,7 +68,7 @@
     "string": "Facture"
   },
   "send_address_placeholder": {
-    "string": "Entrez une facture Lightning ou une adresse Bitcoin"
+    "string": "Saisissez une facture, une adresse ou une clé de profil"
   },
   "send_clipboard_empty_title": {
     "string": "Presse-papiers vide"
@@ -76,11 +85,22 @@
   "send_done": {
     "string": "FAIT"
   },
+  "send_available": {
+    "string": "Disponible"
+  },
   "send_available_spending": {
     "string": "Disponible (dépenses)"
   },
   "send_available_savings": {
     "string": "Disponible (épargne)"
+  },
+  "send_max_spending": {
+    "title": {
+      "string": "Solde Réserve"
+    },
+    "description": {
+      "string": "Le montant maximum pouvant être dépensé est un peu moins élevé en raison d'un solde de Réserve requis."
+    }
   },
   "send_review": {
     "string": "Révision et envoi"
@@ -124,6 +144,9 @@
   "send_quickpay": {
     "nav_title": {
       "string": "QuickPay"
+    },
+    "title": {
+      "string": "Payer \n<accent>facture...</accent>"
     }
   },
   "send_pending_note": {
@@ -133,7 +156,7 @@
     "string": "Échec du paiement instantané"
   },
   "send_regular": {
-    "string": "Paiement régulier"
+    "string": "Paiement standard"
   },
   "send_error_slash_ln": {
     "string": "Malheureusement, le contact ne peut pas être payé instantanément. Vous pouvez essayer un paiement On-Chain (plus cher, plus lent)."
@@ -192,6 +215,9 @@
   "max_possible_fee_rate_msg": {
     "string": "Réduisez les frais et réessayez."
   },
+  "min_possible_fee_rate": {
+    "string": "Frais en dessous de la limite minimale"
+  },
   "min_possible_fee_rate_msg": {
     "string": "Augmentez les frais et réessayez."
   },
@@ -221,6 +247,14 @@
   },
   "note": {
     "string": "Note"
+  },
+  "lnurl_pay_confirm": {
+    "comment": {
+      "string": "Commentaire"
+    },
+    "comment_placeholder": {
+      "string": "Commentaire facultatif au destinataire"
+    }
   },
   "tags": {
     "string": "Tags"
@@ -309,11 +343,43 @@
   "receive_spending": {
     "string": "Recevoir sur le compte de dépenses"
   },
+  "receive_connect_initial": {
+    "string": "Pour établir votre solde Dépenses, un <accent>{networkFee}</accent> frais de réseau et <accent>{serviceFee}</accent> frais de fournisseur de services seront déduits."
+  },
+  "receive_connect_additional": {
+    "string": "Pour recevoir plus de bitcoins instantanés, Bitkit doit augmenter vos liquidités. A <accent>{lspFee}</accent> frais de fournisseur de services seront déduits du montant que vous avez spécifié."
+  },
+  "receive_liquidity": {
+    "nav_title": {
+      "string": "Configuration du solde compte Dépenses"
+    },
+    "nav_title_additional": {
+      "string": "Augmenter la capacité de réception"
+    },
+    "text": {
+      "string": "Votre solde Dépenses utilise le Lightning Network pour rendre vos paiements moins chers, plus rapides et plus confidentiels.\n\nCela fonctionne comme l'accès à Internet, mais vous payez pour la liquidité et le routage au lieu de la bande passante.\n\nCette configuration implique des coûts uniques."
+    },
+    "text_additional": {
+      "string": "Votre solde Dépenses utilise le Lightning Network pour rendre vos paiements moins chers, plus rapides et plus confidentiels.\n\nCela fonctionne comme l'accès à Internet, mais vous payez pour la liquidité et le routage au lieu de la bande passante.\n\nBitkit a besoin d'augmenter la capacité de réception de votre solde du compte courant pour traiter ce paiement."
+    },
+    "label": {
+      "string": "Liquidité disponible"
+    },
+    "label_additional": {
+      "string": "Liquidité supplémentaire du solde Dépenses"
+    }
+  },
   "receive_cjit_error": {
     "string": "Échec de la transaction"
   },
+  "receive_cjit_error_msg": {
+    "string": "Échec de l’envoi vers Dépenses."
+  },
   "receive_will": {
     "string": "Vous recevrez"
+  },
+  "receive_ldk_init": {
+    "string": "Initialisation du solde Dépenses…"
   },
   "minimum": {
     "string": "MINIMUM"
@@ -346,19 +412,22 @@
     "string": "Transfert"
   },
   "activity_transfer_savings_pending": {
-    "string": "Depuis le compte courant (±{duration})"
+    "string": "Depuis le compte Dépenses (±{duration})"
   },
   "activity_transfer_savings_done": {
-    "string": "Déplacé vers l'épargne"
+    "string": "Depuis le compte Dépenses"
   },
   "activity_transfer_spending_pending": {
-    "string": "Depuis l'épargne (±{duration})"
+    "string": "Depuis l'Épargne (±{duration})"
   },
   "activity_transfer_spending_done": {
-    "string": "Déplacé vers le compte courant"
+    "string": "Déplacé vers l'Épargne"
   },
   "activity_transfer_to_spending": {
-    "string": "Vers le compte courant"
+    "string": "Vers le compte Dépenses"
+  },
+  "activity_transfer_pending": {
+    "string": "Transfert (±{duration})"
   },
   "activity_confirms_in": {
     "string": "Confirmé dans {feeRateDescription}"
@@ -441,6 +510,9 @@
   "activity_tx_id": {
     "string": "ID de la transaction"
   },
+  "activity_preimage": {
+    "string": "Préimage"
+  },
   "activity_payment_hash": {
     "string": "Hash du paiement"
   },
@@ -468,6 +540,9 @@
   "activity_invoice_note": {
     "string": "Note de facturation"
   },
+  "activity_invoice_comment": {
+    "string": "Commentaire"
+  },
   "activity_invoice": {
     "string": "Facture"
   },
@@ -489,26 +564,29 @@
     }
   },
   "details_savings_title": {
-    "string": "Épargner"
+    "string": "Épargnes"
   },
   "details_spending_title": {
-    "string": "Dépenser"
+    "string": "Dépenses"
   },
   "savings": {
     "title": {
-      "string": "Épargner"
+      "string": "Épargnes"
     },
     "onboarding": {
-      "string": "<accent>Envoyer\nles bitcoins</accent>\nsur votre\ncompte épargne"
+      "string": "<accent>Envoyer \nles bitcoins</accent>\nsur votre \nCompte d'Épargne"
     }
   },
   "spending": {
     "title": {
-      "string": "Dépenser"
+      "string": "Dépenses"
     },
     "onboarding": {
-      "string": "<accent>Envoyer\nles bitcoins</accent>\nsur votre\ncompte courant"
+      "string": "<accent>Envoyer \nles bitcoins</accent>\nsur votre \nsolde Dépenses"
     }
+  },
+  "details_transfer_subtitle": {
+    "string": "Transfert entrant : "
   },
   "tx_invalid": {
     "string": "Transaction invalide"
@@ -589,31 +667,44 @@
     "string": "Disponible au retrait"
   },
   "lnurl_w_text": {
-    "string": "Les fonds que vous retirez seront déposés sur votre compte courant Bitkit."
+    "string": "Les fonds que vous retirez seront déposés dans votre solde Dépenses."
   },
   "lnurl_w_button": {
     "string": "Retirer"
+  },
+  "lnurl_p_title": {
+    "string": "Payer en bitcoins"
+  },
+  "lnurl_pay": {
+    "error_min": {
+      "title": {
+        "string": "Montant trop faible"
+      },
+      "description": {
+        "string": "Le montant minimum pour cette facture est de ₿ {amount}."
+      }
+    }
   },
   "lnurl_p_max": {
     "string": "Montant maximum"
   },
   "balance_hidden_title": {
-    "string": "Balance du portefeuille cachée"
+    "string": "Balance du wallet cachée"
   },
   "balance_hidden_message": {
-    "string": "Balayez le solde de votre portefeuille pour le révéler à nouveau."
+    "string": "Faites glisser votre solde pour l’afficher à nouveau."
   },
   "balance_unit_switched_title": {
-    "string": "L'échanger contre {unit}"
+    "string": "Passé en {unit}"
   },
   "balance_unit_switched_message": {
-    "string": "Touchez le solde de votre portefeuille pour l'échanger contre {unit}."
+    "string": "Appuyez sur votre solde pour le repasser en {unit}."
   },
   "refresh_error_title": {
     "string": "Échec du rafraîchissement"
   },
   "refresh_error_msg": {
-    "string": "Une erreur s'est produite et nous n'avons pas pu actualiser le portefeuille. Veuillez réessayer."
+    "string": "Une erreur s'est produite et nous n'avons pas pu actualiser le wallet. Veuillez réessayer."
   },
   "refresh_error_throttle_title": {
     "string": "Connexion limitée"
@@ -624,10 +715,19 @@
   "ldk_sync_error_title": {
     "string": "Erreur de synchronisation Lightning"
   },
+  "ldk_start_error_title": {
+    "string": "Erreur de démarrage de Lightning"
+  },
   "receive_insufficient_title": {
     "string": "Solde de réception insuffisant."
   },
   "receive_insufficient_text": {
     "string": "Capacité insuffisante pour recevoir ce montant en Lightning."
+  },
+  "receive_foreground_title": {
+    "string": "Garder Bitkit au premier plan"
+  },
+  "receive_foreground_msg": {
+    "string": "Les paiements sur votre solde du compte courant peuvent échouer si vous passez d'une application à l'autre."
   }
 }

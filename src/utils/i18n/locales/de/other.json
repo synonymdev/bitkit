@@ -276,5 +276,67 @@
         "string": "Diese Lightning-Rechnung ist abgelaufen."
       }
     }
+  },
+  "gift": {
+    "error": {
+      "title": {
+        "string": "Rabattcode-Fehler"
+      },
+      "button": {
+        "string": "OK"
+      }
+    },
+    "used": {
+      "text": {
+        "string": "Dieser Bitkit-Rabattcode wurde bereits verwendet und der Betrag wurde ausbezahlt."
+      },
+      "button": {
+        "string": "OK"
+      }
+    }
+  },
+  "shop": {
+    "intro": {
+      "title": {
+        "string": "Shop"
+      },
+      "button": {
+        "string": "Los geht's"
+      }
+    },
+    "discover": {
+      "nav_title": {
+        "string": "Shop"
+      },
+      "tabs": {
+        "shop": {
+          "string": "Shop"
+        },
+        "map": {
+          "string": "Karte"
+        }
+      },
+      "label": {
+        "string": "Geschenkkarten Kategorien"
+      },
+      "gift-cards": {
+        "title": {
+          "string": "Geschenkkarten"
+        },
+        "description": {
+          "string": "Einkaufen mit Bitcoin"
+        }
+      },
+      "esims": {
+        "title": {
+          "string": "ESims"
+        }
+      }
+    },
+    "main": {
+      "nav_title": {
+        "string": "Shop"
+      }
+    }
   }
 }

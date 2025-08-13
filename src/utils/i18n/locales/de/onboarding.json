@@ -41,6 +41,9 @@
   "slide1_text": {
     "string": "Gib bitcoin aus, schneller denn je zuvor. Genieße sofortige und günstige Zahlungen mit Freunden, Familie und Händlern."
   },
+  "slide1_note": {
+    "string": "Bitkit bietet derzeit keine Lightning-Dienste in deinem Land an,  aber du kannst dich trotzdem direkt mit anderen Knotenpunkten verbinden."
+  },
   "slide2_header": {
     "string": "Bitcoiners,\n<accent>borderless</accent>"
   },

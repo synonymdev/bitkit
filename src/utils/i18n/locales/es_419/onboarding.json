@@ -1,21 +1,69 @@
 {
+  "tos_header": {
+    "string": "Bitkit\n<accent>términos de uso</accent>"
+  },
   "tos_checkbox": {
-    "string": "Condiciones de uso"
+    "string": "Términos de uso"
+  },
+  "tos_checkbox_value": {
+    "string": "Declaro que he leído y acepto las <accent>condiciones de uso.</accent>"
   },
   "pp_checkbox": {
     "string": "Política de privacidad"
+  },
+  "pp_checkbox_value": {
+    "string": "Declaro que he leído y acepto la <accent>política de privacidad.</accent>"
+  },
+  "welcome_title": {
+    "string": "Tú puedes ser <accent>el cam₿io</accent>"
+  },
+  "welcome_text": {
+    "string": "Usa Bitkit para pagar a quien sea, donde sea y cuando sea. Gasta tu bitcoin en lo que realmente valoras."
   },
   "get_started": {
     "string": "Empezar"
   },
   "skip_intro": {
-    "string": "Saltar introducción"
+    "string": "Saltar intro"
   },
   "skip": {
     "string": "Saltar"
   },
+  "slide0_header": {
+    "string": "Libertad en\n<accent>tu bolsillo</accent>"
+  },
+  "slide0_text": {
+    "string": "Bitkit te da las llaves para manejar tu dinero. Gasta ahora o ahorra para después. Tú decides."
+  },
+  "slide1_header": {
+    "string": "Pagos\n<accent>al instante</accent>"
+  },
+  "slide1_text": {
+    "string": "Gasta bitcoin más rápido que nunca. Disfruta pagos instantáneos y baratos con amigos, familia y comercios."
+  },
+  "slide1_note": {
+    "string": "Bitkit no tiene soporte Lightning en tu región, pero puedes usar nodos externos manualmente."
+  },
+  "slide2_header": {
+    "string": "Bitcoiners\n<accent>sin fronteras</accent>"
+  },
+  "slide2_text": {
+    "string": "Toma el control de tu vida digital con perfiles portables y contactos con pago."
+  },
+  "slide3_header": {
+    "string": "La privacidad\n<accent>no es un delito</accent>"
+  },
+  "slide3_text": {
+    "string": "Desliza para ocultar tu saldo, disfruta pagos más privados y protege tu wallet activando funciones de seguridad."
+  },
+  "slide4_header": {
+    "string": "Tus llaves\n<accent>tus monedas</accent>"
+  },
+  "slide4_text": {
+    "string": "Vamos a crear tu billetera. Ten en cuenta que Bitkit es un app para móviles. <accent>No almacene todo su dinero en Bitkit.</accent>"
+  },
   "new_wallet": {
-    "string": "Cartera nueva"
+    "string": "Billetera nueva"
   },
   "restore": {
     "string": "Restaurar"
@@ -29,6 +77,9 @@
   "advanced": {
     "string": "Avanzado"
   },
+  "passphrase_header": {
+    "string": "Proteger con <accent>Passphrase</accent>"
+  },
   "passphrase_text": {
     "string": "Puedes añadir una frase de secreta a la frase de recuperación de 12 palabras. Si lo hace, asegúrese de no olvidarla."
   },
@@ -38,8 +89,14 @@
   "create_new_wallet": {
     "string": "Crear nueva cartera"
   },
+  "restore_header": {
+    "string": "<accent>Restaurar</accent>\nsu billetera"
+  },
   "restore_phrase": {
     "string": "Introduzca su frase de recuperación a partir de cualquier copia de seguridad (en papel)."
+  },
+  "restore_red_explain": {
+    "string": "Si una palabra aparece en <accent>rojo</accent>, significa que no se ha encontrado en el diccionario de frases de recuperación. Compruebe si hay errores ortográficos."
   },
   "restore_inv_checksum": {
     "string": "La suma de comprobación de la frase de recuperación parece ser incorrecta. Por favor, vuelva a comprobar su frase de recuperación."
@@ -50,14 +107,44 @@
   "restore_passphrase_placeholder": {
     "string": "Frase de acesso*"
   },
+  "restore_passphrase_meaning": {
+    "string": "*Opcional, introdúzcalo sólo si ha establecido uno."
+  },
+  "restore_error_title": {
+    "string": "Fallo en la restauración de la cartera"
+  },
+  "restore_error_description": {
+    "string": "Bitkit no pudo restaurar su billetera desde la copia de seguridad o la frase de recuperación."
+  },
+  "loading_header": {
+    "string": "Configurando\n<accent>su billetera</accent>"
+  },
+  "restore_success_header": {
+    "string": "Billetera <accent>restaurada</accent>"
+  },
   "restore_success_text": {
     "string": "Ha restaurado con éxito su cartera desde la copia de seguridad. ¡Disfrute de Bitkit!"
   },
+  "restore_failed_header": {
+    "string": "<accent>Error en</accent> saldo de gastos"
+  },
+  "restore_failed_text": {
+    "string": "Bitkit restauró tus ahorros, pero no pudo recuperar tu saldo para gastar (estado Lightning) ni los datos de tu wallet."
+  },
   "restore_no_backup_button": {
-    "string": "Proceder sin respaldo de la copia de seguridad"
+    "string": "Proceder sin respaldar"
   },
   "restore_no_backup_warn": {
     "string": "Si anteriormente tenía una copia de seguridad Lightning, ésta se sobrescribirá y se perderá. Esto puede acarrear en pérdida de fondos."
+  },
+  "empty_wallet": {
+    "string": "Para empezar\nempezar\n<accent>envíe\nBitcoin</accent>\na su\nbilletera"
+  },
+  "error_create": {
+    "string": "Falló la creación de billetera"
+  },
+  "multiple_header": {
+    "string": "<accent>Precaución:</accent>\nmúltiples dispositivos"
   },
   "multiple_text": {
     "string": "No instale su frase de recuperación Bitkit en varios teléfonos simultáneamente, ya que podría corromper sus datos."

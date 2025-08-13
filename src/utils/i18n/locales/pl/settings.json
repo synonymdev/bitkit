@@ -111,9 +111,6 @@
   "adv": {
     "section_other": {
       "string": "Inne"
-    },
-    "cs_consolidate_description": {
-      "string": "Użyj wszystkich dostępnych UTXO, niezależnie od wysyłanej kwoty. Skorzystaj z tej metody, gdy opłaty są niskie, aby zmniejszyć koszty przyszłych transakcji."
     }
   },
   "fee": {

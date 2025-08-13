@@ -58,9 +58,6 @@
   "send_invoice": {
     "string": "Инвойс"
   },
-  "send_address_placeholder": {
-    "string": "Введите Биткоин или Лайтнинг инвойс или адрес"
-  },
   "send_clipboard_empty_title": {
     "string": "Буфер обмена пуст"
   },
@@ -201,9 +198,6 @@
   },
   "send_output_to_small_description": {
     "string": "Пожалуйста, увеличьте сумму для отправки."
-  },
-  "send_coin_selection_output_to_small_description": {
-    "string": "Пожалуйста, удалите UTXO или увеличьте сумму для отправки."
   },
   "send_fee_error_min": {
     "string": "Невозможно уменьшить комиссию дальше."

@@ -144,5 +144,24 @@
   },
   "try_again": {
     "string": "Spróbuj ponownie."
+  },
+  "gift": {
+    "error": {
+      "button": {
+        "string": "OK"
+      }
+    },
+    "used": {
+      "button": {
+        "string": "OK"
+      }
+    }
+  },
+  "shop": {
+    "intro": {
+      "button": {
+        "string": "Rozpocznij"
+      }
+    }
   }
 }

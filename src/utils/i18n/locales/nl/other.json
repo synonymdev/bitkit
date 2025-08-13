@@ -84,5 +84,24 @@
   },
   "update_button": {
     "string": "Update"
+  },
+  "gift": {
+    "error": {
+      "button": {
+        "string": "OK"
+      }
+    },
+    "used": {
+      "button": {
+        "string": "OK"
+      }
+    }
+  },
+  "shop": {
+    "intro": {
+      "button": {
+        "string": "Starten"
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
   "transfer_intro": {
     "title": {
-      "string": "Compte de dépenses\n<accent>Solde</accent>"
+      "string": "Dépenses \n<accent>Solde</accent>"
     },
     "text": {
       "string": "Alimentez votre solde de dépenses pour profiter de transactions instantanées et bon marché avec vos amis, votre famille et les commerçants."
@@ -12,13 +12,19 @@
   },
   "funding": {
     "nav_title": {
-      "string": "Solde des dépenses"
+      "string": "Solde Dépenses"
     },
     "title": {
-      "string": "Financez votre <accent>solde de dépenses</accent>"
+      "string": "Financez votre <accent>solde Dépenses</accent>"
     },
     "text": {
       "string": "Vous pouvez utiliser votre épargne Bitkit ou envoyer des bitcoins à partir d'un autre portefeuille."
+    },
+    "text_blocked": {
+      "string": "Bitkit ne fournit pas actuellement de services Lightning dans votre pays, mais vous pouvez toujours vous connecter directement à d'autres nœuds."
+    },
+    "text_blocked_cjit": {
+      "string": "Bitkit ne fournit pas actuellement de services Lightning dans votre pays, mais vous pouvez toujours vous connecter directement à d'autres nœuds."
     },
     "button1": {
       "string": "Transfert depuis l'épargne"
@@ -32,7 +38,19 @@
   },
   "funding_advanced": {
     "nav_title": {
-      "string": "Solde des dépenses"
+      "string": "Solde Dépenses"
+    },
+    "title": {
+      "string": "<accent>Configuration</accent> avancée"
+    },
+    "text": {
+      "string": "Scannez un QR code pour réclamer votre canal LNURL à un autre LSP, ou choisissez la configuration manuelle."
+    },
+    "button1": {
+      "string": "LNURL Canal QR code"
+    },
+    "button2": {
+      "string": "Configuration manuelle"
     }
   },
   "no_funds": {
@@ -53,11 +71,20 @@
     "confirm": {
       "string": "Veuillez\n<accent>confirmer</accent>"
     },
+    "custom_fee": {
+      "string": "<accent>Frais</accent> sur mesure"
+    },
     "swipe": {
       "string": "Glissez pour transférer"
     }
   },
   "spending_intro": {
+    "title": {
+      "string": "Transfert\n<accent>aux dépenses</accent>"
+    },
+    "text": {
+      "string": "Transférez des fonds vers votre solde Dépenses pour profiter de transactions instantanées et moins chers avec vos amis, votre famille et les commerçants."
+    },
     "button": {
       "string": "Commencer"
     }
@@ -70,7 +97,7 @@
       "string": "Transfert\n<accent>échoué</accent>"
     },
     "text": {
-      "string": "Désolé, Bitkit n'a pas pu établir votre compte courant ou effectuer votre transfert. Veuillez réessayer."
+      "string": "Désolé, Bitkit n’a pas pu configurer votre solde Dépenses ou effectuer le transfert. Veuillez réessayer."
     },
     "cancel": {
       "string": "Inspecter l'erreur"
@@ -79,22 +106,122 @@
       "string": "Réessayer"
     }
   },
+  "spending_amount": {
+    "title": {
+      "string": "Transfert \n<accent>Dépenses</accent>"
+    },
+    "quarter": {
+      "string": "25%"
+    },
+    "error_min": {
+      "title": {
+        "string": "Seuil Minimum Épargne"
+      },
+      "description": {
+        "string": "Un minimum de ₿ {amount} est nécessaire pour établir votre solde de Dépenses."
+      }
+    },
+    "error_max": {
+      "title": {
+        "string": "Seuil Maximum Épargne"
+      },
+      "description": {
+        "string": "Le montant que vous pouvez transférer vers votre solde de dépenses est actuellement limité à ₿ {amount}."
+      },
+      "description_zero": {
+        "string": "Votre transfert vers le solde des dépenses est limité en raison de la politique de liquidité. Pour plus de détails, consultez le Centre d'aide."
+      }
+    }
+  },
+  "spending_confirm": {
+    "network_fee": {
+      "string": "Frais de réseau"
+    },
+    "lsp_fee": {
+      "string": "Frais de service"
+    },
+    "amount": {
+      "string": "Vers Dépenses"
+    },
+    "total": {
+      "string": "Total"
+    },
+    "default": {
+      "string": "Utiliser les valeurs par défaut"
+    }
+  },
+  "spending_advanced": {
+    "title": {
+      "string": "Recevoir \n<accent>capacité</accent>"
+    },
+    "fee": {
+      "string": "Frais de liquidité"
+    }
+  },
+  "liquidity": {
+    "title": {
+      "string": "Liquidité\n<accent>& routage</accent>"
+    },
+    "text": {
+      "string": "Votre solde Dépenses, utilise le Lightning Network pour rendre vos paiements moins chers, plus rapides et plus confidentiels.\n\nCela fonctionne comme l'accès à Internet, mais vous payez pour la liquidité et le routage au lieu de la bande passante.\n\nCette configuration implique des coûts uniques."
+    },
+    "label": {
+      "string": "Liquidité du Solde des dépenses"
+    }
+  },
   "savings_intro": {
+    "title": {
+      "string": "Transfert \n<accent>vers l'Épargne</accent>"
+    },
+    "text": {
+      "string": "Transférez le solde de votre compte Dépenses vers votre Épargne pour conserver vos bitcoins à long terme."
+    },
     "button": {
       "string": "Commencer"
     }
   },
   "availability": {
+    "title": {
+      "string": "Fonds\n<accent>Disponibilité</accent>"
+    },
     "text": {
-      "string": "Le transfert de fonds vers l'épargne est généralement instantané, mais la transaction peut prendre jusqu'à <accent>14 jours</accent> dans certaines conditions de réseau."
+      "string": "Le transfert de fonds vers l'Épargne est généralement instantané, mais la transaction peut prendre jusqu'à <accent>14 jours</accent> dans certaines conditions de réseau."
+    }
+  },
+  "savings_confirm": {
+    "label": {
+      "string": "Transfert vers l'Épargne"
+    },
+    "transfer_all": {
+      "string": "Tout transférer"
     }
   },
   "savings_advanced": {
+    "title": {
+      "string": "Sélectionnez les fonds\n<accent>à transférer</accent>"
+    },
+    "text": {
+      "string": "Vous pouvez transférer une partie de votre solde du compte des dépenses vers l'épargne, car vous avez plusieurs Connexions Éclair actives."
+    },
     "total": {
       "string": "Total sélectionné"
     }
   },
+  "savings_progress": {
+    "title": {
+      "string": "Fonds\n<accent>en transfert</accent>"
+    },
+    "text": {
+      "string": "Veuillez patienter, votre transfert de fonds est en cours. Cela devrait prendre <accent>±10 secondes.</accent>"
+    }
+  },
   "savings_interrupted": {
+    "nav_title": {
+      "string": "Transfert \n<accent>interrompu</accent>"
+    },
+    "title": {
+      "string": "Gardez Bitkit \n<accent>ouvert</accent>"
+    },
     "text": {
       "string": "Les fonds n'ont pas encore été transférés. Bitkit va essayer d'initier le transfert au cours des <accent>30</accent> prochaines <accent>minutes</accent>. Veuillez garder votre application ouverte."
     }
@@ -103,8 +230,17 @@
     "nav_title": {
       "string": "Transfert réussi"
     },
+    "title_spending": {
+      "string": "Fonds transférés \n<accent>vers Dépenses</accent>"
+    },
     "text_spending": {
-      "string": "Vos fonds ont été transférés et votre solde de dépenses est prêt à être utilisé."
+      "string": "Vos fonds ont été transférés et votre solde Dépenses est prêt à être utilisé."
+    },
+    "title_savings": {
+      "string": "Fonds transférés \n<accent>à l'épargne</accent>"
+    },
+    "text_savings": {
+      "string": "Vos fonds ont été transférés. Vous pouvez utiliser ces fonds immédiatement."
     }
   },
   "external": {
@@ -113,6 +249,12 @@
     }
   },
   "external_manual": {
+    "title": {
+      "string": "<accent>Configuration manuelle</accent>"
+    },
+    "text": {
+      "string": "Vous pouvez utiliser un nœud externe pour ouvrir manuellement une connexion Lightning. Saisissez les détails du nœud pour continuer."
+    },
     "node_id": {
       "string": "ID du nœud"
     },
@@ -122,13 +264,21 @@
     "port": {
       "string": "Port"
     },
+    "paste": {
+      "string": "Coller l'URI du nœud"
+    },
     "scan": {
       "string": "Scanner QR"
     }
   },
+  "external_amount": {
+    "title": {
+      "string": "Dépenses \n<accent>solde</accent>"
+    }
+  },
   "external_success": {
     "title": {
-      "string": "Connexion\n<accent>initiée</accent>"
+      "string": "Connexion \n<accent>initiée</accent>"
     },
     "text": {
       "string": "La connexion Lightning est initiée. Vous pourrez utiliser votre compte courant dans <accent>±30 minutes</accent> (en fonction de la configuration du nœud)."
@@ -150,7 +300,7 @@
     "string": "Épargner"
   },
   "spending_label": {
-    "string": "Solde du compte de dépenses"
+    "string": "Solde Dépenses"
   },
   "receiving_label": {
     "string": "Capacité de réception"
@@ -236,6 +386,9 @@
   "error_add_uri": {
     "string": "L'URI semble être invalide."
   },
+  "error_add_tor": {
+    "string": "Bitkit ne peut pas ajouter de nœuds Tor."
+  },
   "error_save_title": {
     "string": "Impossible de sauvegarder le Pair Lightning"
   },
@@ -260,8 +413,14 @@
   "order_details": {
     "string": "Détails de la commande"
   },
+  "order": {
+    "string": "Numéro de commande"
+  },
   "created_on": {
     "string": "Créé le"
+  },
+  "order_expiry": {
+    "string": "Expiration de la commande"
   },
   "transaction": {
     "string": "Transaction"
@@ -272,11 +431,26 @@
   "balance": {
     "string": "Solde"
   },
+  "reserve_balance": {
+    "string": "Solde de réserve (non dépensable)"
+  },
   "total_size": {
     "string": "Taille totale du canal"
   },
+  "fees": {
+    "string": "Frais"
+  },
+  "base_fee": {
+    "string": "Frais de base des Dépenses"
+  },
+  "fee_rate": {
+    "string": "Taux de redevance"
+  },
   "other": {
     "string": "Autre"
+  },
+  "is_usable": {
+    "string": "Est utilisable"
   },
   "opened_on": {
     "string": "Ouvert le"
@@ -284,12 +458,27 @@
   "closed_on": {
     "string": "Fermé le"
   },
+  "channel_node_id": {
+    "string": "ID du pair"
+  },
+  "channel_id": {
+    "string": "ID du canal"
+  },
+  "channel_point": {
+    "string": "Point du canal"
+  },
+  "closure_reason": {
+    "string": "Motif de la fermeture"
+  },
   "support": {
     "string": "Support"
   },
   "connection_closed": {
     "title": {
       "string": "Connexion fermée"
+    },
+    "description": {
+      "string": "Les fonds de votre solde Dépenses ont été transférés vers votre épargne."
     }
   },
   "close_conn": {
@@ -308,7 +497,7 @@
     "string": "Vos fonds sont transférés vers votre épargne."
   },
   "close_text": {
-    "string": "Les frais de fermeture de cette connection Lightning et de transfert de vos fonds vers votre épargne dépendent des conditions du réseau.\n\nLe transfert des fonds vers l'épargne est généralement instantané, mais la transaction peut prendre jusqu'à <accent>14 jours</accent> dans certaines conditions de réseau."
+    "string": "Les frais de fermeture de cette connection Lightning et de transfert de vos fonds vers votre Épargne dépendent des conditions du réseau. \n\nLe transfert des fonds vers l'Épargne est généralement instantané, mais la transaction peut prendre jusqu'à <accent>14 jours</accent> dans certaines conditions de réseau."
   },
   "close_button": {
     "string": "Fermer"
@@ -317,7 +506,7 @@
     "string": "Forcer le transfert"
   },
   "force_title": {
-    "string": "Force\n<accent>Transfert</accent>"
+    "string": "Force \n<accent>Transfert</accent>"
   },
   "force_text": {
     "string": "Impossible d'initier le transfert. Voulez-vous forcer ce transfert ? Vous ne pourrez pas utiliser ces fonds pendant ±14 jours ( !)"
@@ -335,10 +524,10 @@
     "string": "Échec du transfert forcé"
   },
   "force_failed_msg": {
-    "string": "Impossible de renvoyer vos fonds sur le compte épargne. Veuillez réessayer."
+    "string": "Impossible de renvoyer vos fonds sur l'Épargne. Veuillez réessayer."
   },
   "channel_opened_title": {
-    "string": "Compte courant prêt"
+    "string": "Solde Dépenses"
   },
   "channel_opened_msg": {
     "string": "Vous pouvez désormais payer n'importe qui, n'importe où, instantanément."
@@ -391,6 +580,9 @@
     },
     "open": {
       "string": "Connexion ouverte"
+    },
+    "inactive": {
+      "string": "Connexion inactive"
     }
   },
   "wait_text_top": {

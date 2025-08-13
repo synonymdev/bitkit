@@ -1,5 +1,8 @@
 {
   "drawer": {
+    "wallet": {
+      "string": "Carteira"
+    },
     "activity": {
       "string": "Atividade"
     },
@@ -11,6 +14,9 @@
     },
     "widgets": {
       "string": "Widgets"
+    },
+    "shop": {
+      "string": "Compras"
     },
     "settings": {
       "string": "Configurações"
@@ -24,6 +30,9 @@
   },
   "receive": {
     "string": "Receber"
+  },
+  "balance_total_pending": {
+    "string": "<text> (</text><pending/><text> pendente)</text>"
   },
   "create_wallet_error": {
     "string": "Reinicie o aplicativo e tente novamente."
@@ -47,7 +56,7 @@
     "string": "Contato"
   },
   "recipient_invoice": {
-    "string": "Colar Fatura"
+    "string": "Colar Invoice"
   },
   "recipient_manual": {
     "string": "Inserir Manualmente"
@@ -56,16 +65,16 @@
     "string": "Escanear QR"
   },
   "send_invoice": {
-    "string": "Fatura"
+    "string": "Invoice"
   },
   "send_address_placeholder": {
-    "string": "Insira uma fatura ou endereço Bitcoin ou Lightning"
+    "string": "Inserir um invoice, endereço ou código de perfil"
   },
   "send_clipboard_empty_title": {
     "string": "Área de transferência vazia"
   },
   "send_clipboard_empty_text": {
-    "string": "Por favor, copie um endereço ou uma fatura."
+    "string": "Por favor, copie um endereço ou um invoice."
   },
   "send_amount": {
     "string": "Quantidade de Bitcoin"
@@ -76,11 +85,22 @@
   "send_done": {
     "string": "FEITO"
   },
+  "send_available": {
+    "string": "Disponível"
+  },
   "send_available_spending": {
     "string": "Disponível (gastos)"
   },
   "send_available_savings": {
     "string": "Disponível (poupança)"
+  },
+  "send_max_spending": {
+    "title": {
+      "string": "Saldo de reserva"
+    },
+    "description": {
+      "string": "O valor máximo utilizável é um pouco menor devido a um saldo de reserva obrigatório."
+    }
   },
   "send_review": {
     "string": "Revisar e Enviar"
@@ -89,10 +109,10 @@
     "string": "Confirmando em"
   },
   "send_invoice_expiration": {
-    "string": "Vencimento da fatura"
+    "string": "Vencimento do invoice"
   },
   "send_swipe": {
-    "string": "Passe o dedo para Pagar"
+    "string": "Deslize para Pagar"
   },
   "send_yes": {
     "string": "Sim, Enviar"
@@ -121,6 +141,14 @@
   "send_pending": {
     "string": "Pagamento Pendente"
   },
+  "send_quickpay": {
+    "nav_title": {
+      "string": "QuickPay"
+    },
+    "title": {
+      "string": "Pagando \n<accent>invoice...</accent>"
+    }
+  },
   "send_pending_note": {
     "string": "Esse pagamento está demorando mais do que o esperado. Enquanto isso, você pode continuar usando a Bitkit."
   },
@@ -140,16 +168,16 @@
     "string": "Não foi possível transmitir a transação. Por favor, tente novamente."
   },
   "tag_remove_error_title": {
-    "string": "Falha ao Remover a Etiqueta"
+    "string": "Falha ao Remover a Tag"
   },
   "tag_remove_error_description": {
-    "string": "O Bitkit não conseguiu encontrar os dados da transação."
+    "string": "A Bitkit não conseguiu encontrar os dados da transação."
   },
   "error_no_invoice": {
-    "string": "Não fora encontrada nenhuma fatura lightning."
+    "string": "Não fora encontrada nenhum invoice lightning."
   },
   "error_no_tx_title": {
-    "string": "Nenhuma transação está disponível para transmissão."
+    "string": "Não há transações disponíveis para envio."
   },
   "error_no_tx_msg": {
     "string": "Verifique as informações da transação e tente novamente."
@@ -187,6 +215,9 @@
   "max_possible_fee_rate_msg": {
     "string": "Diminua a taxa personalizada e tente novamente."
   },
+  "min_possible_fee_rate": {
+    "string": "Taxa abaixo do limite mínimo"
+  },
   "min_possible_fee_rate_msg": {
     "string": "Aumente a taxa personalizada e tente novamente."
   },
@@ -194,13 +225,13 @@
     "string": "sat/vbyte"
   },
   "send_output_to_small_title": {
-    "string": "O valor sendo enviado é muito pequeno"
+    "string": "O valor é muito pequeno"
   },
   "send_output_to_small_description": {
-    "string": "Por favor, aumente o valor enviado para prosseguir."
+    "string": "Por favor, aumente o valor para prosseguir."
   },
   "send_coin_selection_output_to_small_description": {
-    "string": "Remova os UTXOs ou aumente o valor enviado para prosseguir."
+    "string": "Por favor, remova os UTXOs ou aumente o valor do envio para continuar."
   },
   "send_fee_error_min": {
     "string": "Não é possível reduzir ainda mais a taxa."
@@ -217,6 +248,14 @@
   "note": {
     "string": "Nota"
   },
+  "lnurl_pay_confirm": {
+    "comment": {
+      "string": "Comentário"
+    },
+    "comment_placeholder": {
+      "string": "Comentário opcional para o receptor"
+    }
+  },
   "tags": {
     "string": "Tags"
   },
@@ -227,10 +266,10 @@
     "string": "Adicionar"
   },
   "tags_add_error_header": {
-    "string": "Falha ao adicionar a etiqueta."
+    "string": "Falha ao adicionar a tag."
   },
   "tags_add_error_description": {
-    "string": "O Bitkit não conseguiu encontrar os dados da transação."
+    "string": "A Bitkit não conseguiu encontrar os dados da transação."
   },
   "tags_new": {
     "string": "Nova Tag"
@@ -245,7 +284,7 @@
     "string": "Filtrar atividades usando tags"
   },
   "tags_filter_title": {
-    "string": "Selecionar Etiqueta"
+    "string": "Selecionar Tag"
   },
   "tags_no": {
     "string": "Ainda não há tags disponíveis"
@@ -263,7 +302,7 @@
     "string": "Seu pagamento instantâneo falhou. Por favor, tente novamente."
   },
   "selection_title": {
-    "string": "Controle de Moedas"
+    "string": "Seleção de Moedas"
   },
   "selection_auto": {
     "string": "Auto"
@@ -278,37 +317,69 @@
     "string": "Receber Bitcoin"
   },
   "receive_specify": {
-    "string": "Editar Fatura"
+    "string": "Editar Invoice"
   },
   "receive_copied": {
-    "string": "Fatura copiada para a área de transferência."
+    "string": "Invoice copiado para a área de transferência."
   },
   "receive_share_address": {
     "string": "Compartilhar endereço de recebimento"
   },
   "receive_bitcoin_invoice": {
-    "string": "Fatura de Bitcoin"
+    "string": "Invoice Bitcoin"
   },
   "receive_lightning_invoice": {
-    "string": "Fatura Lightning"
+    "string": "Invoice Lightning"
   },
   "receive_note_placeholder": {
-    "string": "Nota opcional para o pagador"
+    "string": "Comentário opcional para o pagador"
   },
   "receive_show_qr": {
     "string": "Mostrar código QR"
   },
   "receive_text_lnfunds": {
-    "string": "Deseja receber bitcoin <accent>via Lightning</accent>?"
+    "string": "Deseja receber <accent>via Lightning</accent>?"
   },
   "receive_spending": {
     "string": "Receber no Saldo de Gastos"
   },
+  "receive_connect_initial": {
+    "string": "Para configurar seu saldo de gastos, uma  taxa de rede de <accent>{networkFee}</accent> e <accent>{serviceFee}</accent> de taxa do provedor de serviços serão deduzidas."
+  },
+  "receive_connect_additional": {
+    "string": "Para receber mais Bitcoin instantâneo, a Bitkit precisa aumentar sua liquidez. A taxa de rede de <accent>{networkFee}</accent> e <accent>{serviceFee}</accent> de taxa do provedor de serviços serão deduzidas do valor que você especificou."
+  },
+  "receive_liquidity": {
+    "nav_title": {
+      "string": "Setup do saldo de gastos"
+    },
+    "nav_title_additional": {
+      "string": "Aumentar a capacidade de recebimento"
+    },
+    "text": {
+      "string": "Seu Saldo de Gastos usa a Lightning Network para tornar seus pagamentos mais baratos, mais rápidos e mais privados.\n\nIsso funciona como o acesso à Internet, mas você paga por liquidez e roteamento em vez de largura de banda.\n\nEssa configuração inclui alguns custos únicos."
+    },
+    "text_additional": {
+      "string": "Seu Saldo de Gastos usa a Lightning Network para tornar seus pagamentos mais baratos, mais rápidos e mais privados.\n\nIsso funciona como o acesso à Internet, mas você paga por liquidez e roteamento em vez de largura de banda.\n\nA Bitkit precisa aumentar a capacidade de recebimento de seu saldo de gastos para processar esse pagamento."
+    },
+    "label": {
+      "string": "Liquidez do Saldo de Gastos"
+    },
+    "label_additional": {
+      "string": "Liquidez adicional do saldo de gastos"
+    }
+  },
   "receive_cjit_error": {
     "string": "Falha na Transação"
   },
+  "receive_cjit_error_msg": {
+    "string": "Falha ao enviar fundos para sua conta de gastos."
+  },
   "receive_will": {
     "string": "Você receberá"
+  },
+  "receive_ldk_init": {
+    "string": "Carregando saldo de gastos..."
   },
   "minimum": {
     "string": "MÍNIMO"
@@ -323,7 +394,7 @@
     "string": "Nenhuma atividade ainda"
   },
   "activity_no_explain": {
-    "string": "Receba alguns fundos para começar"
+    "string": "Receba alguns bitcoins para começar"
   },
   "activity_sent": {
     "string": "Enviado"
@@ -347,13 +418,16 @@
     "string": "Do Saldo de Gastos"
   },
   "activity_transfer_spending_pending": {
-    "string": "Do Saldo de Poupança (±{duration})"
+    "string": "Da Poupança (±{duration})"
   },
   "activity_transfer_spending_done": {
-    "string": "Do Saldo de Poupança"
+    "string": "Da Poupança"
   },
   "activity_transfer_to_spending": {
     "string": "Para o Saldo de Gastos"
+  },
+  "activity_transfer_pending": {
+    "string": "Transferência (±{duration})"
   },
   "activity_confirms_in": {
     "string": "Confirma em {feeRateDescription}"
@@ -365,7 +439,7 @@
     "string": "Taxa potencialmente muito baixa"
   },
   "activity_bitcoin_sent": {
-    "string": "Enviou Bitcoin"
+    "string": "Bitcoin Enviado"
   },
   "activity_bitcoin_received": {
     "string": "Bitcoin Recebido"
@@ -392,10 +466,10 @@
     "string": "Transações Removidas do Mempool"
   },
   "activity_removed_msg": {
-    "string": "Verifique sua lista de atividades. Número de transações afetadas (destacadas em vermelho): {count} "
+    "string": "Verifique suas atividades. As {count}  transações inpactadas estão em vermelho"
   },
   "activity_boosting": {
-    "string": "Impulsionar"
+    "string": "Impulsionando"
   },
   "activity_fee": {
     "string": "Taxa"
@@ -410,7 +484,7 @@
     "string": "Data"
   },
   "activity_time": {
-    "string": "Tempo"
+    "string": "Hora"
   },
   "activity_contact": {
     "string": "Contato"
@@ -422,7 +496,7 @@
     "string": "Separar"
   },
   "activity_tag": {
-    "string": "Etiqueta"
+    "string": "Tag"
   },
   "activity_boost": {
     "string": "Impulsionar"
@@ -435,6 +509,9 @@
   },
   "activity_tx_id": {
     "string": "ID da transação"
+  },
+  "activity_preimage": {
+    "string": "Pré imagem"
   },
   "activity_payment_hash": {
     "string": "Hash de pagamento"
@@ -461,10 +538,13 @@
     "string": "Sucesso"
   },
   "activity_invoice_note": {
-    "string": "Descrição da Fatura"
+    "string": "Descrição do invoice"
+  },
+  "activity_invoice_comment": {
+    "string": "Comentário"
   },
   "activity_invoice": {
-    "string": "Fatura"
+    "string": "Invoice"
   },
   "activity_all": {
     "string": "Todas as atividades"
@@ -505,6 +585,9 @@
       "string": "<accent>Transfira\nbitcoin</accent>\npara seu\nsaldo de gastos"
     }
   },
+  "details_transfer_subtitle": {
+    "string": "Transferência chegando:"
+  },
   "tx_invalid": {
     "string": "Transação Inválida"
   },
@@ -512,7 +595,7 @@
     "string": "Impulsionar"
   },
   "boost_title": {
-    "string": "Acelerar Transação"
+    "string": "Impulsionar Transação"
   },
   "boost_success_title": {
     "string": "Acelerado!"
@@ -524,7 +607,7 @@
     "string": "Aceleração Falhou"
   },
   "boost_error_msg": {
-    "string": "O Bitkit não conseguiu acelerar a transação."
+    "string": "A Bitkit não conseguiu acelerar a transação."
   },
   "boost_fee_custom": {
     "string": "Sua transação pode ser confirmada mais rapidamente se você incluir uma taxa adicional de rede. Configure sua taxa personalizada abaixo."
@@ -536,7 +619,7 @@
     "string": "Usar Taxa Sugerida"
   },
   "boost_swipe": {
-    "string": "Deslize para impulsionar"
+    "string": "Arraste para acelerar"
   },
   "payment_received": {
     "string": "Bitcoin Recebido"
@@ -572,22 +655,35 @@
     "string": "Reorganização na Blockchain Detetada"
   },
   "reorg_msg_begin": {
-    "string": "{count, plural, one {uma de suas transações não está mais confirmada.} many {algumas de suas transações não são mais confirmadas.} other {algumas de suas transações não são mais confirmadas.}} Please wait."
+    "string": "{count, plural, one {uma de suas transações não está mais confirmada.} many {algumas de suas transações não são mais confirmadas.} other {algumas de suas transações não estão mais confirmadas.}} Please wait."
   },
   "reorg_msg_end": {
     "string": "Verifique em sua lista de atividades as transações afetadas."
   },
   "lnurl_w_title": {
-    "string": "Retirar Bitcoin"
+    "string": "Sacar Bitcoin"
   },
   "lnurl_w_max": {
-    "string": "Disponível para retirada"
+    "string": "Disponível para saque"
   },
   "lnurl_w_text": {
     "string": "Os fundos que você sacar serão depositados em seu saldo de gastos do Bitkit."
   },
   "lnurl_w_button": {
-    "string": "Retirada"
+    "string": "Sacar"
+  },
+  "lnurl_p_title": {
+    "string": "Pagar com Bitcoin"
+  },
+  "lnurl_pay": {
+    "error_min": {
+      "title": {
+        "string": "Valor muito baixo"
+      },
+      "description": {
+        "string": "O valor mínimo para este invoice é de ₿ {amount}."
+      }
+    }
   },
   "lnurl_p_max": {
     "string": "Valor máximo"
@@ -599,7 +695,7 @@
     "string": "Deslize o seu saldo para revelá-lo novamente."
   },
   "balance_unit_switched_title": {
-    "string": "Saldo visualizado em {unit}"
+    "string": "Saldo exibido em {unit}"
   },
   "balance_unit_switched_message": {
     "string": "Toque no seu saldo para visualizá-lo em {unit}."
@@ -619,10 +715,19 @@
   "ldk_sync_error_title": {
     "string": "Erro de Sincronização Lightning"
   },
+  "ldk_start_error_title": {
+    "string": "Erro de inicialização da Lightning"
+  },
   "receive_insufficient_title": {
     "string": "Limite de recebimento insuficiente."
   },
   "receive_insufficient_text": {
     "string": "Limite de recebimento insuficiente para esse valor."
+  },
+  "receive_foreground_title": {
+    "string": "Mantenha a Bitkit em primeiro plano"
+  },
+  "receive_foreground_msg": {
+    "string": "Os pagamentos ao seu saldo de gastos podem falhar se o usuário alternar entre aplicativos."
   }
 }

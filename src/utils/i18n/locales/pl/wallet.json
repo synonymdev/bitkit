@@ -40,9 +40,6 @@
   "send_invoice": {
     "string": "Faktura"
   },
-  "send_address_placeholder": {
-    "string": "Wprowadź fakturę Bitcoinową lub Lightning, lub adres"
-  },
   "send_clipboard_empty_title": {
     "string": "Schowek pusty"
   },

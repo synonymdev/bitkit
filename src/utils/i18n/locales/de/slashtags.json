@@ -53,6 +53,9 @@
   "contact_pay_error": {
     "string": "Kontakt konnte nicht bezahlt werden"
   },
+  "contact_ldk_not_ready": {
+    "string": "Lightning ist noch nicht bereit"
+  },
   "contact_share": {
     "string": "Profilschlüssel teilen"
   },
@@ -155,8 +158,20 @@
   "profile_delete": {
     "string": "Löschen"
   },
+  "profile_delete_dialogue_title": {
+    "string": "Nutzerprofil löschen?"
+  },
+  "profile_delete_dialogue_msg": {
+    "string": "Bist du sicher, dass du dein Bitkit-Benutzerprofil vollständig löschen möchtest?"
+  },
   "profile_delete_dialogue_yes": {
     "string": "Ja, Löschen"
+  },
+  "profile_delete_success_title": {
+    "string": "Profil gelöscht"
+  },
+  "profile_delete_success_msg": {
+    "string": "Dein Bitkit-Benutzerprofil wurde gelöscht."
   },
   "offline_enable": {
     "string": "Aktiviere Zahlungen mit Kontakten*"
@@ -169,6 +184,9 @@
   },
   "error_saving_profile": {
     "string": "Fehler beim Speichern des Profils"
+  },
+  "error_deleting_profile": {
+    "string": "Kann Benutzerprofil nicht löschen"
   },
   "error_pay_title": {
     "string": "Kontakt konnte nicht bezahlt werden"

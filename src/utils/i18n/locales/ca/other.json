@@ -156,5 +156,24 @@
   },
   "update_button": {
     "string": "Actualització"
+  },
+  "gift": {
+    "error": {
+      "button": {
+        "string": "OK"
+      }
+    },
+    "used": {
+      "button": {
+        "string": "OK"
+      }
+    }
+  },
+  "shop": {
+    "intro": {
+      "button": {
+        "string": "Començar"
+      }
+    }
   }
 }

@@ -149,6 +149,9 @@
   "pin_send": {
     "string": "Veuillez saisir votre code PIN pour confirmer et envoyer ce paiement."
   },
+  "pin_send_title": {
+    "string": "Entrer code PIN"
+  },
   "pin_use_biometrics": {
     "string": "Utiliser {biometricsName}"
   },
@@ -189,7 +192,7 @@
     "string": "Utiliser {biometricsName}"
   },
   "bio_phone_settings": {
-    "string": "Paramètres du téléphone"
+    "string": "Réglages tél."
   },
   "success_title": {
     "string": "Portefeuille sécurisé"
@@ -222,7 +225,7 @@
     "string": "Êtes-vous sûr de vouloir réinitialiser votre portefeuille Bitkit ? Avez-vous une sauvegarde de votre phrase de récupération et des données de votre portefeuille ?"
   },
   "reset_confirm": {
-    "string": "Oui, Réinitialisation"
+    "string": "Oui, Réinitialiser"
   },
   "recovery": {
     "string": "Récupération"
@@ -303,14 +306,47 @@
     "string": "Utiliser le code PIN"
   },
   "wiped_title": {
-    "string": "Données du portefeuille supprimées"
+    "string": "Données du wallet supprimées"
   },
   "wiped_message": {
-    "string": "Bitkit a été réinitialisé et toutes les données du portefeuille ont été supprimées."
+    "string": "Bitkit a été réinitialisé et toutes les données du walet ont été supprimées."
   },
   "authorization": {
+    "title": {
+      "string": "Autorisation"
+    },
+    "description": {
+      "string": "Assurez-vous de faire confiance à ce service avant de lui accorder l'autorisation de gérer vos données."
+    },
+    "authorize": {
+      "string": "Autoriser"
+    },
+    "deny": {
+      "string": "Refuser"
+    },
+    "authorizing": {
+      "string": "Autorisation…"
+    },
     "success": {
       "string": "Succès"
+    },
+    "claims": {
+      "string": "Ce service prétend être"
+    },
+    "requested_permissions": {
+      "string": "Autorisations requises"
+    },
+    "pubky_secret_error_title": {
+      "string": "Erreur Pubky"
+    },
+    "pubky_secret_error_description": {
+      "string": "Impossible de récupérer la clé Pubky"
+    },
+    "pubky_auth_error_title": {
+      "string": "Erreur d'authentification Pubky"
+    },
+    "pubky_auth_error_description": {
+      "string": "Impossible de s'authentifier avec le service Pubky."
     }
   }
 }

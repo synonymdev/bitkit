@@ -44,21 +44,90 @@
   "price": {
     "name": {
       "string": "Bitcoin Preis"
+    },
+    "description": {
+      "string": "Checke die aktuellsten Bitcoin-Wechselkurse für eine Vielzahl an Fiat-Währungen"
+    },
+    "error": {
+      "string": "Konnte Preis-Informationen nicht ermitteln"
     }
   },
   "news": {
     "name": {
       "string": "Bitcoin Schlagzeilen"
+    },
+    "description": {
+      "string": "Lese die neuesten Bitcoin-Schlagzeilen von einer Vielzahl an Nachrichtenseiten."
+    },
+    "error": {
+      "string": "Konnte die neuesten Nachrichten nicht ermitteln"
     }
   },
   "blocks": {
     "name": {
       "string": "Bitcoin Blöcke"
+    },
+    "description": {
+      "string": "Untersuche verschiedene Statistiken über neu geminte Bitcoin-Blöcke."
+    },
+    "error": {
+      "string": "Konnte Block-Daten nicht ermitteln"
     }
   },
   "facts": {
     "name": {
       "string": "Bitcoin Fakten"
+    },
+    "description": {
+      "string": "Entdecke Fun Facts über Bitcoin, jedes Mal wenn du dein Wallet öffnest."
+    }
+  },
+  "calculator": {
+    "name": {
+      "string": "Bitcoin Rechner"
+    },
+    "description": {
+      "string": "Wandle ₿-Beträge in {fiatSymbol} und umgekehrt."
+    }
+  },
+  "weather": {
+    "name": {
+      "string": "Bitcoin Wetter"
+    },
+    "description": {
+      "string": "Finde heraus, wann es eine gute Zeit ist, um auf der Bitcoin blockchain Überweisungen zu tätigen."
+    },
+    "condition": {
+      "good": {
+        "title": {
+          "string": "Günstige Bedingungen"
+        },
+        "description": {
+          "string": "Alles klar. Jetzt wäre eine gute Zeit, um auf der Bitcoin blockchain Überweisungen zu tätigen."
+        }
+      },
+      "average": {
+        "title": {
+          "string": "Durchschnittliche Bedingungen"
+        },
+        "description": {
+          "string": "Die nächste Block-Rate ist nahe dem Monatsdurchschnitt."
+        }
+      },
+      "poor": {
+        "title": {
+          "string": "Schlechte Bedingungen"
+        },
+        "description": {
+          "string": "Wenn du es nicht eilig hast mit deiner Transaktion, könnte es besser sein etwas zu warten."
+        }
+      }
+    },
+    "current_fee": {
+      "string": "Momentane Durchschnittsgebühr"
+    },
+    "error": {
+      "string": "Konnte aktuelle Gebührenwetterlage nicht ermitteln."
     }
   }
 }
