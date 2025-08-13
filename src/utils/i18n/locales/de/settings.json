@@ -429,6 +429,18 @@
     "cs_consolidate": {
       "string": "Konsolidieren"
     },
+    "cs_first_in_first_out": {
+      "string": "First-In First-Out"
+    },
+    "cs_first_in_first_out_description": {
+      "string": "Benutze ältere UTXOs zuerst (nach Blockhöhe)."
+    },
+    "cs_last_in_last_out": {
+      "string": "Last-In Last-Out"
+    },
+    "cs_last_in_last_out_description": {
+      "string": "Benutze neuere UTXOs zuerst (nach Blockhöhe)."
+    },
     "payment_preference": {
       "string": "Zahlungspräferenz"
     },

@@ -20,6 +20,12 @@
     "text": {
       "string": "Du kannst dein Bitkit-Sparkonto verwenden oder Bitcoin aus einer anderen Wallet senden."
     },
+    "text_blocked": {
+      "string": "Bitkit bietet derzeit keine Lightning-Dienste in deinem Land an,  aber du kannst dich trotzdem direkt mit anderen Knotenpunkten verbinden."
+    },
+    "text_blocked_cjit": {
+      "string": "Bitkit bietet derzeit keine Lightning-Dienste in deinem Land an,  aber du kannst dich trotzdem direkt mit anderen Knotenpunkten verbinden."
+    },
     "button1": {
       "string": "Von Sparkonto übertragen"
     },
@@ -106,6 +112,11 @@
     },
     "quarter": {
       "string": "25%"
+    },
+    "error_min": {
+      "title": {
+        "string": "Minimales Sparguthaben"
+      }
     },
     "error_max": {
       "title": {

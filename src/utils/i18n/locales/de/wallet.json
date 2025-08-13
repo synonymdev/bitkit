@@ -1,5 +1,8 @@
 {
   "drawer": {
+    "wallet": {
+      "string": "Wallet"
+    },
     "activity": {
       "string": "Aktivität"
     },
@@ -11,6 +14,9 @@
     },
     "widgets": {
       "string": "Widgets"
+    },
+    "shop": {
+      "string": "Shop"
     },
     "settings": {
       "string": "Einstellungen"
@@ -220,6 +226,9 @@
   },
   "send_output_to_small_description": {
     "string": "Bitte erhöhe deinen Betrag, um fortzufahren."
+  },
+  "send_coin_selection_output_to_small_description": {
+    "string": "Bitte entferne UTXOs oder erhöhe den zu sendenden Betrag um weiter zu machen."
   },
   "send_fee_error_min": {
     "string": "Gebühr kann nicht weiter reduziert werden."

@@ -87,6 +87,14 @@
       "string": "Lege eine PIN fest"
     }
   },
+  "shop": {
+    "title": {
+      "string": "Shop"
+    },
+    "description": {
+      "string": "Einkaufen mit Bitcoin"
+    }
+  },
   "slashtagsProfile": {
     "title": {
       "string": "Profil"
