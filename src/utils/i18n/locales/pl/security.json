@@ -21,7 +21,10 @@
     "string": "Twoje hasło"
   },
   "pass_text": {
-    "string": "Dodałeś hasło do swojego mnemonika podczas tworzenia portfela"
+    "string": "Dodałeś hasło do swojej frazy odzyskiwania podczas konfiguracji portfela."
+  },
+  "pass_never_share": {
+    "string": "<accent>Nigdy nie udostępniaj</accent> nikomu swojego hasła, ponieważ może to spowodować utratę środków."
   },
   "pass_confirm": {
     "string": "Potwierdź hasło"
@@ -29,20 +32,32 @@
   "pass_confirm_text": {
     "string": "Wpisz hasło, które podałeś podczas tworzenia portfela."
   },
+  "pass_recovery": {
+    "string": "<accent>Hasło:</accent> {passphrase}"
+  },
   "mnemonic_phrase": {
-    "string": "Mnemonik"
+    "string": "Fraza odzyskiwania"
   },
   "mnemonic_your": {
     "string": "Twoje hasło"
   },
+  "mnemonic_error": {
+    "string": "Awaria portfela"
+  },
+  "mnemonic_error_description": {
+    "string": "Bitkit nie mógł odczytać Twojej frazy odzyskiwania."
+  },
   "mnemonic_write": {
-    "string": "Zapisz poniższe słowa{length} według kolejności i przechowuj je w bezpiecznym miejscu."
+    "string": "Zapisz poniższe {length} słów według kolejności i przechowuj je w bezpiecznym miejscu."
   },
   "mnemonic_use": {
     "string": "Użyj 12 poniższych słów aby odzyskać swoje środki w przyszłości."
   },
   "mnemonic_reveal": {
     "string": "Stuknij aby pokazać"
+  },
+  "mnemonic_never_share": {
+    "string": "<accent>Nigdy nie udostępniaj</accent> nikomu swojej frazy odzyskiwania, ponieważ może to spowodować utratę środków."
   },
   "mnemonic_confirm": {
     "string": "Potwierdź hasło"
@@ -52,6 +67,15 @@
   },
   "mnemonic_result_header": {
     "string": "Sukces"
+  },
+  "mnemonic_result_text": {
+    "string": "Upewnij się, że przechowujesz swoją frazę odzyskiwania w <accent>bezpiecznym miejscu</accent>, ponieważ jest to <accent>jedyny sposób na odzyskanie</accent> środków!"
+  },
+  "mnemonic_keep_header": {
+    "string": "Zachowaj bezpieczeństwo"
+  },
+  "mnemonic_keep_text": {
+    "string": "Pamiętaj, <accent>aby nigdy nie udostępniać nikomu swojej frazy odzyskiwania</accent>! W przeciwnym razie możesz być ofiarą kradzieży środków, danych profilu lub innych danych."
   },
   "mnemonic_data_header": {
     "string": "Dane portfela"
@@ -70,6 +94,9 @@
   },
   "pin_security_header": {
     "string": "Zwieksz bezpieczeństwo"
+  },
+  "pin_security_title": {
+    "string": "<accent>Chroń</accent> \nswoje bitcoiny"
   },
   "pin_security_text": {
     "string": "Aby zwiększyć bezpieczeństwo portfela, możesz ustawić kod PIN i Face ID."
@@ -108,7 +135,7 @@
     "string": "Ostatnia próba. Wpisanie błędnego kodu spowoduje zresetowanie portfela."
   },
   "pin_attempts": {
-    "string": "Liczba pozostałych prób:{attemptsRemaining}Zapomniałeś kodu PIN?"
+    "string": "Liczba pozostałych prób:{attemptsRemaining}. Zapomniałeś kodu PIN?"
   },
   "pin_forgot_title": {
     "string": "Zapomniałeś kodu PIN?"
@@ -149,8 +176,14 @@
   "bio_error_title": {
     "string": "Konfiguracja biometrii nie powiodła się. "
   },
+  "bio_error_message": {
+    "string": "Bitkit nie mógł skonfigurować {type} na Twoim urządzeniu."
+  },
   "bio_loading": {
     "string": "Ładuję..."
+  },
+  "bio_not_available": {
+    "string": "Wygląda na to, że nie skonfigurowałeś jeszcze zabezpieczeń biometrycznych (lub nie są one obsługiwane). Spróbuj włączyć je w ustawieniach telefonu."
   },
   "bio_ask": {
     "string": "Kod PIN ustawiony. Czy chcesz używać {biometricsName} zamiast twojego PIN-u?"
@@ -191,8 +224,17 @@
   "reset_dialog_desc": {
     "string": "Czy na pewno chcesz zresetować swój portfel Bitkit? Czy masz kopię zapasową swojej frazy odzyskiwania i danych portfela?"
   },
+  "reset_confirm": {
+    "string": "Tak, zresetuj"
+  },
+  "recovery": {
+    "string": "Odzyskiwanie"
+  },
+  "recovery_text": {
+    "string": "Uruchomiłeś tryb odzyskiwania Bitkit. Oto kilka kroków, które możesz wykonać, gdy napotkasz problemy uniemożliwiające prawidłowe działanie aplikacji. Aby wrócić do normalnego trybu, uruchom aplikację ponownie."
+  },
   "display_seed": {
-    "string": "Pokaż mnemonik"
+    "string": "Pokaż frazę odzyskiwania"
   },
   "contact_support": {
     "string": "Skontaktuj się z pomocą techniczną"
@@ -217,6 +259,21 @@
   },
   "export_share": {
     "string": "Udostępnij kopię zapasową"
+  },
+  "export_success_title": {
+    "string": "Wyeksportowano kopię zapasową"
+  },
+  "export_success_msg": {
+    "string": "Bitkit pomyślnie wyeksportował plik kopii zapasowej do telefonu."
+  },
+  "export_error_title": {
+    "string": "Tworzenie kopii zapasowej nie powiodło się"
+  },
+  "export_error_msg": {
+    "string": "Bitkit nie mógł wyeksportować pliku kopii zapasowej do telefonu."
+  },
+  "export_error_file": {
+    "string": "Bitkit nie mógł utworzyć pliku kopii zapasowej."
   },
   "cp_title": {
     "string": "Zmień kod PIN"
@@ -247,5 +304,49 @@
   },
   "use_pin": {
     "string": "Użyj kodu PIN"
+  },
+  "wiped_title": {
+    "string": "Usunięto dane portfela"
+  },
+  "wiped_message": {
+    "string": "Bitkit został zresetowany, a wszystkie dane portfela zostały usunięte."
+  },
+  "authorization": {
+    "title": {
+      "string": "Autoryzacja"
+    },
+    "description": {
+      "string": "Proszę upewnić się, że ufają Państwo tej usłudze przed udzieleniem zgody na zarządzanie Państwa danymi."
+    },
+    "authorize": {
+      "string": "Autoryzuj"
+    },
+    "deny": {
+      "string": "Odmów"
+    },
+    "authorizing": {
+      "string": "Autoryzowanie..."
+    },
+    "success": {
+      "string": "Sukces"
+    },
+    "claims": {
+      "string": "Ta usługa twierdzi, że jest"
+    },
+    "requested_permissions": {
+      "string": "Żądane uprawnienia"
+    },
+    "pubky_secret_error_title": {
+      "string": "Błąd Pubky"
+    },
+    "pubky_secret_error_description": {
+      "string": "Nie można pobrać klucza Pubky"
+    },
+    "pubky_auth_error_title": {
+      "string": "Błąd autoryzacji Pubky"
+    },
+    "pubky_auth_error_description": {
+      "string": "Nie można autoryzować za pomocą usługi Pubky"
+    }
   }
 }

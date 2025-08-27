@@ -87,6 +87,14 @@
       "string": "Ustaw kod PIN"
     }
   },
+  "shop": {
+    "title": {
+      "string": "Sklep"
+    },
+    "description": {
+      "string": "Kupuj za bitcoiny"
+    }
+  },
   "slashtagsProfile": {
     "title": {
       "string": "Profil"
