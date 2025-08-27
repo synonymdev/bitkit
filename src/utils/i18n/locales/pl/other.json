@@ -17,11 +17,17 @@
   "qr_error_network_header": {
     "string": "Nieprawdiłowa sieć"
   },
+  "qr_error_network_text": {
+    "string": "Bitkit jest obecnie ustawiony na {selectedNetwork}, ale dane są dla {dataNetwork}."
+  },
   "qr_paste": {
     "string": "Wklej kod QR"
   },
   "buy_header": {
     "string": "Kup trochę\n<accent>Bitcoina</accent>"
+  },
+  "buy_text": {
+    "string": "Nie masz Bitcoinów lub potrzebujesz więcej?"
   },
   "buy_button": {
     "string": "Wybierz giełdę"
@@ -29,21 +35,39 @@
   "error_keychain": {
     "string": "Problem z połączeniem"
   },
+  "error_keychain_msg": {
+    "string": "Nie można załadować klucza głównego z magazynu kluczy."
+  },
   "connection_restored_title": {
     "string": "Połączenie z Electrum przywrócone"
+  },
+  "connection_restored_message": {
+    "string": "Bitkit pomyślnie połączył się ponownie z Electrum."
   },
   "connection_issue": {
     "string": "Problemy z połączeniem z internetem"
   },
+  "connection_issue_explain": {
+    "string": "Wygląda na to, że zostałeś rozłączony, trwa ponowne łączenie…"
+  },
   "connection_reconnect_title": {
     "string": "Ponowne łączenie z Electrum"
+  },
+  "connection_reconnect_msg": {
+    "string": "Utrata połączenia z Electrum, trwa ponowne łączenie..."
   },
   "connection_back_title": {
     "string": "Połączenie z Internetem przywrócone"
   },
+  "connection_back_msg": {
+    "string": "Bitkit pomyślnie połączył się ponownie z Internetem."
+  },
   "high_balance": {
     "nav_title": {
       "string": "Wysokie saldo"
+    },
+    "title": {
+      "string": "Wysokie\n<accent>Saldo</accent>"
     },
     "text": {
       "string": "<accent>Twoje saldo portfela przekracza 500$.</accent>\nDla bezpieczeństwa rozważ przeniesienie części oszczędności do portfela offline."
@@ -58,6 +82,12 @@
   "update_critical_nav_title": {
     "string": "Aktualizacja krytyczna"
   },
+  "update_critical_title": {
+    "string": "Aktualizuj\n<accent>Bitkit teraz</accent>"
+  },
+  "update_critical_text": {
+    "string": "Pojawiła się krytyczna aktualizacja dla Bitkit. Proszę dokonać aktualizacji, aby kontynuować korzystanie z aplikacji."
+  },
   "update_critical_button": {
     "string": "Aktualizuj Bitkit"
   },
@@ -67,6 +97,9 @@
   "camera_ask_msg": {
     "string": "Bitkit potrzebuje pozwolenia na używanie Twojej kamery"
   },
+  "camera_no_text": {
+    "string": "<bold>Wygląda na to, że Bitkit nie ma uprawnień dostępu do kamery.</bold>\n\nAby korzystać z tej funkcji w przyszłości, należy włączyć uprawnienia kamery dla tej aplikacji w ustawieniach telefonu."
+  },
   "clipboard_redirect_title": {
     "string": "Wykryto dane w schowku"
   },
@@ -75,6 +108,18 @@
   },
   "pay_insufficient_savings": {
     "string": "Niewystarczające oszczędności"
+  },
+  "pay_insufficient_spending": {
+    "string": "Niewystarczające saldo wydatków"
+  },
+  "pay_insufficient_savings_description": {
+    "string": "Za mało ₿, aby opłacić tę fakturę Bitcoin."
+  },
+  "pay_insufficient_savings_amount_description": {
+    "string": "Potrzeba ₿ {amount} więcej do opłacenia tej faktury Bitcoin."
+  },
+  "pay_insufficient_spending_amount_description": {
+    "string": "Potrzeba ₿ {amount} więcej do opłacenia tej faktury Lightning."
   },
   "swipe": {
     "string": "Przesuń, aby potwierdzić"
@@ -88,11 +133,35 @@
   "scan_err_not_payable_msg": {
     "string": "Ten kod QR nie zawiera danych płatności."
   },
+  "rate_error_title": {
+    "string": "Aktualizacja ceny Bitcoina nie powiodła się"
+  },
+  "rate_error_msg_date": {
+    "string": "Bitkit nie mógł zaktualizować bieżącego kursu wymiany Bitcoina. Użyto kursu z {date}"
+  },
   "rate_error_msg_nodate": {
     "string": "Bitkit nie mógł zaktualizować bieżącego kursu wymiany Bitcoina. Spróbuj ponownie później."
   },
+  "lnurl_pay_error": {
+    "string": "Nie można zapłacić (LNURL)"
+  },
+  "lnurl_ln_error_msg": {
+    "string": "Nie można uruchomić lokalnego węzła Lightning. Proszę spróbować ponownie lub zrestartować Bitkita."
+  },
   "lnurl_pay_error_no_capacity": {
     "string": "Niewystarczająca pojemność wychodząca/wysyłająca, aby ukończyć żądanie lnurl-pay."
+  },
+  "lnurl_channel_error": {
+    "string": "Nie można otworzyć kanału (LNURL)"
+  },
+  "lnurl_channel_error_raw": {
+    "string": "Podczas próby dokonania płatności wystąpił błąd: {raw}"
+  },
+  "lnurl_channel_header": {
+    "string": "Połączenie z Lightning"
+  },
+  "lnurl_channel_title": {
+    "string": "Nowe\npołączenie\n<accent>lightning</accent>"
   },
   "lnurl_channel_message": {
     "string": "Czy chcesz otworzyć połączenie Lightning z tym dostawcą usług Lightning?"
@@ -109,20 +178,65 @@
   "lnurl_channel_port": {
     "string": "Port"
   },
+  "lnurl_blocktank_error": {
+    "string": "Bitkit nie mógł połączyć się z Blocktank."
+  },
+  "lnurl_channel_success_title": {
+    "string": "Żądanie otwarcia kanału"
+  },
   "lnurl_channel_success_msg_peer": {
     "string": "Pomyślnie zażądano kanału z: {peer}"
   },
   "lnurl_channel_success_msg_no_peer": {
     "string": "Pomyślnie zażądano kanału."
   },
+  "lnurl_auth_error": {
+    "string": "Logowanie nie powiodło się (LNURL)"
+  },
+  "lnurl_auth_error_msg": {
+    "string": "Wystąpił błąd podczas próby logowania. {raw}"
+  },
   "lnurl_auth_success_title": {
     "string": "Zalogowano"
+  },
+  "lnurl_auth_success_msg_domain": {
+    "string": "Zalogowano pomyślnie do {domain}."
+  },
+  "lnurl_auth_success_msg_no_domain": {
+    "string": "Zalogowano się pomyślnie."
+  },
+  "lnurl_withdr_error": {
+    "string": "Wypłata nieudana (LNURL)"
+  },
+  "lnurl_withdr_error_generic": {
+    "string": "Przepraszamy, wystąpił błąd."
+  },
+  "lnurl_withdr_error_no_capacity": {
+    "string": "Brak wystarczającej pojemności odbiorczej do wykonania wypłaty."
+  },
+  "lnurl_withdr_error_create_invoice": {
+    "string": "Nie udało się utworzyć faktury do wypłaty."
+  },
+  "lnurl_withdr_error_minmax": {
+    "string": "Nieprawidłowe parametry wypłaty LNURL, wartości min/max nie zostały poprawnie ustawione."
+  },
+  "lnurl_withdr_success_title": {
+    "string": "Złożono żądanie wypłaty"
+  },
+  "lnurl_withdr_success_msg": {
+    "string": "Wypłata została pomyślnie zlecona. Oczekiwanie na płatność."
   },
   "phone_settings": {
     "string": "Otwórz ustawienia telefonu"
   },
   "bt_error_retrieve": {
     "string": "Transfer nie powiódł się"
+  },
+  "bt_error_connect": {
+    "string": "Nie udało się dodać węzła LSP jako peera w tym momencie."
+  },
+  "bt_error_retrieve_msg": {
+    "string": "Wystąpił błąd podczas przenoszenia środków. {raw}"
   },
   "bt_channel_purchase_cost_error": {
     "string": "Potrzebujesz {delta}aby ukończyć transakcję."
@@ -145,13 +259,51 @@
   "try_again": {
     "string": "Spróbuj ponownie."
   },
-  "gift": {
+  "transfer_notification": {
+    "title": {
+      "string": "Ważne: Transfer Bitkit"
+    },
+    "body": {
+      "string": "Otwórz Bitkit, aby dokończyć transfer"
+    }
+  },
+  "scan": {
     "error": {
+      "generic": {
+        "string": "Bitkit nie może odczytać dostarczonych danych."
+      },
+      "expired": {
+        "string": "Ta faktura Lightning wygasła."
+      }
+    }
+  },
+  "gift": {
+    "claiming": {
+      "title": {
+        "string": "Odbiór prezentu"
+      },
+      "text": {
+        "string": "Odbiór kodu podarunkowego Bitkit..."
+      }
+    },
+    "error": {
+      "title": {
+        "string": "Błąd kodu podarunkowego"
+      },
+      "text": {
+        "string": "Bitkit nie mógł odebrać środków. Proszę spróbować ponownie później lub skontaktować się z nami."
+      },
       "button": {
         "string": "OK"
       }
     },
     "used": {
+      "title": {
+        "string": "Użyty kod"
+      },
+      "text": {
+        "string": "Ten kod podarunkowy Bitkit został już wykorzystany, a środki zostały wypłacone."
+      },
       "button": {
         "string": "OK"
       }
@@ -159,8 +311,67 @@
   },
   "shop": {
     "intro": {
+      "title": {
+        "string": "Sklep"
+      },
+      "description": {
+        "string": "Przestaw się na standard Bitcoina. Wydawaj swoje Bitcoiny na karty podarunkowe, eSIM-y, doładowania telefonu i inne usługi."
+      },
       "button": {
         "string": "Rozpocznij"
+      }
+    },
+    "discover": {
+      "nav_title": {
+        "string": "Sklep"
+      },
+      "tabs": {
+        "shop": {
+          "string": "Sklep"
+        },
+        "map": {
+          "string": "Mapa"
+        }
+      },
+      "label": {
+        "string": "Kategorie kart podarunkowych"
+      },
+      "gift-cards": {
+        "title": {
+          "string": "Karty podarunkowe"
+        },
+        "description": {
+          "string": "Kupuj za bitcoiny"
+        }
+      },
+      "esims": {
+        "title": {
+          "string": "Karty ESim"
+        },
+        "description": {
+          "string": "Bez granic"
+        }
+      },
+      "refill": {
+        "title": {
+          "string": "Doładowanie telefonu"
+        },
+        "description": {
+          "string": "Doładuj swój telefon"
+        }
+      },
+      "travel": {
+        "title": {
+          "string": "Podróże"
+        },
+        "description": {
+          "string": "Zarezerwuj wakacje z ₿"
+        }
+      }
+    },
+    "main": {
+      "nav_title": {
+        "string": "Sklep"
       }
     }
   }

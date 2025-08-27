@@ -89,10 +89,10 @@
   },
   "shop": {
     "title": {
-      "string": "Compras"
+      "string": "Comprar"
     },
     "description": {
-      "string": "Compre com Bitcoin"
+      "string": "Compre com ₿"
     }
   },
   "slashtagsProfile": {
@@ -100,7 +100,7 @@
       "string": "Perfil"
     },
     "description": {
-      "string": "Adicione seus detalhes"
+      "string": "Crie seu perfil"
     }
   },
   "support": {

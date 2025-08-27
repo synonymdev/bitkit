@@ -312,7 +312,7 @@
   "shop": {
     "intro": {
       "title": {
-        "string": "Compras"
+        "string": "Comprar"
       },
       "description": {
         "string": "Coloque sua vida no padrão Bitcoin. Gaste seu Bitcoin em cartões-presente digitais, eSIMs, recargas de telefone e muito mais."
@@ -323,11 +323,11 @@
     },
     "discover": {
       "nav_title": {
-        "string": "Compras"
+        "string": "Comprar"
       },
       "tabs": {
         "shop": {
-          "string": "Compras"
+          "string": "Comprar"
         },
         "map": {
           "string": "Mapa"
@@ -341,7 +341,7 @@
           "string": "Gift cards"
         },
         "description": {
-          "string": "Compre com Bitcoin"
+          "string": "Compre com ₿"
         }
       },
       "esims": {
@@ -354,7 +354,7 @@
       },
       "refill": {
         "title": {
-          "string": "Recarga de telefone"
+          "string": "Recarga"
         },
         "description": {
           "string": "Recarregar seu telefone"
@@ -365,13 +365,13 @@
           "string": "Viagem"
         },
         "description": {
-          "string": "Reserve suas férias ₿."
+          "string": "Suas férias ₿"
         }
       }
     },
     "main": {
       "nav_title": {
-        "string": "Compras"
+        "string": "Comprar"
       }
     }
   }

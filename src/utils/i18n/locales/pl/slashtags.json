@@ -41,6 +41,18 @@
   "contacts_name": {
     "string": "Nazwa kontaktu"
   },
+  "contact_your_name": {
+    "string": "Twoja publiczna\nnazwa profilu"
+  },
+  "contact_retrieving": {
+    "string": "Pobieranie\ndanych kontaktowych..."
+  },
+  "contact_no_links": {
+    "string": "Nie dodano jeszcze żadnych linków..."
+  },
+  "contact_pay_error": {
+    "string": "Brak możliwości zapłaty Kontaktowi"
+  },
   "contact_ldk_not_ready": {
     "string": "Sieć Lightning nie jest jeszcze gotowa."
   },
@@ -74,11 +86,23 @@
   "disabled": {
     "string": "Slashtagi wyłączone"
   },
+  "onboarding_header": {
+    "string": "Dynamiczne\n<accent>kontakty</accent>"
+  },
   "onboarding_text": {
     "string": "Otrzymuj automatyczne aktualizacje od swoich kontaktów Bitkit, płać im i śledź ich publiczne profile."
   },
   "onboarding_button": {
     "string": "Dodaj pierwszy kontakt"
+  },
+  "onboarding_profile1_header": {
+    "string": "Własny\n<accent>profil</accent>"
+  },
+  "onboarding_profile1_text": {
+    "string": "Skonfiguruj swój publiczny profil i linki, aby Twoje kontakty w Bitkit mogły skontaktować się z Tobą lub zapłacić Ci w dowolnym miejscu i czasie."
+  },
+  "onboarding_profile2_header": {
+    "string": "Płać <accent>kontaktom\nBitkit</accent>"
   },
   "onboarding_profile2_text": {
     "string": "Ty i Twoje kontakty możecie używać Bitkit do bezpośredniego przesyłania płatności – bez banków, zawsze i wszędzie."
@@ -98,6 +122,12 @@
   "profile_create": {
     "string": "Utwórz profil"
   },
+  "profile_public_warn": {
+    "string": "Twój profil będzie publicznie dostępny i widoczny."
+  },
+  "profile_bio": {
+    "string": "Krótka biografia. Napisz coś o sobie."
+  },
   "profile_add_link": {
     "string": "Dodaj link"
   },
@@ -110,8 +140,17 @@
   "profile_link_value": {
     "string": "Link lub tekst"
   },
+  "profile_link_public": {
+    "string": "Uwaga: Każdy dodany link będzie widoczny publicznie."
+  },
   "profile_link_suggestions": {
     "string": "Sugestie"
+  },
+  "profile_link_suggestions_to_add": {
+    "string": "Sugestie do dodania"
+  },
+  "profile_scan_to_add": {
+    "string": "Zeskanuj, aby dodać {name}"
   },
   "profile_edit": {
     "string": "Edytuj profil"
@@ -122,11 +161,38 @@
   "profile_delete_dialogue_title": {
     "string": "Usunąć informacje profilowe?"
   },
+  "profile_delete_dialogue_msg": {
+    "string": "Czy na pewno chcesz usunąć wszystkie informacje z profilu Bitkit?"
+  },
   "profile_delete_dialogue_yes": {
     "string": "Tak, usuń"
   },
   "profile_delete_success_title": {
     "string": "Profil usunięty"
+  },
+  "profile_delete_success_msg": {
+    "string": "Twój profil w Bitkit został usunięty."
+  },
+  "offline_enable": {
+    "string": "Włącz płatności za pomocą kontaktów*"
+  },
+  "offline_enable_explain": {
+    "string": "* Wymaga to udostępnienia danych dotyczących płatności."
+  },
+  "error_saving_contact": {
+    "string": "Nie można zapisać kontaktu"
+  },
+  "error_saving_profile": {
+    "string": "Nie można zapisać profilu"
+  },
+  "error_deleting_profile": {
+    "string": "Nie można usunąć profilu"
+  },
+  "error_pay_title": {
+    "string": "Brak możliwości zapłaty Kontaktowi"
+  },
+  "error_pay_empty_msg": {
+    "string": "Kontakt, do którego chesz wysłać, nie aktywował płatności."
   },
   "auth_depricated_title": {
     "string": "Przestarzałe"

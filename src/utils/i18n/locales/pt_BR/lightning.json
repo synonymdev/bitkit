@@ -45,6 +45,12 @@
     },
     "text": {
       "string": "Escaneie um QR para reivindicar seu canal LNURL de outro LSP ou escolha o setup manual."
+    },
+    "button1": {
+      "string": "QR Canal LNURL"
+    },
+    "button2": {
+      "string": "Setup Manual"
     }
   },
   "no_funds": {
@@ -60,7 +66,7 @@
   },
   "transfer": {
     "nav_title": {
-      "string": "Transferência de fundos"
+      "string": "Transf. fundos"
     },
     "confirm": {
       "string": "Por favor\n<accent>confirme</accent>"
@@ -103,6 +109,9 @@
   "spending_amount": {
     "title": {
       "string": "Transferir\n<accent>para gastos</accent>"
+    },
+    "quarter": {
+      "string": "25%"
     },
     "error_min": {
       "title": {
@@ -200,7 +209,7 @@
   },
   "savings_progress": {
     "title": {
-      "string": "Fundos\n<accent>em transferência</accent>"
+      "string": "<accent>Transferindo</accent>\nfundos"
     },
     "text": {
       "string": "Aguarde, sua transferência de fundos está em andamento. Isso deve levar <accent>±10 segundos.</accent>"
@@ -577,7 +586,7 @@
     }
   },
   "wait_text_top": {
-    "string": "Por favor, sepere que a Bitkit se conecte à rede de pagamento (±10 segundos)."
+    "string": "Por favor, espere que a Bitkit se conecte à rede de pagamento (±10 segundos)."
   },
   "wait_text_bottom": {
     "string": "Conectando e Sincronizando..."

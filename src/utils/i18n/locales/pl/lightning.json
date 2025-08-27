@@ -1,12 +1,30 @@
 {
   "transfer_intro": {
+    "title": {
+      "string": "Saldo \n<accent>Wydatków</accent>"
+    },
+    "text": {
+      "string": "Zasil swoje saldo wydatków, aby cieszyć się natychmiastowymi i tanimi transakcjami z przyjaciółmi, rodziną i sprzedawcami."
+    },
     "button": {
       "string": "Rozpocznij"
     }
   },
   "funding": {
     "nav_title": {
-      "string": "Saldo do wydawania"
+      "string": "Saldo wydatków"
+    },
+    "title": {
+      "string": "Zasil swoje <accent>saldo wydatków</accent>"
+    },
+    "text": {
+      "string": "Możesz użyć oszczędności zgromadzonych w Twoim portfelu Bitkit lub wysłać bitcoiny z innego portfela."
+    },
+    "text_blocked": {
+      "string": "Bitkit nie świadczy obecnie usług Lightning w Twoim kraju, ale nadal możesz łączyć się z innymi węzłami."
+    },
+    "text_blocked_cjit": {
+      "string": "Bitkit nie świadczy obecnie usług Lightning w Twoim kraju, ale nadal możesz łączyć się bezpośrednio z innymi węzłami."
     },
     "button1": {
       "string": "Prześlij z Oszczędności"
@@ -30,11 +48,17 @@
     },
     "button1": {
       "string": "Kod QR kanału LNURL"
+    },
+    "button2": {
+      "string": "Konfiguracja ręczna"
     }
   },
   "no_funds": {
     "title": {
       "string": "Brak dostępnych środków"
+    },
+    "description": {
+      "string": "Zanim będzie można przelać środki z salda oszczędności, należy wysłać bitcoiny do portfela Bitkit."
     },
     "fund": {
       "string": "Zasil portfel"
@@ -43,21 +67,70 @@
   "transfer": {
     "nav_title": {
       "string": "Prześlij środki"
+    },
+    "confirm": {
+      "string": "Proszę \n<accent>potwierdzić</accent>"
+    },
+    "custom_fee": {
+      "string": "<accent>Niestandardowa</accent> opłata transakcyjna"
+    },
+    "swipe": {
+      "string": "Przesuń, aby przesłać"
     }
   },
   "spending_intro": {
+    "title": {
+      "string": "Prześlij \n<accent>na saldo wydatków</accent>"
+    },
+    "text": {
+      "string": "Przelewaj środki na swoje saldo wydatków, aby cieszyć się natychmiastowymi i tanimi transakcjami z przyjaciółmi, rodziną i sprzedawcami."
+    },
     "button": {
       "string": "Rozpocznij"
     }
   },
   "transfer_failed": {
+    "nav_title": {
+      "string": "Błąd podczas przelewu środków"
+    },
+    "title": {
+      "string": "Transfer środków  \n<accent>niepowiódł się</accent>"
+    },
+    "text": {
+      "string": "Przepraszamy, Bitkit nie mógł skonfigurować salda wydatków lub zakończyć transferu. Proszę spróbować ponownie."
+    },
+    "cancel": {
+      "string": "Sprawdź błąd"
+    },
     "continue": {
       "string": "Spróbuj ponownie"
     }
   },
   "spending_amount": {
+    "title": {
+      "string": "Prześlij \n<accent>na saldo wydatków</accent>"
+    },
     "quarter": {
       "string": "25%"
+    },
+    "error_min": {
+      "title": {
+        "string": "Minimalne saldo oszczędności"
+      },
+      "description": {
+        "string": "Do utworzenia salda wydatków wymagana jest minimalna kwota ₿ {amount}."
+      }
+    },
+    "error_max": {
+      "title": {
+        "string": "Maksymalne saldo wydatków"
+      },
+      "description": {
+        "string": "Kwota, którą można przelać na saldo wydatków, jest obecnie ograniczona do ₿ {amount}."
+      },
+      "description_zero": {
+        "string": "Transfer do salda wydatków jest ograniczony ze względu na politykę płynności. Aby uzyskać szczegółowe informacje, proszę odwiedzić Centrum pomocy."
+      }
     }
   },
   "spending_confirm": {
@@ -67,26 +140,121 @@
     "lsp_fee": {
       "string": "Opłaty serwisowe"
     },
+    "amount": {
+      "string": "Do salda wydatków"
+    },
     "total": {
       "string": "Razem"
+    },
+    "default": {
+      "string": "Użyj ustawień domyślnych"
+    }
+  },
+  "spending_advanced": {
+    "title": {
+      "string": "Pojemność \n<accent>odbiorcza</accent>"
+    },
+    "fee": {
+      "string": "Opłata za płynność"
+    }
+  },
+  "liquidity": {
+    "title": {
+      "string": "Płynność \n<accent>i routing</accent>"
+    },
+    "text": {
+      "string": "Saldo Wydatków wykorzystuje sieć Lightning, aby Twoje płatności były tańsze, szybsze i bardziej prywatne.\n\nDziała to podobnie jak dostęp do Internetu, ale płacą Państwo za płynność i routing zamiast za przepustowość.\n\nTa konfiguracja obejmuje pewne jednorazowe koszty."
+    },
+    "label": {
+      "string": "Płynność Salda Wydatków"
     }
   },
   "savings_intro": {
+    "title": {
+      "string": "Prześlij \n<accent>na saldo oszczędności</accent>"
+    },
+    "text": {
+      "string": "Przenieś saldo wydatków do oszczędności, aby przechowywać Bitcoiny długoterminowo i zabezpieczyć swoją przyszłość."
+    },
     "button": {
       "string": "Rozpocznij"
+    }
+  },
+  "availability": {
+    "title": {
+      "string": "Dostępność  \n<accent>funduszy</accent>"
+    },
+    "text": {
+      "string": "Przelew środków na konto oszczędnościowe jest zazwyczaj natychmiastowy, ale rozliczenie może potrwać do <accent>14 dni</accent> w określonych warunkach sieciowych."
     }
   },
   "savings_confirm": {
     "label": {
       "string": "Prześlij na Oszczędności"
+    },
+    "transfer_all": {
+      "string": "Prześlij wszystko"
     }
   },
   "savings_advanced": {
+    "title": {
+      "string": "Wybierz fundusze \n<accent>do przesłania</accent>"
+    },
     "text": {
       "string": "Możesz przenieść część swojego salda wydatków na oszczędności, ponieważ masz kilka aktywnych połączeń Lightning."
+    },
+    "total": {
+      "string": "Łącznie wybrano"
+    }
+  },
+  "savings_progress": {
+    "title": {
+      "string": "Fundusze \n<accent>w przelewie</accent>"
+    },
+    "text": {
+      "string": "Proszę czekać, transfer środków jest w toku. Powinno to zająć <accent>±10 sekund.</accent>"
+    }
+  },
+  "savings_interrupted": {
+    "nav_title": {
+      "string": "Transfer środków\n<accent>przerwany</accent>"
+    },
+    "title": {
+      "string": "Pozostaw Bitkit\n<accent>otwarty</accent>"
+    },
+    "text": {
+      "string": "Środki nie zostały jeszcze przelane. Bitkit spróbuje zainicjować transfer w ciągu najbliższych <accent>30 minut</accent>. Proszę pozostawić aplikację otwartą."
+    }
+  },
+  "transfer_success": {
+    "nav_title": {
+      "string": "Transfer środków powiódł się"
+    },
+    "title_spending": {
+      "string": "Środki przeniesione\n<accent>na saldo wydatków</accent>"
+    },
+    "text_spending": {
+      "string": "Środki zostały przeniesione i saldo wydatków jest gotowe do użycia."
+    },
+    "title_savings": {
+      "string": "Środki przeniesione\n<accent>na saldo oszczędności</accent>"
+    },
+    "text_savings": {
+      "string": "Środki zostały przelane i są gotowe do natychmiastowego użycia."
+    }
+  },
+  "external": {
+    "nav_title": {
+      "string": "Połączenie z Lightning"
     }
   },
   "external_manual": {
+    "title": {
+      "string": "<accent>Konfiguracja ręczna</accent>"
+    },
+    "text": {
+      "string": "Do ręcznego otwarcia połączenia Lightning można użyć węzła zewnętrznego. Proszę wprowadzić szczegóły węzła, aby kontynuować."
+    },
     "node_id": {
       "string": "ID węzła"
     },
@@ -103,34 +271,324 @@
       "string": "Skanuj QR"
     }
   },
+  "external_amount": {
+    "title": {
+      "string": "Saldo\n<accent>wydatków</accent>"
+    }
+  },
+  "external_success": {
+    "title": {
+      "string": "Połączenie\n<accent>zainicjowane</accent>"
+    },
+    "text": {
+      "string": "Połączenie Lightning zostało zainicjowane. Będą Państwo mogli wykorzystać swoje saldo wydatków w ciągu <accent>±30 minut</accent> (w zależności od konfiguracji węzła)."
+    }
+  },
+  "error_channel_purchase": {
+    "string": "Konfiguracja płatności natychmiastowych nie powiodła się"
+  },
+  "error_channel_setup_msg": {
+    "string": "Wystąpił błąd podczas konfigurowania salda natychmiastowego. {raw}"
+  },
+  "error_channel_receiving": {
+    "string": "Kwota odbioru musi być większa niż ${usdValue}"
+  },
+  "spending": {
+    "string": "Wydatki"
+  },
   "savings": {
     "string": "Oszczędności"
+  },
+  "spending_label": {
+    "string": "Saldo wydatków"
+  },
+  "receiving_label": {
+    "string": "Zdolność odbioru"
+  },
+  "setting_up_header": {
+    "string": "W transferze"
+  },
+  "setting_up_text": {
+    "string": "Proszę czekać, transfer środków jest w toku. Powinno to zająć <accent>±10 minut.</accent>"
+  },
+  "setting_up_step1": {
+    "string": "Przetwarzanie płatności"
+  },
+  "setting_up_step2": {
+    "string": "Płatność powiodła się"
+  },
+  "setting_up_step3": {
+    "string": "W kolejce do otwarcia"
+  },
+  "setting_up_step4": {
+    "string": "Otwieranie połączenia"
+  },
+  "setting_up_button": {
+    "string": "Kontunuuj korzystanie z Bitkit'a"
+  },
+  "node_info": {
+    "string": "Węzeł Lightning"
+  },
+  "node_id": {
+    "string": "Identyfikator węzła LDK"
+  },
+  "node_disconnected": {
+    "string": "odłączony"
+  },
+  "node_failed": {
+    "string": "Bitkit nie mógł zainicjować węzła Lightning."
+  },
+  "connections": {
+    "string": "Połączenia z Lightning"
+  },
+  "conn_pending": {
+    "string": "Połączenia oczekujące"
+  },
+  "conn_open": {
+    "string": "Połączenia otwarte"
+  },
+  "conn_closed": {
+    "string": "Połączenia zamknięte"
+  },
+  "conn_failed": {
+    "string": "Połączenia nieudane"
+  },
+  "conn_closed_show": {
+    "string": "Pokaż zamknięte i nieudane"
+  },
+  "conn_closed_hide": {
+    "string": "Ukryj zamknięte i nieudane"
+  },
+  "conn_button_export_logs": {
+    "string": "Eksport logów"
+  },
+  "conn_button_add": {
+    "string": "Dodaj połączenie"
+  },
+  "export_logs": {
+    "string": "Eksport logów Lightning"
+  },
+  "error_logs": {
+    "string": "Eksport logów nie powiódł się"
+  },
+  "error_logs_description": {
+    "string": "Bitkit nie był w stanie wyeksportować logów LDK."
   },
   "error_invoice": {
     "string": "Nie udało się utworzyć faktury"
   },
+  "error_add_title": {
+    "string": "Nie można dodać Lightning Peer"
+  },
+  "error_add": {
+    "string": "Bitkit nie mógł dodać peera Lightning."
+  },
+  "error_add_uri": {
+    "string": "Identyfikator URI wygląda na nieprawidłowy."
+  },
+  "error_add_tor": {
+    "string": "Bitkit nie może dodawać węzłów Tor."
+  },
+  "error_save_title": {
+    "string": "Nie można zapisać Lightning Peer"
+  },
+  "error_save": {
+    "string": "Nie można zapisać lightning peer"
+  },
   "error_decode": {
     "string": "Nie można zdekodować faktury"
+  },
+  "peer_saved": {
+    "string": "Lightning peer dodany i zapisany pomyślnie."
   },
   "invoice_copied": {
     "string": "Skopiowano fakturę do schowka"
   },
+  "connection": {
+    "string": "Połączenie"
+  },
+  "status": {
+    "string": "Status"
+  },
+  "order_details": {
+    "string": "Szczegóły zamówienia"
+  },
+  "order": {
+    "string": "Identyfikator zamówienia"
+  },
+  "created_on": {
+    "string": "Utworzono"
+  },
+  "order_expiry": {
+    "string": "Wygaśnięcie zamówienia"
+  },
+  "transaction": {
+    "string": "Transakcja"
+  },
+  "order_fee": {
+    "string": "Opłata za zamówienie"
+  },
+  "balance": {
+    "string": "Saldo"
+  },
+  "reserve_balance": {
+    "string": "Saldo rezerwy (nie do wydania)"
+  },
+  "total_size": {
+    "string": "Całkowity rozmiar kanału"
+  },
+  "fees": {
+    "string": "Opłaty"
+  },
+  "base_fee": {
+    "string": "Opłata bazowa za wydatki"
+  },
+  "fee_rate": {
+    "string": "Stawka opłaty transakcyjnej"
+  },
   "other": {
     "string": "Inne"
+  },
+  "is_usable": {
+    "string": "Jest użyteczny"
+  },
+  "opened_on": {
+    "string": "Otwarto"
+  },
+  "closed_on": {
+    "string": "Zamknięto"
   },
   "channel_node_id": {
     "string": "ID węzła"
   },
+  "channel_id": {
+    "string": "ID kanału"
+  },
+  "channel_point": {
+    "string": "Punkt kanału"
+  },
+  "closure_reason": {
+    "string": "Powód zamknięcia"
+  },
   "support": {
     "string": "Wsparcie"
   },
+  "connection_closed": {
+    "title": {
+      "string": "Połączenie zamknięte"
+    },
+    "description": {
+      "string": "Środki z salda wydatków zostały przeniesione do oszczędności."
+    }
+  },
+  "close_conn": {
+    "string": "Zamknij połączenie"
+  },
   "close_error": {
     "string": "Transfer nie powiódł się"
+  },
+  "close_error_msg": {
+    "string": "Nie można przelać środków z powrotem na saldo oszczędności. Proszę spróbować ponownie."
+  },
+  "close_success_title": {
+    "string": "Transfer zainicjowany"
+  },
+  "close_success_msg": {
+    "string": "Państwa środki są przelewane z powrotem do oszczędności."
   },
   "close_text": {
     "string": "Opłata za zamknięcie tego połączenia Lightning i przelanie środków z powrotem na oszczędności zależy od warunków sieciowych.\n\nPrzelew środków na oszczędności jest zazwyczaj natychmiastowy, ale w szczególnych warunkach sieciowych rozliczenie może potrwać do <accent>14 dni</accent>."
   },
   "close_button": {
     "string": "Zamknij"
+  },
+  "force_nav_title": {
+    "string": "Wymuś transfer"
+  },
+  "force_title": {
+    "string": "Wymuś\n<accent>Transfer</accent>"
+  },
+  "force_text": {
+    "string": "Nie można zainicjować transferu. Czy chcesz wymusić transfer? Nie będziesz mógł korzystać z tych środków przez ±14 dni (!)."
+  },
+  "force_button": {
+    "string": "Wymuś transfer"
+  },
+  "force_init_title": {
+    "string": "Wymuszenie transferu zainicjowane"
+  },
+  "force_init_msg": {
+    "string": "Środki będą dostępne w ciągu ±14 dni."
+  },
+  "force_failed_title": {
+    "string": "Wymuszenie transferu nie powiodło się"
+  },
+  "force_failed_msg": {
+    "string": "Nie można przelać środków z powrotem na saldo oszczędności. Proszę spróbować ponownie."
+  },
+  "channel_opened_title": {
+    "string": "Saldo wydatków gotowe"
+  },
+  "channel_opened_msg": {
+    "string": "Teraz możesz zapłacić każdemu, gdziekolwiek, natychmiast."
+  },
+  "order_given_up_title": {
+    "string": "Konfiguracja płatności natychmiastowych nie powiodła się"
+  },
+  "order_given_up_msg": {
+    "string": "Proces konfiguracji wygasł. Proszę spróbować ponownie."
+  },
+  "order_expired_title": {
+    "string": "Konfiguracja płatności natychmiastowych nie powiodła się"
+  },
+  "order_expired_msg": {
+    "string": "Proces konfiguracji wygasł. Proszę spróbować ponownie."
+  },
+  "order_state": {
+    "awaiting_payment": {
+      "string": "Przetwarzanie płatności"
+    },
+    "payment_canceled": {
+      "string": "Płatność anulowana"
+    },
+    "paid": {
+      "string": "Płatność powiodła się"
+    },
+    "refund_available": {
+      "string": "Możliwość zwrotu środków"
+    },
+    "refunded": {
+      "string": "Płatność zwrócona"
+    },
+    "queued": {
+      "string": "W kolejce do otwarcia"
+    },
+    "opening": {
+      "string": "Otwieranie połączenia"
+    },
+    "closing": {
+      "string": "Zamkykanie połączenia"
+    },
+    "given_up": {
+      "string": "Zrezygnowano"
+    },
+    "expired": {
+      "string": "Zamówienie wygasło"
+    },
+    "closed": {
+      "string": "Połączenie zamknięte"
+    },
+    "open": {
+      "string": "Połączenie otwarte"
+    },
+    "inactive": {
+      "string": "Połączenie nieaktywne"
+    }
+  },
+  "wait_text_top": {
+    "string": "Proszę poczekać, aż Bitkit połączy się z siecią płatności (±10 sekund)."
+  },
+  "wait_text_bottom": {
+    "string": "Podłączanie i synchronizacja..."
   }
 }
