@@ -83,8 +83,8 @@ android {
         applicationId "to.bitkit"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 159
-        versionName "1.1.4"
+        versionCode 160
+        versionName "1.1.5"
         testBuildType System.getProperty('testBuildType', 'debug')
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
