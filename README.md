@@ -12,14 +12,16 @@ Bitkit ships as native iOS and Android apps that share a Rust core via FFI. This
 flowchart TD
   bitkitIos["bitkit-ios"]
   bitkitAndroid["bitkit-android"]
-  bitkitCore["bitkit-core"]
-  ldkNode["ldk-node"]
-  vssFfi["vss-rust-client-ffi"]
 
-  bitkitIos -->|FFI| bitkitCore
-  bitkitAndroid -->|FFI| bitkitCore
-  bitkitCore --> ldkNode
-  bitkitCore --> vssFfi
+  subgraph rust["Shared Rust Layer"]
+    bitkitCore["bitkit-core"]
+    ldkNode["ldk-node"]
+    vssFfi["vss-rust-client-ffi"]
+    bitkitCore ~~~ ldkNode ~~~ vssFfi
+  end
+
+  bitkitIos -->|FFI| rust
+  bitkitAndroid -->|FFI| rust
 ```
 
 ## Related repos
@@ -41,3 +43,8 @@ flowchart TD
 - Core library: [bitkit-core/README](https://github.com/synonymdev/bitkit-core/blob/master/README.md)
 - VSS client: [vss-rust-client-ffi/README](https://github.com/synonymdev/vss-rust-client-ffi/blob/master/README.md)
 - LDK Node: [ldk-node/README](https://github.com/synonymdev/ldk-node/blob/main/README.md)
+
+## License
+
+This project is licensed under the MIT License.
+See the [LICENSE](./LICENSE) file for more details.
