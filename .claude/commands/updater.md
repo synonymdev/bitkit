@@ -17,14 +17,17 @@ Apps fetch their respective file at:
 - Android: `https://github.com/synonymdev/bitkit-android/releases/download/updater/release.json`
 
 ### How the apps consume it
-- **iOS:** `AppUpdateService` (`Bitkit/Services/AppUpdateService.swift`), URL from `Env.swift:280`. Compares `buildNumber` against current app build; `critical: true` shows a blocking full-screen.
-- **Android:** `AppUpdaterService` (`to.bitkit.services.AppUpdaterService`), URL from `Env.kt:133`. Same comparison logic.
+- **iOS native:** `AppUpdateService` (`Bitkit/Services/AppUpdateService.swift`), URL from `Env.swift:280`. Compares `buildNumber` against current app build; `critical: true` shows a blocking full-screen.
+- **Android native:** `AppUpdaterService` (`to.bitkit.services.AppUpdaterService`), URL from `Env.kt:133`. Same comparison logic.
+- **RN Android (legacy):** `checkForAppUpdate` in `src/store/utils/ui.ts` of `synonymdev/bitkit-react-native`. Fetches from the **same URL as iOS** (`synonymdev/bitkit` release). Reads `platforms["android"]` via `Platform.OS`. Last RN build: 161 (v1.1.6). The `"android"` entry in the iOS release.json directs these users to the native Android app on the Play Store. This entry always has `critical: true` to force migration.
 
 ## Critical JSON rules
 
 ### iOS `release.json`
-**Only include the `ios` entry — NEVER include null entries for other platforms.**
-iOS `JSONDecoder` maps `platforms` as `[String: AppUpdateInfo]` (non-optional values). A null value breaks decoding and crashes the app.
+**Must include both `ios` and `android` entries — NEVER include null values.**
+- iOS `JSONDecoder` maps `platforms` as `[String: AppUpdateInfo]` (non-optional values). A null value breaks decoding and crashes the iOS app.
+- The `"android"` entry is required for the legacy RN Android app, which fetches from this same URL and reads `platforms["android"]`. Without it, the RN app crashes on `undefined.buildNumber`.
+- The `"android"` entry always has `"critical": true` to force RN users to migrate to the native app.
 
 Template:
 ```json
@@ -37,6 +40,14 @@ Template:
       "pub_date": "ISO_8601_TIMESTAMP",
       "url": "https://apps.apple.com/app/bitkit-wallet/id6502440655",
       "critical": false
+    },
+    "android": {
+      "version": "VERSION_TAG",
+      "buildNumber": BUILD_NUMBER,
+      "notes": "https://github.com/synonymdev/bitkit-android/releases/tag/VERSION_TAG",
+      "pub_date": "ISO_8601_TIMESTAMP",
+      "url": "https://play.google.com/store/apps/details?id=to.bitkit",
+      "critical": true
     }
   }
 }
@@ -106,7 +117,7 @@ For `pub_date`, resolve the tag ref:
 
 For `buildNumber`: check the associated GitHub release for a build number, or ask the user.
 
-Ask whether `critical` should be true (default: **false**).
+Ask whether `critical` should be true for iOS (default: **false**). The `"android"` entry in the iOS file is always `critical: true` — no need to ask.
 
 ### Step 3 — Confirm values
 
@@ -124,6 +135,7 @@ Platform: Android
   buildNumber: 178
   pub_date:    2026-02-25T12:00:00Z
   critical:    false
+  (iOS file android entry: critical always true)
 ```
 
 Wait for explicit user confirmation.
@@ -133,8 +145,12 @@ Wait for explicit user confirmation.
 Read the current `updater/ios/release.json` and/or `updater/android/release.json`, then edit them with the confirmed values.
 
 **Remember the JSON rules:**
-- iOS file: only the `ios` key, no nulls
+- iOS file: must have both `ios` and `android` entries, no nulls. The `"android"` entry always has `critical: true`.
 - Android file: must include `"ios": null`
+
+**When updating Android (or Both):** write Android values to **two places**:
+1. `updater/android/release.json` (the `"android"` entry)
+2. `updater/ios/release.json` (the `"android"` entry, with `critical: true`)
 
 ### Step 5 — Upload to GitHub releases
 
@@ -154,6 +170,11 @@ Fetch the uploaded files and confirm they match:
 curl -sL https://github.com/synonymdev/bitkit/releases/download/updater/release.json | jq .
 curl -sL https://github.com/synonymdev/bitkit-android/releases/download/updater/release.json | jq .
 ```
+
+Confirm:
+- The iOS file has both `"ios"` and `"android"` entries (no nulls)
+- The Android file has `"ios": null` and a valid `"android"` entry
+- All values match what was confirmed in Step 3
 
 Show the output to the user and confirm it looks correct.
 
