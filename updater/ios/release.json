@@ -1,18 +1,18 @@
 {
   "platforms": {
     "ios": {
-      "version": "v2.2.1",
-      "buildNumber": 187,
-      "notes": "https://github.com/synonymdev/bitkit-ios/releases/tag/v2.2.1",
-      "pub_date": "2026-05-05T16:33:16Z",
+      "version": "v2.3.0",
+      "buildNumber": 190,
+      "notes": "https://github.com/synonymdev/bitkit-ios/releases/tag/v2.3.0",
+      "pub_date": "2026-06-05T14:57:50Z",
       "url": "https://apps.apple.com/app/bitkit-wallet/id6502440655",
-      "critical": true
+      "critical": false
     },
     "android": {
-      "version": "v2.2.0",
-      "buildNumber": 181,
-      "notes": "https://github.com/synonymdev/bitkit-android/releases/tag/v2.2.0",
-      "pub_date": "2026-04-07T13:43:26Z",
+      "version": "v2.3.0",
+      "buildNumber": 182,
+      "notes": "https://github.com/synonymdev/bitkit-android/releases/tag/v2.3.0",
+      "pub_date": "2026-06-05T14:19:27Z",
       "url": "https://play.google.com/store/apps/details?id=to.bitkit",
       "critical": true
     }
