@@ -6,7 +6,7 @@
       "notes": "https://github.com/synonymdev/bitkit-ios/releases/tag/v2.3.2",
       "pub_date": "2026-07-14T15:37:17Z",
       "url": "https://apps.apple.com/app/bitkit-wallet/id6502440655",
-      "critical": true
+      "critical": false
     },
     "android": {
       "version": "v2.3.2",

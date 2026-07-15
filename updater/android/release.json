@@ -7,7 +7,7 @@
       "notes": "https://github.com/synonymdev/bitkit-android/releases/tag/v2.3.2",
       "pub_date": "2026-07-14T15:25:29Z",
       "url": "https://play.google.com/store/apps/details?id=to.bitkit",
-      "critical": true
+      "critical": false
     }
   }
 }
