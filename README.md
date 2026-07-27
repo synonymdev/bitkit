@@ -17,7 +17,8 @@ flowchart TD
     bitkitCore["bitkit-core"]
     ldkNode["ldk-node"]
     vssFfi["vss-rust-client-ffi"]
-    bitkitCore ~~~ ldkNode ~~~ vssFfi
+    paykit["paykit-rs"]
+    bitkitCore ~~~ ldkNode ~~~ vssFfi ~~~ paykit
   end
 
   bitkitIos -->|FFI| rust
@@ -31,6 +32,7 @@ flowchart TD
 - [synonymdev/bitkit-core](https://github.com/synonymdev/bitkit-core) - Rust core library with FFI bindings for iOS and Android.
 - [synonymdev/vss-rust-client-ffi](https://github.com/synonymdev/vss-rust-client-ffi) - VSS client FFI bindings for mobile apps.
 - [synonymdev/ldk-node](https://github.com/synonymdev/ldk-node) - Lightning node library dependency.
+- [pubky/paykit-rs](https://github.com/pubky/paykit-rs) - Paykit payment discovery and Pubky routing with mobile FFI bindings.
 
 ## Deprecated/Archived
 
@@ -43,6 +45,7 @@ flowchart TD
 - Core library: [bitkit-core/README](https://github.com/synonymdev/bitkit-core/blob/master/README.md)
 - VSS client: [vss-rust-client-ffi/README](https://github.com/synonymdev/vss-rust-client-ffi/blob/master/README.md)
 - LDK Node: [ldk-node/README](https://github.com/synonymdev/ldk-node/blob/main/README.md)
+- Paykit: [paykit-rs/README](https://github.com/pubky/paykit-rs/blob/master/README.md)
 
 ## License
 
