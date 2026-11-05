@@ -47,6 +47,11 @@ flowchart TD
 - LDK Node: [ldk-node/README](https://github.com/synonymdev/ldk-node/blob/main/README.md)
 - Paykit: [paykit-rs/README](https://github.com/pubky/paykit-rs/blob/master/README.md)
 
+## Shared release guidance
+
+- [Store release-note checks](docs/store-release-notes.md) — drafting, translations and store submission readback for both native apps.
+- [Release QA method](https://github.com/synonymdev/bitkit-e2e-tests/blob/main/docs/release-qa.md) — derive release sanity checks and retain test evidence in the E2E repository.
+
 ## License
 
 This project is licensed under the MIT License.
