@@ -2,12 +2,12 @@
   "platforms": {
     "ios": null,
     "android": {
-      "version": "v2.5.1",
-      "buildNumber": 191,
-      "notes": "https://github.com/synonymdev/bitkit-android/releases/tag/v2.5.1",
-      "pub_date": "2026-10-13T12:42:40Z",
+      "version": "v3.1.0",
+      "buildNumber": 196,
+      "notes": "https://github.com/synonymdev/bitkit-android/releases/tag/v3.1.0",
+      "pub_date": "2026-11-02T15:05:04Z",
       "url": "https://play.google.com/store/apps/details?id=to.bitkit",
-      "critical": true
+      "critical": false
     }
   }
 }
